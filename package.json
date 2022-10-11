@@ -1,8 +1,36 @@
 {
   "dependencies": {
+    "concurrently": "^7.4.0",
+    "nodemon": "^2.0.20",
     "yargs": "^17.6.0"
   },
   "devDependencies": {
     "@types/yargs": "^17.0.13"
-  }
+  },
+  "name": "obo",
+  "description": "An Oberon-O to WebAssembly Compiler.",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start:build": "tsc -w",
+    "start:run": "nodemon build/obo.js",
+    "start": "concurrently npm:start:*",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/raulcostajunior/obo.git"
+  },
+  "keywords": [
+    "Oberon",
+    "Programming Language",
+    "compiler",
+    "WASM"
+  ],
+  "author": "http://linkedin.com/in/raulcostajunior",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/raulcostajunior/obo/issues"
+  },
+  "homepage": "https://github.com/raulcostajunior/obo#readme"
 }
