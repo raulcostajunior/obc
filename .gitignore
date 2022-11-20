@@ -44,8 +44,12 @@ compile_commands.json
 CTestTestfile.cmake
 build/
 build_debug/
+build-debug/
 build_release/
+build-release/
+cmake_build_debug/
 cmake-build-debug/
+cmake_build_release/
 cmake-build-release/
 
 # VSCode specific settings
