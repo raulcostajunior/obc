@@ -1,2 +1,2 @@
-# obo
-An Oberon-O to WebAssembly Compiler.
+# oboc
+An Oberon-O compiler.
