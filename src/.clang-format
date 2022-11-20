@@ -1,0 +1,17 @@
+Language: Cpp
+BasedOnStyle: Google
+# Overrides to Google style
+AllowShortIfStatementsOnASingleLine: AllIfsAndElse
+AllowShortFunctionsOnASingleLine: Empty
+ColumnLimit: 96
+# 'ContinuationIndentWidth' should be set to a value greater than 'IndentWidth'
+# to avoid wrapped function parameters lists having the same indentation as the
+# function's body. In Google style 'IndentWidth' is '4' and 'AlignAfterOpenBracket'
+# is 'DontAlign' (if 'AlignAfterOpenBracket' is set to 'Align', the setting for
+# 'ContinuationIndentWidth' won't make a difference for the long parameters list
+# scenario).
+ContinuationIndentWidth: 6
+IndentWidth: 4
+MaxEmptyLinesToKeep: 2
+NamespaceIndentation: All
+SpacesBeforeTrailingComments: 1
