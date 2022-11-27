@@ -6,7 +6,7 @@ project(oboc
         DESCRIPTION "An Oberon-O compiler targetting Webasm and LLVM IR"
         LANGUAGES CXX)
 
-set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS 1)
