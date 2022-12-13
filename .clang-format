@@ -3,7 +3,7 @@ BasedOnStyle: Google
 # Overrides to Google style
 AllowShortIfStatementsOnASingleLine: AllIfsAndElse
 AllowShortFunctionsOnASingleLine: Empty
-ColumnLimit: 96
+ColumnLimit: 80
 # 'ContinuationIndentWidth' should be set to a value greater than 'IndentWidth'
 # to avoid wrapped function parameters lists having the same indentation as the
 # function's body. In Google style 'IndentWidth' is '4' and 'AlignAfterOpenBracket'
