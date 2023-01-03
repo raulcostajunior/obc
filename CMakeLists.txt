@@ -13,4 +13,4 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS 1)
 
 # TODO add directory src and specify target from there.
 add_executable(oboc
-               src/main.cpp)
+               src/main.cpp src/token.cpp src/scanner.cpp)
