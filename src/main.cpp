@@ -1,5 +1,5 @@
 /**
- * oboc - An Oberon-O to WebAssembly compiler.
+ * oboc - An Oberon-O to LLVM-IR compiler.
  *
  * The Oberon-O programming language is a subset of the Oberon language defined
  * in the book, "Compiler Construction" authored by Niklaus Wirth. A revised
@@ -14,7 +14,7 @@
 
 // NOLINTBEGIN(bugprone-exception-escape)
 int main(int argc, char **argv) {
-    CLI::App app{"An Oberon-O to WebAssembly compiler"};
+    CLI::App app{"An Oberon-O to LLVM-IR compiler"};
 
     app.set_version_flag("--version", OBOC_VERSION_STR);
 
