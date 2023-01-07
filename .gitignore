@@ -64,4 +64,5 @@ checks.json
 
 # clangd specific
 .clangd/
+.cache
 Footer
