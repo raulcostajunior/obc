@@ -1,7 +1,7 @@
 /**
- * oboc - An Oberon-O to LLVM-IR compiler.
+ * oboc - An Oberon-0 to LLVM-IR compiler.
  *
- * The Oberon-O programming language is a subset of the Oberon language defined
+ * The Oberon-0 programming language is a subset of the Oberon language defined
  * in the book, "Compiler Construction" authored by Niklaus Wirth. A revised
  * version of the book can be downloaded from
  * https://people.inf.ethz.ch/wirth/CompilerConstruction/CompilerConstruction1.pdf.
