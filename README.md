@@ -1,2 +1,2 @@
 # oboc
-An Oberon-O compiler.
+An Oberon-0 compiler.
