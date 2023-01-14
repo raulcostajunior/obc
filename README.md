@@ -1,2 +1,2 @@
-# oboc
-An Oberon-0 compiler.
+# obc
+An Oberon-0 to LLVM-IR compiler.
