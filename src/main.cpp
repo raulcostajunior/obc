@@ -1,5 +1,5 @@
 /**
- * oboc - An Oberon-0 to LLVM-IR compiler.
+ * obc - An Oberon-0 to LLVM-IR compiler.
  *
  * The Oberon-0 programming language is a subset of the Oberon language defined
  * in the book, "Compiler Construction" authored by Niklaus Wirth. A revised
@@ -16,7 +16,7 @@
 int main(int argc, char **argv) {
     CLI::App app{"An Oberon-0 to LLVM-IR compiler"};
 
-    app.set_version_flag("--version", OBOC_VERSION_STR);
+    app.set_version_flag("--version", OBC_VERSION_STR);
 
     std::string srcFile;
     CLI::Option *srcFileOption = app.add_option(
