@@ -16,7 +16,7 @@
 int main(int argc, char **argv) {
     CLI::App app{"An Oberon-0 to LLVM-IR compiler"};
 
-    app.set_version_flag("--version, -vˆ", OBC_VERSION_STR);
+    app.set_version_flag("--version, -v", OBC_VERSION_STR);
 
     bool upperCaseKeywords{false};
     app.add_flag("--up-case-keywords, -U, -u", upperCaseKeywords,
