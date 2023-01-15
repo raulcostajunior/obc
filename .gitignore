@@ -47,10 +47,10 @@ build_debug/
 build-debug/
 build_release/
 build-release/
-cmake_build_debug/
-cmake-build-debug/
-cmake_build_release/
-cmake-build-release/
+cmake-build-debug*/
+cmake-build-release*/
+cmake_build_debug*/
+cmake_build_release*/
 
 # VSCode specific settings
 .vscode

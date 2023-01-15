@@ -1,0 +1,5 @@
+[requires]
+cli11/2.3.2
+
+[generators]
+cmake_find_package

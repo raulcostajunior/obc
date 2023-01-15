@@ -9,7 +9,7 @@
  */
 #include <string>
 
-#include "CLI11.hpp"
+#include "CLI/CLI.hpp"
 #include "_version.hpp"
 
 // NOLINTBEGIN(bugprone-exception-escape)
