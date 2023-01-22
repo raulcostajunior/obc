@@ -3,7 +3,6 @@
 #include <map>
 
 std::string Token::typeString() const {
-
     static std::map<TokenType, std::string> tokenTypeToString{
 
           {TokenType::ARRAY, "ARRAY"},
