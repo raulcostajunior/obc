@@ -4,23 +4,64 @@
 #include <iostream>
 #include <string>
 
-enum class TokenType {
+enum class TokenType : unsigned short {
     // Keywords
+    ARRAY,
     BEGIN,
+    CONST,
+    DIV,
+    DO,
+    ELSE,
+    ELSEIF,
     END,
-    FOR,
     IF,
+    MOD,
+    MODULE,
+    OF,
+    OR,
+    PROCEDURE,
+    RECORD,
+    THEN,
+    TYPE,
+    VAR,
+    WHILE,
 
     // Literals
-    IDENTIFIER,
+    IDENT,
     STRING,
-    NUMBER
+    NUMBER,
+
+    // Single-char tokens
+    AND,
+    COLON,
+    COMMA,
+    DOT,
+    EQUAL,
+    GREATER,
+    HASH,
+    LEFT_BRACKET,
+    LEFT_PAREN,
+    LESS,
+    MINUS,
+    PLUS,
+    RIGHT_BRACKET,
+    RIGHT_PAREN,
+    SEMICOLON,
+    STAR,
+    TILDE,
+
+    // Two-char tokens
+    GREATER_EQUAL,
+    LESS_EQUAL
+
 };
 
 struct Token {
     TokenType type;
     std::string lexeme;
     int line;
+
+    std::string typeString() const;
 };
 
 std::ostream& operator<<(std::ostream&, const Token&);
