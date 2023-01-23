@@ -11,7 +11,7 @@ class Scanner {
    public:
     Scanner(bool upperCaseKeywords=false);
 
-    std::vector<Token>scanSrcFile(std::string srcFilePath);
+    std::vector<Token>scanSrcFile(const std::string& srcFilePath);
 
    private:
 
