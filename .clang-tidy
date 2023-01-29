@@ -1,5 +1,5 @@
 ---
-Checks:          'clang-diagnostic-*,clang-analyzer-*,readbility-*, performance-*, cppcoreguidelines-*, -cppcoreguidelines-pro-bounds-constant-array-index, bugprone-*, modernize-*, -modernize-use-trailing-return-type, -modernize-use-nodiscard, -llvm-*, -fuchsia-*, -google-*, -zircon-*, -abseil-*, -android-*'
+Checks:          'clang-diagnostic-*,clang-analyzer-*,readability-*, performance-*, cppcoreguidelines-*, -cppcoreguidelines-pro-bounds-constant-array-index, bugprone-*, modernize-*, -modernize-use-trailing-return-type, -modernize-use-nodiscard, -llvm-*, -fuchsia-*, -google-*, -zircon-*, -abseil-*, -android-*'
 WarningsAsErrors: '1'
 HeaderFilterRegex: ''
 FormatStyle:     none
