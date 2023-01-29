@@ -29,7 +29,7 @@ struct Token {
     std::string lexeme;
     int line;
 
-    std::string typeString() const;
+    [[nodiscard]] std::string typeString() const;
 };
 
 std::ostream& operator<<(std::ostream&, const Token&);
