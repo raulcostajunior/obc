@@ -2,7 +2,6 @@
 Checks:          'clang-diagnostic-*,clang-analyzer-*,readbility-*, performance-*, cppcoreguidelines-*, -cppcoreguidelines-pro-bounds-constant-array-index, bugprone-*, modernize-*, -modernize-use-trailing-return-type, -modernize-use-nodiscard, -llvm-*, -fuchsia-*, -google-*, -zircon-*, -abseil-*, -android-*'
 WarningsAsErrors: '1'
 HeaderFilterRegex: ''
-AnalyzeTemporaryDtors: false
 FormatStyle:     none
 CheckOptions:
   - key:             cert-dcl16-c.NewSuffixes
@@ -13,8 +12,6 @@ CheckOptions:
     value:           0;1;2;3;4;5;6;7;8;9;10
   - key:             readability-magic-numbers.IgnoredIntegerValues
     value:           0;1;2;3;4;5;6;7;8;9;10
-  - key:             cppcoreguidelines-explicit-virtual-functions.IgnoreDestructors
-    value:           '1'
   - key:             cppcoreguidelines-non-private-member-variables-in-classes.IgnoreClassesWithAllMemberVariablesBeingPublic
     value:           '1'
   - key:             modernize-loop-convert.MaxCopySize
@@ -23,11 +20,4 @@ CheckOptions:
     value:           reasonable
   - key:             modernize-loop-convert.NamingStyle
     value:           CamelCase
-  - key:             modernize-pass-by-value.IncludeStyle
-    value:           llvm
-  - key:             modernize-replace-auto-ptr.IncludeStyle
-    value:           llvm
-  - key:             modernize-use-nullptr.NullMacros
-    value:           'NULL'
-
 ...
