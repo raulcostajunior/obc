@@ -54,7 +54,7 @@ std::string Token::typeString() const {
     return tokenTypeToString[this->type];
 }
 
-std::ostream& operator<<(std::ostream& ostr, const Token& token) {
-    ostr << "'" << token.lexeme << "' (" << token.typeString() << ")";
-    return ostr;
+std::ostream& operator<<(std::ostream& out, const Token& token) {
+    out << "'" << token.lexeme << "' (" << token.typeString() << ")";
+    return out;
 }
