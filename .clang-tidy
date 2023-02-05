@@ -1,19 +1,15 @@
 ---
 Checks:          'clang-diagnostic-*,clang-analyzer-*,readability-*, performance-*, cppcoreguidelines-*, -cppcoreguidelines-pro-bounds-constant-array-index, bugprone-*, modernize-*, -modernize-use-trailing-return-type, -modernize-use-nodiscard, -llvm-*, -fuchsia-*, -google-*, -zircon-*, -abseil-*, -android-*'
-WarningsAsErrors: '1'
+WarningsAsErrors: 'true'
 HeaderFilterRegex: ''
 FormatStyle:     none
 CheckOptions:
   - key:             cert-dcl16-c.NewSuffixes
     value:           'L;LL;LU;LLU'
-  - key:             cert-oop54-cpp.WarnOnlyIfThisHasSuspiciousField
-    value:           '0'
   - key:             cppcoreguidelines-avoid-magic-numbers.IgnoredIntegerValues
     value:           0;1;2;3;4;5;6;7;8;9;10
   - key:             readability-magic-numbers.IgnoredIntegerValues
     value:           0;1;2;3;4;5;6;7;8;9;10
-  - key:             cppcoreguidelines-non-private-member-variables-in-classes.IgnoreClassesWithAllMemberVariablesBeingPublic
-    value:           '1'
   - key:             modernize-loop-convert.MaxCopySize
     value:           '16'
   - key:             modernize-loop-convert.MinConfidence
