@@ -1,5 +1,6 @@
 [requires]
 cli11/2.3.2
+gtest/1.13.0
 
 [generators]
 cmake_find_package

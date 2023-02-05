@@ -18,6 +18,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS 1)
 set(CMAKE_MODULE_PATH ${CMAKE_BINARY_DIR})
 
 find_package(CLI11 REQUIRED)
+find_package(GTest REQUIRED)
 
 # TODO add directory src and specify target from there.
 add_executable(obc
