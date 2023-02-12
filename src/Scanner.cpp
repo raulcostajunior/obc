@@ -3,7 +3,7 @@
 #include <array>
 #include <fstream>
 
-// Size of the buffer used with message that corresponding to an errno value.
+// Size of the buffer for storing a errno corresponding message.
 const size_t ERR_MSG_BUFF_SIZE = 256;
 
 Scanner::Scanner(bool upperCaseKeywords) : m_upperCaseKeywords(upperCaseKeywords) {}
