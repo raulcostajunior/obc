@@ -22,7 +22,7 @@ find_package(GTest REQUIRED)
 
 # TODO add directory src and specify target from there.
 add_executable(obc
-        src/main.cpp src/Token.cpp src/Scanner.cpp src/ErrorInfo.hpp)
+        src/main.cpp src/Token.cpp src/Scanner.cpp src/ErrorInfo.hpp src/ErrorInfo.cpp)
 
 target_include_directories(obc
         PRIVATE ${CLI11_INCLUDE_DIR})

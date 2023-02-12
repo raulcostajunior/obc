@@ -9,4 +9,7 @@ struct ErrorInfo {
     std::string msg;
 };
 
+std::ostream& operator<<(std::ostream&, const ErrorInfo&);
+
+
 #endif // OBC_ERRORINFO_HPP

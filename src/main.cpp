@@ -59,12 +59,7 @@ int main(int argc, char **argv) {
                       << srcFile << "':" << std::endl;
         }
         for (const auto &error : res.errors) {
-            if (error.line >= 0 && error.column >= 0) {
-                std::cout << "(line " << error.line << ", column " << error.column
-                          << "): " << error.msg << std::endl;
-            } else {
-                std::cout << error.msg << std::endl;
-            }
+            std::cout << error << std::endl;
         }
     }
 }
