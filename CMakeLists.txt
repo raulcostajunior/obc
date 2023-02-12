@@ -6,7 +6,7 @@ project(obc
         DESCRIPTION "An Oberon-0 to LLVM-IR compiler"
         LANGUAGES CXX)
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS 1)
@@ -22,7 +22,7 @@ find_package(GTest REQUIRED)
 
 # TODO add directory src and specify target from there.
 add_executable(obc
-               src/main.cpp src/token.cpp src/scanner.cpp)
+        src/main.cpp src/Token.cpp src/Scanner.cpp src/ErrorInfo.hpp)
 
 target_include_directories(obc
         PRIVATE ${CLI11_INCLUDE_DIR})
