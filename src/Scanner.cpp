@@ -1,6 +1,7 @@
 #include "Scanner.hpp"
 
 #include <array>
+#include <cstring>
 #include <fstream>
 
 // Size of the buffer for storing an errno corresponding message.
@@ -32,7 +33,11 @@ ScanResults Scanner::scanSrcFile(const std::string& srcFilePath) {
             // Some error happened during the file read operation.
             ScanResults res;
             std::array<char, ERR_MSG_BUFF_SIZE> errBuf{};
+#ifdef __MSVCRT__
+            strerror_s(errBuf.data(), errBuf.size(), errno);
+#else
             strerror_r(errno, errBuf.data(), errBuf.size());
+#endif
             res.errors.emplace_back(
                   ErrorInfo{.msg = std::string{"Error while reading '" + srcFilePath +
                                                "': " + errBuf.data()}});
