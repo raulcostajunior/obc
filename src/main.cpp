@@ -20,9 +20,10 @@ int main(int argc, char **argv) {
 
     app.set_version_flag("--version, -v", OBC_VERSION_STR);
 
-    bool upperCaseKeywords{false};
-    app.add_flag("--up-case-keywords, -U, -u", upperCaseKeywords,
-                 "Must keywords be all-caps? (original Oberon-0 spec)");
+    bool lowerCaseKeywords{false};
+    app.add_flag("--lower-keywords", lowerCaseKeywords,
+                 "Must keywords be lowercase? (in the Oberon-0 spec, keywords are all "
+                 "uppercase)");
 
     std::string srcFile;
     CLI::Option *srcFileOption =
@@ -36,7 +37,7 @@ int main(int argc, char **argv) {
     }
 
     // For now, we just scan and printout the results.
-    Scanner scanner(upperCaseKeywords);
+    Scanner scanner(lowerCaseKeywords);
     const auto res = scanner.scanSrcFile(srcFile);
     // Report on tokens.
     if (res.tokens.empty()) {

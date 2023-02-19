@@ -15,7 +15,7 @@ struct ScanResults {
 
 class Scanner {
    public:
-    Scanner(bool upperCaseKeywords = false);
+    Scanner(bool lowerCaseKeywords = false);
 
     /**
      * Scans a given source file, returning the list of tokens found in it.
@@ -32,7 +32,7 @@ class Scanner {
     ScanResults scan(const std::string& src);
 
    private:
-    bool m_upperCaseKeywords;
+    bool m_lowerCaseKeywords;
 };
 
 

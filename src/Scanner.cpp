@@ -7,7 +7,7 @@
 // Size of the buffer for storing an errno corresponding message.
 const size_t ERR_MSG_BUFF_SIZE = 256U;
 
-Scanner::Scanner(bool upperCaseKeywords) : m_upperCaseKeywords(upperCaseKeywords) {}
+Scanner::Scanner(bool lowerCaseKeywords) : m_lowerCaseKeywords(lowerCaseKeywords) {}
 
 ScanResults Scanner::scanSrcFile(const std::string& srcFilePath) {
     std::string src;
