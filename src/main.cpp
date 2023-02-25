@@ -21,13 +21,14 @@ int main(int argc, char **argv) {
     app.set_version_flag("--version, -v", OBC_VERSION_STR);
 
     bool lowerCaseKeywords{false};
-    app.add_flag("--lower-keywords", lowerCaseKeywords,
-                 "Must keywords be lowercase? (in the Oberon-0 spec, keywords are all "
-                 "uppercase)");
+    app.add_flag(
+          "--lower-keywords", lowerCaseKeywords,
+          "Must keywords be lowercase? (in the Oberon-0 spec, keywords are all "
+          "uppercase)");
 
     std::string srcFile;
-    CLI::Option *srcFileOption =
-          app.add_option("src_file", srcFile, "Oberon-0 source file to be compiled");
+    CLI::Option *srcFileOption = app.add_option(
+          "src_file", srcFile, "Oberon-0 source file to be compiled");
     srcFileOption->required();
 
     try {
@@ -44,8 +45,8 @@ int main(int argc, char **argv) {
         std::cout << "No token found in '" << srcFile << "'." << std::endl;
     } else {
         std::cout << "Scanned " << res.tokens.size()
-                  << (res.tokens.size() == 1U ? " token" : " tokens") << " from "
-                  << srcFile << ":" << std::endl;
+                  << (res.tokens.size() == 1U ? " token" : " tokens")
+                  << " from " << srcFile << ":" << std::endl;
         for (const auto &token : res.tokens) {
             std::cout << token << std::endl;
         }
@@ -56,8 +57,9 @@ int main(int argc, char **argv) {
             std::cout << "An error happened while scanning '" << srcFile
                       << "':" << std::endl;
         } else {
-            std::cout << res.errors.size() << " errors happened while scanning '"
-                      << srcFile << "':" << std::endl;
+            std::cout << res.errors.size()
+                      << " errors happened while scanning '" << srcFile
+                      << "':" << std::endl;
         }
         for (const auto &error : res.errors) {
             std::cout << error << std::endl;
