@@ -20,14 +20,14 @@ class Scanner {
     /**
      * Scans a given source file, returning the list of tokens found in it.
      * @param srcFilePath the path of the source file to be scanned.
-     * @return list of tokens in the file.
+     * @return list of tokens (and the lexical errors) in the file.
      */
     ScanResults scanSrcFile(const std::string& srcFilePath);
 
     /**
-     * Scan an a string with the contents of a source file.
+     * Scans a string with the contents of a source file.
      * @param src the contents of a source file.
-     * @return list of tokens in the contents.
+     * @return list of tokens (and the lexical errors) in the contents.
      */
     ScanResults scan(const std::string& src);
 
