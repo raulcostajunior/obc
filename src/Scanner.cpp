@@ -29,9 +29,21 @@ ScanResults Scanner::scanSrcFile(const std::string& srcFilePath) {
             std::string nextLine;
             std::getline(srcFile, nextLine);
             src.append(nextLine);
+            // As std::getline consumes the delimiter - in this case the default
+            // "\n" - we add it to the string. We may end up adding an extra
+            // "\n" when the last line in the source file didn't end with a "\n"
+            // - for the context of the scanner, though, this extra line break
+            // is harmless as the new last line in memory will have no code to
+            // be scanned.
+            src.append("\n");
         }
-        if (srcFile.fail()) {
+        srcFile.close();
+        if (srcFile.bad()) {
             // Some error happened during the file read operation.
+            // NOTE: fail() should not be used for detecting read errors in this
+            //       context: a file whose last line consists solely of the
+            //       new line character would cause getline to return no
+            //       character and set both eofbit and failbit.
             ScanResults res;
             std::array<char, ERR_MSG_BUFF_SIZE> errBuf{};
 #ifdef __MSVCRT__
