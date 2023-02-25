@@ -46,7 +46,9 @@ ScanResults Scanner::scanSrcFile(const std::string& srcFilePath) {
             //       character and set both eofbit and failbit.
             ScanResults res;
             std::array<char, ERR_MSG_BUFF_SIZE> errBuf{};
-#ifdef __MSVCRT__
+#if defined(__MSVCRT__) || defined(_MSC_VER)
+            // On Windows, using the Microsoft supplied runtime, the safe
+            // version of strerror is not strerror_r, but strerror_s.
             strerror_s(errBuf.data(), errBuf.size(), errno);
 #else
             strerror_r(errno, errBuf.data(), errBuf.size());
