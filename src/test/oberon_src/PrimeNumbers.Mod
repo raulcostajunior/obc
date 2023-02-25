@@ -30,3 +30,4 @@ MODULE PrimeNumbers;  (*NW 6.9.07; Tabulate prime numbers; for Oberon-07  NW 25.
 
 BEGIN ReadInt(n); WriteInt(n); WriteLn; Primes(n)
 END PrimeNumbers.
+
