@@ -7,10 +7,9 @@
 // Size of the buffer for storing an errno corresponding message.
 const size_t ERR_MSG_BUFF_SIZE = 256U;
 
-Scanner::Scanner(bool lowerCaseKeywords)
-    : m_lowerCaseKeywords(lowerCaseKeywords) {}
+Scanner::Scanner(bool lowerCaseKeywords) : m_lowerCaseKeywords(lowerCaseKeywords) {}
 
-ScanResults Scanner::scanSrcFile(const std::string& srcFilePath) {
+ScanResults Scanner::scanSrcFile(const std::string& srcFilePath) const {
     std::string src;
     { // Scope for the srcFile ifstream - allows its destruction before lexing
       // work actually takes place.
@@ -18,9 +17,9 @@ ScanResults Scanner::scanSrcFile(const std::string& srcFilePath) {
         if (!srcFile.is_open()) {
             // Some error happened during file opening.
             ScanResults res;
-            res.errors.emplace_back(ErrorInfo{
-                  .msg = std::string{"File '"} + srcFilePath +
-                         "' not found or not available for reading."});
+            res.errors.emplace_back(
+                  ErrorInfo{.msg = std::string{"File '"} + srcFilePath +
+                                   "' not found or not available for reading."});
             return res;
         }
         while (srcFile) {
@@ -53,9 +52,9 @@ ScanResults Scanner::scanSrcFile(const std::string& srcFilePath) {
 #else
             strerror_r(errno, errBuf.data(), errBuf.size());
 #endif
-            res.errors.emplace_back(ErrorInfo{
-                  .msg = std::string{"Error while reading '" + srcFilePath +
-                                     "': " + errBuf.data()}});
+            res.errors.emplace_back(
+                  ErrorInfo{.msg = std::string{"Error while reading '" + srcFilePath +
+                                               "': " + errBuf.data()}});
             return res;
         }
     }
@@ -64,7 +63,16 @@ ScanResults Scanner::scanSrcFile(const std::string& srcFilePath) {
 }
 
 
-ScanResults Scanner::scan(const std::string& src) {
-    ScanResults res;
-    return res;
+ScanResults Scanner::scan(const std::string& src) const {
+    ScanContext ctx(src, m_lowerCaseKeywords);
+
+    while (ctx.allScanned()) {
+        scanToken(ctx);
+    }
+
+    return ctx.results;
+}
+
+void Scanner::scanToken(ScanContext& ctx) const {
+    // TODO: add definition.
 }
