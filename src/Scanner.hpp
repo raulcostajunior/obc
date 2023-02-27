@@ -25,35 +25,30 @@ struct ScanContext {
     // Use lowercase kaywords?
     bool lowerKeywords;
     // Start of the lexeme being scanned (index in the src input)
-    int lexStart;
+    int lexStart{0};
     // Index, in the src input, of the character being scanned.
-    int lexPos;
+    int lexPos{0};
     // Number of the line from the src input currently being scanned.
-    int currLine;
+    int currLine{1};
     // Number of the column (of the current line) from the src input currently
     // being scanned.
-    int currColumn;
+    int currColumn{1};
     // The tokens (and errors) found by the ongoing scan operation.
     ScanResults results;
 
     ScanContext(const std::string& srcInput, bool lowerKey)
-        : srcInput{srcInput},
-          lowerKeywords{lowerKey},
-          lexStart{0},
-          lexPos{0},
-          currLine{1},
-          currColumn{1} {}
+        : srcInput{srcInput}, lowerKeywords{lowerKey} {}
 
     /**
      * @brief Returns whether the whole src input has been already scanned or not.
-     * 
+     *
      * @param ctx  the context of the ongoing scan operation.
      * @return true all the characters from the src input have already been scanned.
      * @return false there is at least one more character from the src input to be scanned.
      */
     bool allScanned() const {
         return lexPos <= srcInput.length();
-    };  
+    };
 };
 
 class Scanner {
@@ -62,18 +57,18 @@ class Scanner {
 
     /**
      * @brief Scans a given source file, returning the list of tokens found in it.
-     * 
+     *
      * @param srcFilePath the path of the source file to be scanned.
-     * 
+     *
      * @return list of tokens (and the lexical errors) in the file.
      */
     ScanResults scanSrcFile(const std::string& srcFilePath) const;
 
     /**
      * @brief Scans a string with the contents of a source file.
-     * 
+     *
      * @param src the contents of a source file.
-     * 
+     *
      * @return list of tokens (and the lexical errors) in the contents.
      */
     ScanResults scan(const std::string& src) const;
@@ -82,10 +77,10 @@ class Scanner {
     bool m_lowerCaseKeywords;
 
     /**
-     * @brief Scans the next token from the src input. 
-     * 
-     * Keeps advancing the src input until the next token (or an error) is found. 
-     * 
+     * @brief Scans the next token from the src input.
+     *
+     * Keeps advancing the src input until the next token (or an error) is found.
+     *
      * @param ctx the context of the ongoing scan operation.
      */
     void scanToken(ScanContext& ctx) const;
