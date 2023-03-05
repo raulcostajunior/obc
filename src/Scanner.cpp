@@ -48,7 +48,7 @@ struct ScanContext {
     };
 };
 
-Scanner::Scanner(bool lowerCaseKeywords) : _lowerCaseKeywords(lowerCaseKeywords) {}
+Scanner::Scanner(bool lowerCaseKeywords) : m_lowerCaseKeywords(lowerCaseKeywords) {}
 
 ScanResults Scanner::scanSrcFile(const std::string& srcFilePath) const {
     std::string src;
@@ -105,7 +105,7 @@ ScanResults Scanner::scanSrcFile(const std::string& srcFilePath) const {
 
 
 ScanResults Scanner::scan(const std::string& src) const {
-    ScanContext ctx(src, _lowerCaseKeywords);
+    ScanContext ctx(src, m_lowerCaseKeywords);
 
     while (ctx.allScanned()) {
         scanToken(ctx);

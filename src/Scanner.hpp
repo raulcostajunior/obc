@@ -39,7 +39,7 @@ class Scanner {
     ScanResults scan(const std::string& src) const;
 
    private:
-    bool _lowerCaseKeywords;
+    bool m_lowerCaseKeywords;
 
     /**
      * @brief Scans the next token from the src input.
