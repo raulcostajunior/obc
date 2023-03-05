@@ -17,7 +17,8 @@ const size_t ERR_MSG_BUFF_SIZE = 256U;
 struct ScanContext {
     // The source input being scanned.
     // A string_view here is safe - the lifetime of a ScanContext is limited to
-    // a single scan operation.
+    // a single scan operation. The string_view allows avoiding both copying strings and
+    // having to declare a const data member.
     std::string_view srcInput;
     // Use lowercase keyword?
     bool lowerKeywords;
