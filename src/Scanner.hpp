@@ -22,7 +22,7 @@ struct ScanResults {
 struct ScanContext {
     // The source input being scanned.
     const std::string& srcInput;
-    // Use lowercase kaywords?
+    // Use lowercase keywords?
     bool lowerKeywords;
     // Start of the lexeme being scanned (index in the src input)
     int lexStart{0};
