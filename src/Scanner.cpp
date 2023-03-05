@@ -3,11 +3,52 @@
 #include <array>
 #include <cstring>
 #include <fstream>
+#include <string_view>
 
 // Size of the buffer for storing an errno corresponding message.
 const size_t ERR_MSG_BUFF_SIZE = 256U;
 
-Scanner::Scanner(bool lowerCaseKeywords) : m_lowerCaseKeywords(lowerCaseKeywords) {}
+/**
+ * Context of an ongoing scan operation. Each scan operation creates an
+ * instance of ScanContext at its start. The context stores book-keeping data for the
+ * scan process and is passed around (and modified) by the different methods of the
+ * Scanner class.
+ */
+struct ScanContext {
+    // The source input being scanned.
+    // A string_view here is safe - the lifetime of a ScanContext is limited to
+    // a single scan operation.
+    std::string_view srcInput;
+    // Use lowercase keyword?
+    bool lowerKeywords;
+    // Start of the lexeme being scanned (index in the src input)
+    int lexStart{0};
+    // Index, in the src input, of the character being scanned.
+    int lexPos{0};
+    // Number of the line from the src input currently being scanned.
+    int currLine{1};
+    // Number of the column (of the current line) from the src input currently
+    // being scanned.
+    int currColumn{1};
+    // The tokens (and errors) found by the ongoing scan operation.
+    ScanResults results;
+
+    ScanContext(const std::string& srcInput, bool lowerKey)
+        : srcInput{srcInput}, lowerKeywords{lowerKey} {}
+
+    /**
+     * @brief Returns whether the whole src input has been already scanned or not.
+     *
+     * @param ctx  the context of the ongoing scan operation.
+     * @return true all the characters from the src input have already been scanned.
+     * @return false there is at least one more character from the src input to be scanned.
+     */
+    bool allScanned() const {
+        return lexPos <= srcInput.length();
+    };
+};
+
+Scanner::Scanner(bool lowerCaseKeywords) : _lowerCaseKeywords(lowerCaseKeywords) {}
 
 ScanResults Scanner::scanSrcFile(const std::string& srcFilePath) const {
     std::string src;
@@ -64,7 +105,7 @@ ScanResults Scanner::scanSrcFile(const std::string& srcFilePath) const {
 
 
 ScanResults Scanner::scan(const std::string& src) const {
-    ScanContext ctx(src, m_lowerCaseKeywords);
+    ScanContext ctx(src, _lowerCaseKeywords);
 
     while (ctx.allScanned()) {
         scanToken(ctx);
