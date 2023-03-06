@@ -30,6 +30,15 @@ struct Token {
     int line;
 
     [[nodiscard]] std::string typeString() const;
+
+    /**
+     * @brief For single-char tokens, returns the token type for a given character.
+     * @param ch The character whose corresponding single-char token type should be returned.
+     * @return The single-char token type corresponding token type should be returned
+     * @throw invalid_argument exception if the given character does not correspond to
+     * a single-char token type known to Oberon-0.
+     */
+    static TokenType typeFromChar(const char ch);
 };
 
 std::ostream& operator<<(std::ostream&, const Token&);

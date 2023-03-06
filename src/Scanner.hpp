@@ -48,7 +48,7 @@ class Scanner {
      *
      * @param ctx the context of the ongoing scan operation.
      */
-    void scanToken(ScanContext& ctx) const;
+    static void scanNextToken(ScanContext& ctx);
 };
 
 

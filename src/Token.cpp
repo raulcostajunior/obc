@@ -1,6 +1,8 @@
 #include "Token.hpp"
 
 #include <map>
+#include <sstream>
+#include <stdexcept>
 
 std::string Token::typeString() const {
     static std::map<TokenType, std::string> tokenTypeToString{
@@ -52,6 +54,26 @@ std::string Token::typeString() const {
     };
 
     return tokenTypeToString[this->type];
+}
+
+TokenType Token::typeFromChar(const char ch) {
+    static std::map<char, TokenType> charToSingleCharTokenType{
+          {'&', TokenType::AND},           {':', TokenType::COLON},
+          {',', TokenType::COMMA},         {'.', TokenType::DOT},
+          {'=', TokenType::EQUAL},         {'>', TokenType::GREATER},
+          {'#', TokenType::HASH},          {'[', TokenType::LEFT_BRACKET},
+          {'(', TokenType::LEFT_PAREN},    {'<', TokenType::LESS},
+          {'-', TokenType::MINUS},         {'+', TokenType::PLUS},
+          {']', TokenType::RIGHT_BRACKET}, {')', TokenType::RIGHT_PAREN},
+          {';', TokenType::SEMICOLON},     {'*', TokenType::STAR},
+          {'~', TokenType::TILDE}};
+    const auto& it = charToSingleCharTokenType.find(ch);
+    if (it == charToSingleCharTokenType.end()) {
+        std::ostringstream oss{"Unexpected char, "};
+        oss << ch << "' found.";
+        throw std::invalid_argument(oss.str());
+    }
+    return charToSingleCharTokenType[ch];
 }
 
 std::ostream& operator<<(std::ostream& out, const Token& token) {

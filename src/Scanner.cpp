@@ -5,6 +5,8 @@
 #include <fstream>
 #include <string_view>
 
+#include "ErrorInfo.hpp"
+
 // Size of the buffer for storing an errno corresponding message.
 const size_t ERR_MSG_BUFF_SIZE = 256U;
 
@@ -47,6 +49,18 @@ struct ScanContext {
     bool allScanned() const {
         return lexPos <= srcInput.length();
     };
+
+    /**
+     * @brief Returns the next character in the source being scanned and advances the scan of
+     * one character.
+     *
+     * @return the next character in the source being scanned.
+     */
+    char nextChr() {
+        char chr = this->srcInput[this->lexPos];
+        this->lexPos++;
+        return chr;
+    }
 };
 
 Scanner::Scanner(bool lowerCaseKeywords) : m_lowerCaseKeywords(lowerCaseKeywords) {}
@@ -109,12 +123,47 @@ ScanResults Scanner::scan(const std::string& src) const {
     ScanContext ctx(src, m_lowerCaseKeywords);
 
     while (ctx.allScanned()) {
-        scanToken(ctx);
+        Scanner::scanNextToken(ctx);
     }
 
     return ctx.results;
 }
 
-void Scanner::scanToken(ScanContext& ctx) const {
-    // TODO: add definition.
+void Scanner::scanNextToken(ScanContext& ctx) {
+    char chr = ctx.nextChr();
+    switch (chr) {
+        case '&':
+        case ':':
+        case ',':
+        case '.':
+        case '=':
+        case '>':
+        case '#':
+        case '[':
+        case '(':
+        case '<':
+        case '-':
+        case '+':
+        case ']':
+        case ')':
+        case ';':
+        case '*':
+        case '~':
+            try {
+                ctx.results.tokens.emplace_back(Token{.type = Token::typeFromChar(chr),
+                                                      .lexeme = std::string{chr},
+                                                      .line = ctx.currLine});
+            } catch (std::invalid_argument const& ex) {
+                ctx.results.errors.emplace_back(ErrorInfo{
+                      .line = ctx.currLine, .column = ctx.currColumn, .msg = ex.what()});
+            }
+            ctx.currColumn++;
+            break;
+        default:
+            ctx.results.errors.emplace_back(
+                  ErrorInfo{.line = ctx.currLine,
+                            .column = ctx.currColumn,
+                            .msg = std::string{"Unexpected character, '"} + chr + "' found."});
+            ctx.currColumn++;
+    }
 }
