@@ -24,6 +24,8 @@ struct ScanContext {
     std::string_view srcInput;
     // Use lowercase keyword?
     bool lowerKeywords;
+    // Should currColumn be ignored? (Look in currColumn description for more details)
+    bool ignoreCurrColumn;
     // Start of the lexeme being scanned (index in the src input)
     int lexStart{0};
     // Index, in the src input, of the character being scanned.
@@ -31,13 +33,14 @@ struct ScanContext {
     // Number of the line from the src input currently being scanned.
     int currLine{1};
     // Number of the column (of the current line) from the src input currently
-    // being scanned.
+    // being scanned. Column information should be ignored if there's at least one '\t' in
+    // the source file.
     int currColumn{1};
     // The tokens (and errors) found by the ongoing scan operation.
     ScanResults results;
 
-    ScanContext(const std::string& srcInput, bool lowerKey)
-        : srcInput{srcInput}, lowerKeywords{lowerKey} {}
+    ScanContext(const std::string& srcInput, bool lowerKey, bool currColumnUpdated)
+        : srcInput{srcInput}, lowerKeywords{lowerKey}, ignoreCurrColumn{currColumnUpdated} {}
 };
 
 Scanner::Scanner(bool lowerCaseKeywords) : m_lowerCaseKeywords(lowerCaseKeywords) {}
@@ -97,7 +100,9 @@ ScanResults Scanner::scanSrcFile(const std::string& srcFilePath) const {
 
 
 ScanResults Scanner::scan(const std::string& src) const {
-    ScanContext ctx(src, m_lowerCaseKeywords);
+    // Current column information is only updated when the source file has no tabs.
+    bool currColumnUpdated = src.find("\t") == std::string::npos;
+    ScanContext ctx(src, m_lowerCaseKeywords, currColumnUpdated);
 
     while (allScanned(ctx)) {
         Scanner::scanNextToken(ctx);
@@ -126,8 +131,9 @@ bool Scanner::nextChrMatch(ScanContext& ctx, char expChr) {
 
 void Scanner::scanNextToken(ScanContext& ctx) {
     char chr = nextChr(ctx);
+
     switch (chr) {
-            // Single-char tokens
+        // Handling of single-char tokens
         case '&':
         case ',':
         case '.':
@@ -152,7 +158,8 @@ void Scanner::scanNextToken(ScanContext& ctx) {
             }
             ctx.currColumn++;
             break;
-            // (Potentially) two-char tokens
+
+        // Handling of (potentially) two-char tokens
         case '<':
             if (nextChrMatch(ctx, '=')) {
                 ctx.results.tokens.emplace_back(Token{
@@ -190,11 +197,24 @@ void Scanner::scanNextToken(ScanContext& ctx) {
             }
             break;
 
+        // White space characters (except newline) - simply consumed.
+        case ' ':
+        case '\r':
+        case '\t':
+            ctx.currColumn++;
+            break;
+
+        // Handling of new lines (outside comments; new lines in the middle of comments are
+        // handled by the comment handler)
+        case '\n':
+            ctx.currLine++;
+            ctx.currColumn = 1;
+            break;
 
         default:
             ctx.results.errors.emplace_back(
                   ErrorInfo{.line = ctx.currLine,
-                            .column = ctx.currColumn,
+                            .column = ctx.ignoreCurrColumn ? -1 : ctx.currColumn,
                             .msg = std::string{"Unexpected character, '"} + chr + "' found."});
             ctx.currColumn++;
     }
