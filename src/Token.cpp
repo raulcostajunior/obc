@@ -49,7 +49,8 @@ std::string Token::typeString() const {
           {TokenType::TILDE, "TILDE"},
 
           {TokenType::GREATER_EQUAL, "GREATER_EQUAL"},
-          {TokenType::LESS_EQUAL, "LESS_EQUAL"}
+          {TokenType::LESS_EQUAL, "LESS_EQUAL"},
+          {TokenType::ASSIGN, "ASSIGN"}
 
     };
 

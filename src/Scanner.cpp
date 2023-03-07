@@ -116,19 +116,25 @@ char Scanner::nextChr(ScanContext& ctx) {
     return chr;
 }
 
+bool Scanner::nextChrMatch(ScanContext& ctx, char expChr) {
+    if (allScanned(ctx) || ctx.srcInput[ctx.lexPos] != expChr) {
+        return false;
+    }
+    ctx.lexPos++;
+    return true;
+}
+
 void Scanner::scanNextToken(ScanContext& ctx) {
     char chr = nextChr(ctx);
     switch (chr) {
+            // Single-char tokens
         case '&':
-        case ':':
         case ',':
         case '.':
         case '=':
-        case '>':
         case '#':
         case '[':
         case '(':
-        case '<':
         case '-':
         case '+':
         case ']':
@@ -146,6 +152,45 @@ void Scanner::scanNextToken(ScanContext& ctx) {
             }
             ctx.currColumn++;
             break;
+            // (Potentially) two-char tokens
+        case '<':
+            if (nextChrMatch(ctx, '=')) {
+                ctx.results.tokens.emplace_back(Token{
+                      .type = TokenType::LESS_EQUAL, .lexeme = "<=", .line = ctx.currLine});
+                ctx.currColumn += 2;
+            } else {
+                ctx.results.tokens.emplace_back(Token{.type = Token::typeFromChar(chr),
+                                                      .lexeme = std::string{chr},
+                                                      .line = ctx.currLine});
+                ctx.currColumn++;
+            }
+            break;
+        case '>':
+            if (nextChrMatch(ctx, '=')) {
+                ctx.results.tokens.emplace_back(Token{
+                      .type = TokenType::GREATER_EQUAL, .lexeme = ">=", .line = ctx.currLine});
+                ctx.currColumn += 2;
+            } else {
+                ctx.results.tokens.emplace_back(Token{.type = Token::typeFromChar(chr),
+                                                      .lexeme = std::string{chr},
+                                                      .line = ctx.currLine});
+                ctx.currColumn++;
+            }
+            break;
+        case ':':
+            if (nextChrMatch(ctx, '=')) {
+                ctx.results.tokens.emplace_back(
+                      Token{.type = TokenType::ASSIGN, .lexeme = ":=", .line = ctx.currLine});
+                ctx.currColumn += 2;
+            } else {
+                ctx.results.tokens.emplace_back(Token{.type = Token::typeFromChar(chr),
+                                                      .lexeme = std::string{chr},
+                                                      .line = ctx.currLine});
+                ctx.currColumn++;
+            }
+            break;
+
+
         default:
             ctx.results.errors.emplace_back(
                   ErrorInfo{.line = ctx.currLine,

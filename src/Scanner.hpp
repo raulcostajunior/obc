@@ -51,7 +51,7 @@ class Scanner {
     static bool allScanned(const ScanContext& ctx);
 
     /**
-     * @brief Returns the next character in the source being scanned and advances the scan of
+     * @brief Returns the next character in the source being scanned and advances the scan by
      * one character.
      *
      * @return the next character in the source being scanned.
@@ -66,6 +66,18 @@ class Scanner {
      * @param ctx the context of the ongoing scan operation.
      */
     static void scanNextToken(ScanContext& ctx);
+
+    /**
+     * @brief Returns whether the next character matches an expected character or not.
+     *
+     * If the next character matches the expected character it is also "consumed", by advancing
+     * the scan by one character.
+     *
+     * @param ctx the context of the ongoing scan operation.
+     * @param expChr the expected character after the current one.
+     * @return true if the next character matches the expected character.
+     */
+    static bool nextChrMatch(ScanContext& ctx, char expChr);
 };
 
 

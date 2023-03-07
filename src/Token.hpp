@@ -19,7 +19,7 @@ enum class TokenType : unsigned short {
     LESS, MINUS, PLUS, RIGHT_BRACKET, RIGHT_PAREN, SEMICOLON, STAR, TILDE,
 
     // Two-char tokens
-    GREATER_EQUAL, LESS_EQUAL
+    GREATER_EQUAL, LESS_EQUAL, ASSIGN
 
     // clang-format on
 };
