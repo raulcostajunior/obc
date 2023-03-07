@@ -42,6 +42,23 @@ class Scanner {
     bool m_lowerCaseKeywords;
 
     /**
+     * @brief Returns whether the whole src input has been already scanned or not.
+     *
+     * @param ctx  the context of the ongoing scan operation.
+     * @return true all the characters from the src input have already been scanned.
+     * @return false there is at least one more character from the src input to be scanned.
+     */
+    static bool allScanned(const ScanContext& ctx);
+
+    /**
+     * @brief Returns the next character in the source being scanned and advances the scan of
+     * one character.
+     *
+     * @return the next character in the source being scanned.
+     */
+    static char nextChr(ScanContext& ctx);
+
+    /**
      * @brief Scans the next token from the src input.
      *
      * Keeps advancing the src input until the next token (or an error) is found.

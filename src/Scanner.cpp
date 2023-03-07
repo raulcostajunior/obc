@@ -38,29 +38,6 @@ struct ScanContext {
 
     ScanContext(const std::string& srcInput, bool lowerKey)
         : srcInput{srcInput}, lowerKeywords{lowerKey} {}
-
-    /**
-     * @brief Returns whether the whole src input has been already scanned or not.
-     *
-     * @param ctx  the context of the ongoing scan operation.
-     * @return true all the characters from the src input have already been scanned.
-     * @return false there is at least one more character from the src input to be scanned.
-     */
-    bool allScanned() const {
-        return lexPos <= srcInput.length();
-    };
-
-    /**
-     * @brief Returns the next character in the source being scanned and advances the scan of
-     * one character.
-     *
-     * @return the next character in the source being scanned.
-     */
-    char nextChr() {
-        char chr = this->srcInput[this->lexPos];
-        this->lexPos++;
-        return chr;
-    }
 };
 
 Scanner::Scanner(bool lowerCaseKeywords) : m_lowerCaseKeywords(lowerCaseKeywords) {}
@@ -122,15 +99,25 @@ ScanResults Scanner::scanSrcFile(const std::string& srcFilePath) const {
 ScanResults Scanner::scan(const std::string& src) const {
     ScanContext ctx(src, m_lowerCaseKeywords);
 
-    while (ctx.allScanned()) {
+    while (allScanned(ctx)) {
         Scanner::scanNextToken(ctx);
     }
 
     return ctx.results;
 }
 
+bool Scanner::allScanned(const ScanContext& ctx) {
+    return ctx.lexPos <= ctx.srcInput.length();
+}
+
+char Scanner::nextChr(ScanContext& ctx) {
+    char chr = ctx.srcInput[ctx.lexPos];
+    ctx.lexPos++;
+    return chr;
+}
+
 void Scanner::scanNextToken(ScanContext& ctx) {
-    char chr = ctx.nextChr();
+    char chr = nextChr(ctx);
     switch (chr) {
         case '&':
         case ':':
