@@ -101,10 +101,11 @@ ScanResults Scanner::scanSrcFile(const std::string& srcFilePath) const {
 
 ScanResults Scanner::scan(const std::string& src) const {
     // Current column information is only updated when the source file has no tabs.
-    bool currColumnUpdated = src.find("\t") == std::string::npos;
+    bool currColumnUpdated = src.find('\t') == std::string::npos;
     ScanContext ctx(src, m_lowerCaseKeywords, currColumnUpdated);
 
     while (allScanned(ctx)) {
+        ctx.lexStart = ctx.lexPos;
         Scanner::scanNextToken(ctx);
     }
 
@@ -119,6 +120,13 @@ char Scanner::nextChr(ScanContext& ctx) {
     char chr = ctx.srcInput[ctx.lexPos];
     ctx.lexPos++;
     return chr;
+}
+
+char Scanner::nextChrNoAdvance(const ScanContext& ctx) {
+    if (allScanned(ctx)) {
+        return '\0';
+    }
+    return ctx.srcInput[ctx.lexPos];
 }
 
 bool Scanner::nextChrMatch(ScanContext& ctx, char expChr) {
@@ -140,21 +148,27 @@ void Scanner::scanNextToken(ScanContext& ctx) {
         case '=':
         case '#':
         case '[':
-        case '(':
         case '-':
         case '+':
         case ']':
         case ')':
+            // A close parenthesis matched in this context won't be ont of the comments
+            // terminating characters. Such right parenthesis will be consumed by th comment
+            // consuming loop.
         case ';':
         case '*':
+            // A star matched in this context won't be one of the comments terminating
+            // characters. Such stars will be consumed by the comment consuming loop.
         case '~':
             try {
                 ctx.results.tokens.emplace_back(Token{.type = Token::typeFromChar(chr),
                                                       .lexeme = std::string{chr},
                                                       .line = ctx.currLine});
             } catch (std::invalid_argument const& ex) {
-                ctx.results.errors.emplace_back(ErrorInfo{
-                      .line = ctx.currLine, .column = ctx.currColumn, .msg = ex.what()});
+                ctx.results.errors.emplace_back(
+                      ErrorInfo{.line = ctx.currLine,
+                                .column = ctx.ignoreCurrColumn ? -1 : ctx.currColumn,
+                                .msg = ex.what()});
             }
             ctx.currColumn++;
             break;
@@ -197,7 +211,7 @@ void Scanner::scanNextToken(ScanContext& ctx) {
             }
             break;
 
-        // White space characters (except newline) - simply consumed.
+        // Handling of whitespace characters (except newline) - simply consumed.
         case ' ':
         case '\r':
         case '\t':
@@ -211,11 +225,61 @@ void Scanner::scanNextToken(ScanContext& ctx) {
             ctx.currColumn = 1;
             break;
 
+        // Handling of (potential) comments. If the "(" is followed by a "*" and indeed starts a
+        // comment, the scanning process will be captured by the comment-consuming loop.
+        case '(':
+            if (nextChrMatch(ctx, '*')) {
+                // Found start of comment - "consume" it.
+                consumeComment(ctx);
+            } else {
+                // Found a single-character open parenthesis token.
+                ctx.results.tokens.emplace_back(Token{.type = Token::typeFromChar(chr),
+                                                      .lexeme = std::string{chr},
+                                                      .line = ctx.currLine});
+                ctx.currColumn++;
+            }
+            break;
+
         default:
             ctx.results.errors.emplace_back(
                   ErrorInfo{.line = ctx.currLine,
                             .column = ctx.ignoreCurrColumn ? -1 : ctx.currColumn,
                             .msg = std::string{"Unexpected character, '"} + chr + "' found."});
             ctx.currColumn++;
+    }
+}
+
+void Scanner::consumeComment(ScanContext& ctx) {
+    bool endOfCommentFound = false;
+    while (!allScanned(ctx)) {
+        // As comments can be "surrounded" by real code (in Oberon-0, comments are not
+        // ended by line breaks), the line and column information must be updated.
+        if (nextChrNoAdvance(ctx) == '\n') {
+            ctx.currLine++;
+            ctx.currColumn = 1;
+        } else {
+            ctx.currColumn++;
+        }
+        if (nextChrNoAdvance(ctx) == '*') {
+            // There's a chance that the end of comment has been reached;
+            // Advances the scan and checks if the next character is ")"
+            ctx.lexPos++;
+            if (nextChrNoAdvance(ctx) == ')') {
+                // The end of the comment has indeed been reached.
+                ctx.lexPos++;
+                ctx.currColumn++;
+                endOfCommentFound = true;
+                break; // Break-out of the comment consuming loop
+            }
+        }
+        ctx.lexPos++;
+    }
+    if (!endOfCommentFound) {
+        // If the end of the comment has not been found at this point, it means we
+        // have an unfinished comment.
+        ctx.results.errors.emplace_back(
+              ErrorInfo{.line = ctx.currLine,
+                        .column = ctx.ignoreCurrColumn ? -1 : ctx.currColumn,
+                        .msg = "Source module ends in an unfinished comment."});
     }
 }

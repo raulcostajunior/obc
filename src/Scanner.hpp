@@ -53,10 +53,19 @@ class Scanner {
     /**
      * @brief Returns the next character in the source being scanned and advances the scan by
      * one character.
-     *
+     * @param ctx the context of the ongoing scan operation.
      * @return the next character in the source being scanned.
      */
     static char nextChr(ScanContext& ctx);
+
+    /**
+     * @brief Returns the next character in the source being scanned, but doesn't advance the
+     * scan.
+     * @param ctx the context of the ongoing scan operation.
+     * @return the next character in the source being scanned. If the end of the input has been
+     * reached, returns '\0'.
+     */
+    static char nextChrNoAdvance(const ScanContext& ctx);
 
     /**
      * @brief Scans the next token from the src input.
@@ -78,6 +87,17 @@ class Scanner {
      * @return true if the next character matches the expected character.
      */
     static bool nextChrMatch(ScanContext& ctx, char expChr);
+
+    /**
+     * @brief Consumes the scanning input until an end of comment sequence, "*)", is found.
+     *
+     * @attention this internal method must be called only when the scanner knows that is in a
+     * comment - after a
+     * "(*", but before a "*)".
+     *
+     * @param ctx the context of the ongoing scan operation.
+     */
+    static void consumeComment(ScanContext& ctx);
 };
 
 
