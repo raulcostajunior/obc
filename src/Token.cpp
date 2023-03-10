@@ -58,7 +58,7 @@ std::string Token::typeString() const {
     return tokenTypeToString[this->type];
 }
 
-TokenType Token::typeFromChar(const char ch) {
+TokenType Token::typeFromChar(const char chr) {
     static std::unordered_map<char, TokenType> charToSingleCharTokenType{
           {'&', TokenType::AND},           {':', TokenType::COLON},
           {',', TokenType::COMMA},         {'.', TokenType::DOT},
@@ -69,13 +69,13 @@ TokenType Token::typeFromChar(const char ch) {
           {']', TokenType::RIGHT_BRACKET}, {')', TokenType::RIGHT_PAREN},
           {';', TokenType::SEMICOLON},     {'*', TokenType::STAR},
           {'~', TokenType::TILDE}};
-    const auto& it = charToSingleCharTokenType.find(ch);
-    if (it == charToSingleCharTokenType.end()) {
+    const auto& iter = charToSingleCharTokenType.find(chr);
+    if (iter == charToSingleCharTokenType.end()) {
         std::ostringstream oss{"Unexpected char, '"};
-        oss << ch << "' found.";
+        oss << chr << "' found.";
         throw std::invalid_argument(oss.str());
     }
-    return it->second;
+    return iter->second;
 }
 
 TokenType Token::keywordTypeFromLexeme(const std::string& lex) {
@@ -91,16 +91,16 @@ TokenType Token::keywordTypeFromLexeme(const std::string& lex) {
           {"TYPE", TokenType::TYPE},     {"VAR", TokenType::VAR},
           {"WHILE", TokenType::WHILE},
     };
-    const auto& it = lexToKeywordType.find(lex);
-    if (it == lexToKeywordType.end()) {
+    const auto& iter = lexToKeywordType.find(lex);
+    if (iter == lexToKeywordType.end()) {
         std::ostringstream oss{"Provided string, '"};
         oss << lex << "' does not match any keyword.";
         throw std::invalid_argument(oss.str());
     }
-    return it->second;
+    return iter->second;
 }
 
 std::ostream& operator<<(std::ostream& out, const Token& token) {
-    out << "'" << token.lexeme << "' (" << token.typeString() << ")";
+    out << "'" << token.lexeme << "' (" << token.typeString() << ") at line " << token.line;
     return out;
 }
