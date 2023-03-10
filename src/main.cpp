@@ -37,8 +37,7 @@ int main(int argc, char **argv) {
     }
 
     // For now, we just scan and printout the results.
-    Scanner scanner(lowerCaseKeywords);
-    const auto res = scanner.scanSrcFile(srcFile);
+    const auto res = Scanner::scanSrcFile(srcFile, lowerCaseKeywords);
     // Report on tokens.
     if (res.tokens.empty()) {
         std::cout << "No token found in '" << srcFile << "'." << std::endl;

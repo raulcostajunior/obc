@@ -25,11 +25,9 @@ struct ScanContext {
     // having to declare a const data member.
     std::string_view srcInput;
     // Use lowercase keyword?
-    bool lowerKeywords;
+    bool lowerCaseKeywords;
     // Should currColumn be ignored? (Look in currColumn description for more details)
     bool ignoreCurrColumn;
-    // Start of the lexeme being scanned (index in the src input)
-    int lexStart{0};
     // Index, in the src input, of the character being scanned.
     int lexPos{0};
     // Number of the line from the src input currently being scanned.
@@ -42,12 +40,12 @@ struct ScanContext {
     ScanResults results;
 
     ScanContext(const std::string& srcInput, bool lowerKey, bool currColumnUpdated)
-        : srcInput{srcInput}, lowerKeywords{lowerKey}, ignoreCurrColumn{currColumnUpdated} {}
+        : srcInput{srcInput},
+          lowerCaseKeywords{lowerKey},
+          ignoreCurrColumn{currColumnUpdated} {}
 };
 
-Scanner::Scanner(bool lowerCaseKeywords) : m_lowerCaseKeywords(lowerCaseKeywords) {}
-
-ScanResults Scanner::scanSrcFile(const std::string& srcFilePath) const {
+ScanResults Scanner::scanSrcFile(const std::string& srcFilePath, bool lowerCaseKeywords) {
     std::string src;
     { // Scope for the srcFile ifstream - allows its destruction before lexing
       // work actually takes place.
@@ -97,17 +95,16 @@ ScanResults Scanner::scanSrcFile(const std::string& srcFilePath) const {
         }
     }
     // Scans the source file from its in-memory storage.
-    return scan(src);
+    return scan(src, lowerCaseKeywords);
 }
 
 
-ScanResults Scanner::scan(const std::string& src) const {
+ScanResults Scanner::scan(const std::string& src, bool lowerCaseKeywords) {
     // Current column information is only updated when the source file has no tabs.
     bool currColumnUpdated = src.find('\t') == std::string::npos;
-    ScanContext ctx(src, m_lowerCaseKeywords, currColumnUpdated);
+    ScanContext ctx(src, lowerCaseKeywords, currColumnUpdated);
 
     while (allScanned(ctx)) {
-        ctx.lexStart = ctx.lexPos;
         Scanner::scanNextToken(ctx);
     }
 
@@ -139,7 +136,7 @@ bool Scanner::nextChrMatch(ScanContext& ctx, char expChr) {
     return true;
 }
 
-void Scanner::scanNextToken(ScanContext& ctx) const {
+void Scanner::scanNextToken(ScanContext& ctx) {
     char chr = nextChr(ctx);
 
     switch (chr) {
@@ -248,7 +245,7 @@ void Scanner::scanNextToken(ScanContext& ctx) const {
                 // Handling of identifiers - start with a letter, possibly followed by letters
                 // and/or digits
                 const std::string identLex = getIdentifierLexeme(ctx);
-                const TokenType tkType = tokenTypeFromIdentifierLexeme(identLex);
+                const TokenType tkType = tokenTypeFromIdentifierLexeme(ctx, identLex);
                 ctx.results.tokens.emplace_back(
                       Token{.type = tkType, .lexeme = identLex, .line = ctx.currLine});
             } else if (std::isdigit(chr) != 0) {
@@ -302,10 +299,11 @@ void Scanner::consumeComment(ScanContext& ctx) {
     }
 }
 
-TokenType Scanner::tokenTypeFromIdentifierLexeme(const std::string& idLex) const {
+TokenType Scanner::tokenTypeFromIdentifierLexeme(const ScanContext& ctx,
+                                                 const std::string& idLex) {
     TokenType idTokenType = TokenType::IDENT;
     try {
-        if (!m_lowerCaseKeywords) {
+        if (!ctx.lowerCaseKeywords) {
             // The scanner is supporting the standard casing of Oberon keywords: the lexeme must
             // be provided in all upper case to be recognized as a keyword.
             idTokenType = Token::keywordTypeFromLexeme(idLex);

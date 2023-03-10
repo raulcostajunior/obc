@@ -19,29 +19,28 @@ struct ScanContext;
 
 class Scanner {
    public:
-    explicit Scanner(bool lowerCaseKeywords = false);
-
     /**
      * @brief Scans a given source file, returning the list of tokens found in it.
      *
      * @param srcFilePath the path of the source file to be scanned.
+     * @param lowerCaseKeywords adopt lowercase keywords?
      *
      * @return list of tokens (and the lexical errors) in the file.
      */
-    ScanResults scanSrcFile(const std::string& srcFilePath) const;
+    static ScanResults scanSrcFile(const std::string& srcFilePath,
+                                   bool lowerCaseKeywords = false);
 
     /**
      * @brief Scans a string with the contents of a source file.
      *
      * @param src the contents of a source file.
+     * @param lowerCaseKeywords adopt lowercase keywords?
      *
      * @return list of tokens (and the lexical errors) in the contents.
      */
-    ScanResults scan(const std::string& src) const;
+    static ScanResults scan(const std::string& src, bool lowerCaseKeywords = false);
 
    private:
-    bool m_lowerCaseKeywords;
-
     /**
      * @brief Scans the next token from the src input.
      *
@@ -49,17 +48,19 @@ class Scanner {
      *
      * @param ctx the context of the ongoing scan operation.
      */
-    void scanNextToken(ScanContext& ctx) const;
+    static void scanNextToken(ScanContext& ctx);
 
     /**
      * @brief Gets the token type of a given identifier lexeme.
      *
+     * @param ctx the context of the ongoing scan operation.
      * @param idLex the identifier lexeme whose token type should be determined.
      *
      * @return the token type of an identifier lexeme - the lexeme can be of a language keyword
      * or of an ordinary identifier.
      */
-    TokenType tokenTypeFromIdentifierLexeme(const std::string& idLex) const;
+    static TokenType tokenTypeFromIdentifierLexeme(const ScanContext& ctx,
+                                                   const std::string& idLex);
 
     /**
      * @brief Returns whether the whole src input has been already scanned or not.
