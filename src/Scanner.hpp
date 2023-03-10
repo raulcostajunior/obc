@@ -3,6 +3,7 @@
 
 #include <string>
 #include <string_view>
+#include <utility>
 #include <vector>
 
 #include "ErrorInfo.hpp"
@@ -42,6 +43,25 @@ class Scanner {
     bool m_lowerCaseKeywords;
 
     /**
+     * @brief Scans the next token from the src input.
+     *
+     * Keeps advancing the src input until the next token (or an error) is found.
+     *
+     * @param ctx the context of the ongoing scan operation.
+     */
+    void scanNextToken(ScanContext& ctx) const;
+
+    /**
+     * @brief Gets the token type of a given identifier lexeme.
+     *
+     * @param idLex the identifier lexeme whose token type should be determined.
+     *
+     * @return the token type of an identifier lexeme - the lexeme can be of a language keyword
+     * or of an ordinary identifier.
+     */
+    TokenType tokenTypeFromIdentifierLexeme(const std::string& idLex) const;
+
+    /**
      * @brief Returns whether the whole src input has been already scanned or not.
      *
      * @param ctx  the context of the ongoing scan operation.
@@ -68,15 +88,6 @@ class Scanner {
     static char nextChrNoAdvance(const ScanContext& ctx);
 
     /**
-     * @brief Scans the next token from the src input.
-     *
-     * Keeps advancing the src input until the next token (or an error) is found.
-     *
-     * @param ctx the context of the ongoing scan operation.
-     */
-    static void scanNextToken(ScanContext& ctx);
-
-    /**
      * @brief Returns whether the next character matches an expected character or not.
      *
      * If the next character matches the expected character it is also "consumed", by advancing
@@ -98,6 +109,10 @@ class Scanner {
      * @param ctx the context of the ongoing scan operation.
      */
     static void consumeComment(ScanContext& ctx);
+
+    static std::string getIdentifierLexeme(ScanContext& ctx);
+
+    static std::string getNumberLexeme(ScanContext& ctx);
 };
 
 

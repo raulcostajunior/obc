@@ -3,6 +3,7 @@
 #include <map>
 #include <sstream>
 #include <stdexcept>
+#include <unordered_map>
 
 std::string Token::typeString() const {
     static std::map<TokenType, std::string> tokenTypeToString{
@@ -58,7 +59,7 @@ std::string Token::typeString() const {
 }
 
 TokenType Token::typeFromChar(const char ch) {
-    static std::map<char, TokenType> charToSingleCharTokenType{
+    static std::unordered_map<char, TokenType> charToSingleCharTokenType{
           {'&', TokenType::AND},           {':', TokenType::COLON},
           {',', TokenType::COMMA},         {'.', TokenType::DOT},
           {'=', TokenType::EQUAL},         {'>', TokenType::GREATER},
@@ -70,11 +71,33 @@ TokenType Token::typeFromChar(const char ch) {
           {'~', TokenType::TILDE}};
     const auto& it = charToSingleCharTokenType.find(ch);
     if (it == charToSingleCharTokenType.end()) {
-        std::ostringstream oss{"Unexpected char, "};
+        std::ostringstream oss{"Unexpected char, '"};
         oss << ch << "' found.";
         throw std::invalid_argument(oss.str());
     }
-    return charToSingleCharTokenType[ch];
+    return it->second;
+}
+
+TokenType Token::keywordTypeFromLexeme(const std::string& lex) {
+    static std::unordered_map<std::string, TokenType> lexToKeywordType{
+          {"ARRAY", TokenType::ARRAY},   {"BEGIN", TokenType::BEGIN},
+          {"CONST", TokenType::CONST},   {"DIV", TokenType::DIV},
+          {"DO", TokenType::DO},         {"ELSE", TokenType::ELSE},
+          {"ELSEIF", TokenType::ELSEIF}, {"END", TokenType::END},
+          {"IF", TokenType::IF},         {"MOD", TokenType::MOD},
+          {"MODULE", TokenType::MODULE}, {"OF", TokenType::OF},
+          {"OR", TokenType::OR},         {"PROCEDURE", TokenType::PROCEDURE},
+          {"RECORD", TokenType::RECORD}, {"THEN", TokenType::THEN},
+          {"TYPE", TokenType::TYPE},     {"VAR", TokenType::VAR},
+          {"WHILE", TokenType::WHILE},
+    };
+    const auto& it = lexToKeywordType.find(lex);
+    if (it == lexToKeywordType.end()) {
+        std::ostringstream oss{"Provided string, '"};
+        oss << lex << "' does not match any keyword.";
+        throw std::invalid_argument(oss.str());
+    }
+    return it->second;
 }
 
 std::ostream& operator<<(std::ostream& out, const Token& token) {

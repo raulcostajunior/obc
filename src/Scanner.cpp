@@ -1,6 +1,8 @@
 #include "Scanner.hpp"
 
+#include <algorithm>
 #include <array>
+#include <cctype>
 #include <cstring>
 #include <fstream>
 #include <string_view>
@@ -137,7 +139,7 @@ bool Scanner::nextChrMatch(ScanContext& ctx, char expChr) {
     return true;
 }
 
-void Scanner::scanNextToken(ScanContext& ctx) {
+void Scanner::scanNextToken(ScanContext& ctx) const {
     char chr = nextChr(ctx);
 
     switch (chr) {
@@ -241,11 +243,27 @@ void Scanner::scanNextToken(ScanContext& ctx) {
             break;
 
         default:
-            ctx.results.errors.emplace_back(
-                  ErrorInfo{.line = ctx.currLine,
-                            .column = ctx.ignoreCurrColumn ? -1 : ctx.currColumn,
-                            .msg = std::string{"Unexpected character, '"} + chr + "' found."});
-            ctx.currColumn++;
+
+            if (std::isalpha(chr) != 0) {
+                // Handling of identifiers - start with a letter, possibly followed by letters
+                // and/or digits
+                const std::string identLex = getIdentifierLexeme(ctx);
+                const TokenType tkType = tokenTypeFromIdentifierLexeme(identLex);
+                ctx.results.tokens.emplace_back(
+                      Token{.type = tkType, .lexeme = identLex, .line = ctx.currLine});
+            } else if (std::isdigit(chr) != 0) {
+                // Handling of numbers - start with a digit, possibly followed by digits.
+                // NOTE: Oberon-0 only supports the INTEGER numerical type specified in base 10.
+                const std::string numberLex = getNumberLexeme(ctx);
+                ctx.results.tokens.emplace_back(Token{
+                      .type = TokenType::NUMBER, .lexeme = numberLex, .line = ctx.currLine});
+            } else {
+                ctx.results.errors.emplace_back(ErrorInfo{
+                      .line = ctx.currLine,
+                      .column = ctx.ignoreCurrColumn ? -1 : ctx.currColumn,
+                      .msg = std::string{"Unexpected character, '"} + chr + "' found."});
+                ctx.currColumn++;
+            }
     }
 }
 
@@ -282,4 +300,48 @@ void Scanner::consumeComment(ScanContext& ctx) {
                         .column = ctx.ignoreCurrColumn ? -1 : ctx.currColumn,
                         .msg = "Source module ends in an unfinished comment."});
     }
+}
+
+TokenType Scanner::tokenTypeFromIdentifierLexeme(const std::string& idLex) const {
+    TokenType idTokenType = TokenType::IDENT;
+    try {
+        if (!m_lowerCaseKeywords) {
+            // The scanner is supporting the standard casing of Oberon keywords: the lexeme must
+            // be provided in all upper case to be recognized as a keyword.
+            idTokenType = Token::keywordTypeFromLexeme(idLex);
+        } else {
+            // The scanner is in all lowercase mode - if the lexeme is all lowercase and matches
+            // (in a case-insensitive manner) an Oberon keyword, we return the appropriate
+            // keyword token type - otherwise, the lexeme is seen as an identifier.
+            std::string upperLex(idLex.size(), ' ');
+            bool allLower = true;
+            for (std::size_t i = 0; i < idLex.size(); i++) {
+                if (idLex[i] != std::tolower(idLex[i])) {
+                    allLower = false;
+                    break;
+                }
+                upperLex[i] = static_cast<char>(std::toupper(idLex[i]));
+            }
+            if (allLower) {
+                // The identifier lexeme being is all lower case; there's a chance for it to be
+                // a keyword - as the corresponding token method expects all upper case lexemes,
+                // we give it upperLex, instead of the original idLex argument.
+                idTokenType = Token::keywordTypeFromLexeme(upperLex);
+            }
+        }
+    } catch (std::invalid_argument const& e) {
+        // The lexeme not being a keyword is not an issue in the context of this method; we
+        // can simply ignore the invalid_argument exception.
+    }
+    return idTokenType;
+}
+
+std::string Scanner::getIdentifierLexeme(ScanContext& ctx) {
+    // TODO: add real body
+    return "an_identifier";
+}
+
+std::string Scanner::getNumberLexeme(ScanContext& ctx) {
+    // TODO: add real body
+    return "2023";
 }
