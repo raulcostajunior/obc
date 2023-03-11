@@ -39,10 +39,10 @@ struct ScanContext {
     // The tokens (and errors) found by the ongoing scan operation.
     ScanResults results;
 
-    ScanContext(const std::string& srcInput, bool lowerKey, bool currColumnUpdated)
+    ScanContext(const std::string& srcInput, bool lowerKey, bool ignoreCurrColumn)
         : srcInput{srcInput},
           lowerCaseKeywords{lowerKey},
-          ignoreCurrColumn{currColumnUpdated} {}
+          ignoreCurrColumn{ignoreCurrColumn} {}
 };
 
 ScanResults Scanner::scanSrcFile(const std::string& srcFilePath, bool lowerCaseKeywords) {
@@ -100,9 +100,11 @@ ScanResults Scanner::scanSrcFile(const std::string& srcFilePath, bool lowerCaseK
 
 
 ScanResults Scanner::scan(const std::string& src, bool lowerCaseKeywords) {
-    // Current column information is only updated when the source file has no tabs.
-    bool currColumnUpdated = src.find('\t') == std::string::npos;
-    ScanContext ctx(src, lowerCaseKeywords, currColumnUpdated);
+    // Current column information should be ignored when the source file has at least one tab:
+    // The information of how many columns correspond to a '\t' is not in the source file
+    // and cannot be easily infered.
+    bool srcHasTab = src.find('\t') != std::string::npos;
+    ScanContext ctx(src, lowerCaseKeywords, srcHasTab);
 
     while (allScanned(ctx)) {
         Scanner::scanNextToken(ctx);
