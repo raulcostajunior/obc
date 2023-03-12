@@ -104,7 +104,7 @@ ScanResults Scanner::scan(const std::string& src, bool lowerCaseKeywords) {
     bool currColumnUpdated = src.find('\t') == std::string::npos;
     ScanContext ctx(src, lowerCaseKeywords, currColumnUpdated);
 
-    while (allScanned(ctx)) {
+    while (!allScanned(ctx)) {
         Scanner::scanNextToken(ctx);
     }
 
@@ -112,7 +112,7 @@ ScanResults Scanner::scan(const std::string& src, bool lowerCaseKeywords) {
 }
 
 bool Scanner::allScanned(const ScanContext& ctx) {
-    return ctx.lexPos <= ctx.srcInput.length();
+    return ctx.lexPos >= ctx.srcInput.length();
 }
 
 char Scanner::nextChr(ScanContext& ctx) {
@@ -242,18 +242,9 @@ void Scanner::scanNextToken(ScanContext& ctx) {
         default:
 
             if (std::isalpha(chr) != 0) {
-                // Handling of identifiers - start with a letter, possibly followed by letters
-                // and/or digits
-                const std::string identLex = getIdentifierLexeme(ctx);
-                const TokenType tkType = tokenTypeFromIdentifierLexeme(ctx, identLex);
-                ctx.results.tokens.emplace_back(
-                      Token{.type = tkType, .lexeme = identLex, .line = ctx.currLine});
+                scanIdentifier(ctx, chr);
             } else if (std::isdigit(chr) != 0) {
-                // Handling of numbers - start with a digit, possibly followed by digits.
-                // NOTE: Oberon-0 only supports the INTEGER numerical type specified in base 10.
-                const std::string numberLex = getNumberLexeme(ctx);
-                ctx.results.tokens.emplace_back(Token{
-                      .type = TokenType::NUMBER, .lexeme = numberLex, .line = ctx.currLine});
+                scanNumber(ctx, chr);
             } else {
                 ctx.results.errors.emplace_back(ErrorInfo{
                       .line = ctx.currLine,
@@ -262,6 +253,33 @@ void Scanner::scanNextToken(ScanContext& ctx) {
                 ctx.currColumn++;
             }
     }
+}
+
+void Scanner::scanNumber(ScanContext& ctx, char firstDigit) {
+    std::string numberLex{firstDigit};
+    char nextChr = nextChrNoAdvance(ctx);
+    while (isdigit(nextChr) != 0) {
+        numberLex.push_back(nextChr);
+        ctx.lexPos++;
+        ctx.currColumn++;
+        nextChr = nextChrNoAdvance(ctx);
+    }
+    ctx.results.tokens.emplace_back(
+          Token{.type = TokenType::NUMBER, .lexeme = numberLex, .line = ctx.currLine});
+}
+
+void Scanner::scanIdentifier(ScanContext& ctx, char firstLetter) {
+    std::string identLex{firstLetter};
+    char nextChr = nextChrNoAdvance(ctx);
+    while (isalpha(nextChr) != 0 || isdigit(nextChr) != 0) {
+        identLex.push_back(nextChr);
+        ctx.lexPos++;
+        ctx.currColumn++;
+        nextChr = nextChrNoAdvance(ctx);
+    }
+    const TokenType tkType = tokenTypeFromIdentifierLexeme(ctx, identLex);
+    ctx.results.tokens.emplace_back(
+          Token{.type = tkType, .lexeme = identLex, .line = ctx.currLine});
 }
 
 void Scanner::consumeComment(ScanContext& ctx) {
@@ -332,14 +350,4 @@ TokenType Scanner::tokenTypeFromIdentifierLexeme(const ScanContext& ctx,
         // can simply ignore the invalid_argument exception.
     }
     return idTokenType;
-}
-
-std::string Scanner::getIdentifierLexeme(ScanContext& ctx) {
-    // TODO: add real body
-    return "an_identifier";
-}
-
-std::string Scanner::getNumberLexeme(ScanContext& ctx) {
-    // TODO: add real body
-    return "2023";
 }

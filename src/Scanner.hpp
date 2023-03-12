@@ -82,6 +82,7 @@ class Scanner {
     /**
      * @brief Returns the next character in the source being scanned, but doesn't advance the
      * scan.
+     *
      * @param ctx the context of the ongoing scan operation.
      * @return the next character in the source being scanned. If the end of the input has been
      * reached, returns '\0'.
@@ -111,9 +112,24 @@ class Scanner {
      */
     static void consumeComment(ScanContext& ctx);
 
-    static std::string getIdentifierLexeme(ScanContext& ctx);
+    /**
+     * @brief Scans an identifier - sequence of letters and digits initiated by a letter.
+     *
+     * An identifier can be a keyword of the language or can be a simple identifier (e.g. a
+     * variable or constant name).
+     *
+     * @param ctx the context of the ongoing scan operation.
+     * @param firstLetter the first letter of the identifier.
+     */
+    static void scanIdentifier(ScanContext& ctx, char firstLetter);
 
-    static std::string getNumberLexeme(ScanContext& ctx);
+    /**
+     * @brief Scans a number - sequence of digits.
+     *
+     * @param ctx the context of the ongoing scan operation.
+     * @param firstDigit the first digit of the number.
+     */
+    static void scanNumber(ScanContext& ctx, char firstDigit);
 };
 
 
