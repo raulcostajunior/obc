@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.17)
+cmake_minimum_required(VERSION 3.20)  # GTest import targets introduced in 3.20 are used
 
 # TODO: Extract version from repository and generate _version.hpp file
 project(obc
@@ -6,7 +6,7 @@ project(obc
         DESCRIPTION "An Oberon-0 to LLVM-IR compiler"
         LANGUAGES CXX)
 
-set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD 20)  # Uses C++ 20 Designated Initializers feature
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS 1)
@@ -20,9 +20,22 @@ set(CMAKE_MODULE_PATH ${CMAKE_BINARY_DIR})
 find_package(CLI11 REQUIRED)
 find_package(GTest REQUIRED)
 
-# TODO add directory src and specify target from there.
-add_executable(obc
-        src/main.cpp src/Token.cpp src/Scanner.cpp src/ErrorInfo.cpp)
+# The compiler library to be linked to the CLI and the unit tests
+add_library(obc_lib STATIC src/Token.cpp src/Scanner.cpp src/ErrorInfo.cpp)
 
+# The compiler CLI
+add_executable(obc
+        src/main.cpp)
+target_link_libraries(obc PRIVATE obc_lib)
 target_include_directories(obc
         PRIVATE ${CLI11_INCLUDE_DIR})
+
+# Unit tests
+enable_testing()
+
+add_executable(scanner_test_suite src/test/ScannerTestSuite.cpp)
+target_include_directories(scanner_test_suite PRIVATE ${CMAKE_CURRENT_LIST_DIR}/src)
+target_link_libraries(scanner_test_suite PRIVATE GTest::gtest GTest::gtest_main PRIVATE obc_lib)
+
+add_test(NAME scanner_tests COMMAND scanner_test_suite)
+
