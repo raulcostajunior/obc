@@ -23,9 +23,12 @@ class Scanner {
      * @brief Scans a given source file, returning the list of tokens found in it.
      *
      * @param srcFilePath the path of the source file to be scanned.
-     * @param lowerCaseKeywords adopt lowercase keywords?
+     * @param lowerCaseKeywords adopt accept lowercase keywords?
      *
      * @return list of tokens (and the lexical errors) in the file.
+     *
+     * @note Lower case keywords mode has been introduced because of the high number of
+     * opinions against all upper case keywords (including the one from obc's author :) ).
      */
     static ScanResults scanSrcFile(const std::string& srcFilePath,
                                    bool lowerCaseKeywords = false);
@@ -37,6 +40,9 @@ class Scanner {
      * @param lowerCaseKeywords adopt lowercase keywords?
      *
      * @return list of tokens (and the lexical errors) in the contents.
+     *
+     * @note Lower case keywords mode has been introduced because of the high number of
+     * opinions against all upper case keywords (including the one from obc's author :) ).
      */
     static ScanResults scan(const std::string& src, bool lowerCaseKeywords = false);
 
