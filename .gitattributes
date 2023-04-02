@@ -1,3 +1,3 @@
-# Oberon module files being wrongly identified by Github's Linguist as Modula-2 source files.
-
+# Ignore Oberon module files that were being wrongly identified by Github's
+# Linguist as Modula-2 module files.
 src/test/oberon_src/*.Mod  linguist-vendored
