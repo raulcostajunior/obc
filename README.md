@@ -1,2 +1,2 @@
 # obc
-An Oberon-0 to LLVM-IR compiler.
+An Oberon to WebAssembly compiler.
