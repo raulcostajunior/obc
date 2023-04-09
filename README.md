@@ -1,2 +1,2 @@
 # obc
-An Oberon to WebAssembly compiler.
+An Oberon-0 to WebAssembly compiler.
