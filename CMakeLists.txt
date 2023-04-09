@@ -31,11 +31,11 @@ target_include_directories(obc
         PRIVATE ${CLI11_INCLUDE_DIR})
 
 # Unit tests
+include(GoogleTest)
 enable_testing()
 
 add_executable(scanner_test_suite src/test/ScannerTestSuite.cpp)
 target_include_directories(scanner_test_suite PRIVATE ${CMAKE_CURRENT_LIST_DIR}/src)
 target_link_libraries(scanner_test_suite PRIVATE GTest::gtest GTest::gtest_main PRIVATE obc_lib)
 
-add_test(NAME scanner_tests COMMAND scanner_test_suite)
-
+gtest_discover_tests(scanner_test_suite)
