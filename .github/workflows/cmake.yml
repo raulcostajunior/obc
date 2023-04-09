@@ -28,6 +28,11 @@ jobs:
       - name: Create default Conan profile
         run: conan profile new default --detect
 
+      # Needed to adjust the libstdc++ version used - use the C++ ABI introduced for C++ 11.
+      # Conan by default sets the profile to use older versions of the C++ ABI.
+      - name: Update Conan profile
+        run: conan profile update settings.compiler.libcxx=libstdc++11 default
+
       - name: Install dependencies
         run: conan install . -s build_type=${{env.BUILD_TYPE}} --install-folder=${{github.workspace}}/build
 
