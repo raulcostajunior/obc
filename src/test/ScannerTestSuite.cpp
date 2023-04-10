@@ -104,17 +104,17 @@ END LowerCaseModule.
 }
 
 TEST(ScannerTests, TestModuleWithUnfinishedComment) {
-    // A source file that finishes with an unfinished comment.
+    // A source file that finishes with an unfinished comment must trigger a
+    // error.
     const std::string unfinishedCommentMsg{"Source module ends in an unfinished comment."};
 
-    // First using the standard upper case keywords from Oberon.
-    const std::string upKeywordsSrc{R"(
+    const std::string moduleSrc{R"(
 MODULE UnfinishedComment;
 
 (* This is a multiline, open ended
 comment and should be rejected.
 )"};
-    auto res = Scanner::scan(upKeywordsSrc);
+    auto res = Scanner::scan(moduleSrc);
     ASSERT_EQ(res.tokens.size(), 3);
     EXPECT_EQ(res.tokens[0].type, TokenType::MODULE);
     EXPECT_EQ(res.tokens[1].type, TokenType::IDENT);
@@ -124,4 +124,40 @@ comment and should be rejected.
     EXPECT_EQ(res.errors[0].line, 6);
     EXPECT_EQ(res.errors[0].column, 1);
     EXPECT_EQ(res.errors[0].msg, unfinishedCommentMsg);
+}
+
+TEST(ScannerTests, TestModuleWithInvalidSymbol) {
+    // A source file with an invalid terminal symbol must trigger a lexical error.
+    // The error must not stop the scanner, which must continue finding tokens
+    // until the end of the module.
+    const std::string invalidSymbolSrc{R"(
+MODULE WithInvalidSymbol;
+
+(* ? is not a valid terminal in the language; it should be accepted in a 
+comment, but trigger an error when outside a comment *)
+
+BEGIN
+    VAR i: INTEGER?;
+    WriteInt(i);
+END.
+)"};
+
+    auto res = Scanner::scan(invalidSymbolSrc);
+    ASSERT_EQ(res.tokens.size(), 16);
+    EXPECT_EQ(res.tokens[0].type, TokenType::MODULE);
+    EXPECT_EQ(res.tokens[1].type, TokenType::IDENT);
+    EXPECT_EQ(res.tokens[1].lexeme, "WithInvalidSymbol");
+    // Tokens 7 and 8 are the ones around the invalid symbol in the source.
+    // We verify if they have been properly scanned.
+    EXPECT_EQ(res.tokens[7].type, TokenType::IDENT);
+    EXPECT_EQ(res.tokens[7].lexeme, "INTEGER");
+    EXPECT_EQ(res.tokens[8].type, TokenType::SEMICOLON);
+    EXPECT_EQ(res.tokens[15].type, TokenType::DOT);
+
+    ASSERT_EQ(res.errors.size(), 1);
+    // The R-String for the source starts with a new line, so the MODULE line
+    // is already line 2 in the source - that's the reason for line with the
+    // invalid symbol being line 8.
+    EXPECT_EQ(res.errors[0].line, 8);
+    EXPECT_EQ(res.errors[0].msg, std::string{"Unexpected character, '?' found."});
 }
