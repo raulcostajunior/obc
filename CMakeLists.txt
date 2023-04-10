@@ -11,6 +11,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS 1)
 
+message(STATUS "Platform being built for: ${CMAKE_HOST_SYSTEM_PROCESSOR}")
+
 # CMAKE_MODULE_PATH must contain the path for the build directory:
 # a previously run "conan install" will have generated the "Find*.cmake"
 # file(s) responsible(s) for locating the external project dependencies
