@@ -130,12 +130,25 @@ class Scanner {
     static void scanIdentifier(ScanContext& ctx, char firstLetter);
 
     /**
-     * @brief Scans a number - sequence of digits.
+     * @brief Scans a number - sequence of digits optionally in hexadecimal form - or a single
+     * char string - sequence of digits or hexadecimal digits followed by an "X". An hexadecimal
+     * number literal must be followed by an "H" to be valid.
      *
      * @param ctx the context of the ongoing scan operation.
      * @param firstDigit the first digit of the number.
      */
-    static void scanNumber(ScanContext& ctx, char firstDigit);
+    static void scanNumberOrSingleCharString(ScanContext& ctx, char firstDigit);
+
+    /**
+     * @brief Returns whether a given char is an hexadecimal digit or not.
+     *
+     * @note Oberon's grammar specifies only uppercase 'A' to 'F' as valid hexadecimal
+     * digits. We stick to the specification in here.
+     *
+     * @param c the character to be verified
+     * @return true if c is an hexadecimal digit; false otherwise.
+     */
+    static bool isHexDigit(char c);
 };
 
 

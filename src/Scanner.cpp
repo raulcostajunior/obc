@@ -210,7 +210,8 @@ void Scanner::scanNextToken(ScanContext& ctx) {
             }
             break;
 
-        // Handling of whitespace characters (except newline) - simply consumed.
+        // Handling of whitespace characters (except newline) - simply consumed. Blanks are not
+        // ignored when inside strings.
         case ' ':
         case '\r':
         case '\t':
@@ -239,12 +240,13 @@ void Scanner::scanNextToken(ScanContext& ctx) {
             }
             break;
 
+
         default:
 
             if (std::isalpha(chr) != 0) {
                 scanIdentifier(ctx, chr);
             } else if (std::isdigit(chr) != 0) {
-                scanNumber(ctx, chr);
+                scanNumberOrSingleCharString(ctx, chr);
             } else {
                 ctx.results.errors.emplace_back(ErrorInfo{
                       .line = ctx.currLine,
@@ -255,17 +257,51 @@ void Scanner::scanNextToken(ScanContext& ctx) {
     }
 }
 
-void Scanner::scanNumber(ScanContext& ctx, char firstDigit) {
-    std::string numberLex{firstDigit};
+bool Scanner::isHexDigit(char chr) {
+    return (isdigit(chr) != 0 || chr == 'A' || chr == 'B' || chr == 'D' || chr == 'E' ||
+            chr == 'F');
+}
+
+void Scanner::scanNumberOrSingleCharString(ScanContext& ctx, char firstDigit) {
+    std::string lex{firstDigit};
     char nextChr = nextChrNoAdvance(ctx);
-    while (isdigit(nextChr) != 0) {
-        numberLex.push_back(nextChr);
+    while (isHexDigit(nextChr)) {
+        lex.push_back(nextChr);
         ctx.lexPos++;
         ctx.currColumn++;
         nextChr = nextChrNoAdvance(ctx);
     }
-    ctx.results.tokens.emplace_back(
-          Token{.type = TokenType::NUMBER, .lexeme = numberLex, .line = ctx.currLine});
+    if (nextChr == 'X') {
+        // The end of a single character string has been found.
+        ctx.results.tokens.emplace_back(
+              Token{.type = TokenType::STRING, .lexeme = lex, .line = ctx.currLine});
+    } else if (nextChr == 'H') {
+        // The end of an integer literal in hexadecimal form has been found.
+        ctx.results.tokens.emplace_back(
+              Token{.type = TokenType::NUMBER, .lexeme = lex, .line = ctx.currLine});
+    } else {
+        // The lexeme found so far can be an integer literal in decimal form - unless it
+        // contains any hexadecimal digit that is not a base 10 digit
+        size_t nonBase10Pos = -1;
+        for (size_t i = 0; i < lex.size(); i++) {
+            if (isdigit(lex[i]) == 0) {
+                nonBase10Pos = i;
+                break;
+            }
+        }
+        if (nonBase10Pos == -1) {
+            // The lexeme is a valid integer literal in decimal form.
+            ctx.results.tokens.emplace_back(
+                  Token{.type = TokenType::NUMBER, .lexeme = lex, .line = ctx.currLine});
+        } else {
+            // A hexadecimal digit that is not a base 10 digit has been found; report the
+            // error.
+            ctx.results.errors.emplace_back(
+                  ErrorInfo{.line = ctx.currLine,
+                            .column = ctx.ignoreCurrColumn ? -1 : ctx.currColumn,
+                            .msg = "Hexadecimal number must be terminated with an 'H'."});
+        }
+    }
 }
 
 void Scanner::scanIdentifier(ScanContext& ctx, char firstLetter) {
