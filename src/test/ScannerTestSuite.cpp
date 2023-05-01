@@ -104,8 +104,7 @@ END LowerCaseModule.
 }
 
 TEST(ScannerTests, TestModuleWithUnfinishedComment) {
-    // A source file that finishes with an unfinished comment must trigger a
-    // error.
+    // A source file that finishes with an unfinished comment must trigger an error.
     const std::string unfinishedCommentMsg{"Source module ends in an unfinished comment."};
 
     const std::string moduleSrc{R"(

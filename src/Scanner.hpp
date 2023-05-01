@@ -28,7 +28,7 @@ class Scanner {
      * @return list of tokens (and the lexical errors) in the file.
      *
      * @note Lower case keywords mode has been introduced because of the high number of
-     * opinions against all upper case keywords (including the one from obc's author :) ).
+     * opinions against all upper case keywords.
      */
     static ScanResults scanSrcFile(const std::string& srcFilePath,
                                    bool lowerCaseKeywords = false);
@@ -42,7 +42,7 @@ class Scanner {
      * @return list of tokens (and the lexical errors) in the contents.
      *
      * @note Lower case keywords mode has been introduced because of the high number of
-     * opinions against all upper case keywords (including the one from obc's author :) ).
+     * opinions against all upper case keywords.
      */
     static ScanResults scan(const std::string& src, bool lowerCaseKeywords = false);
 
