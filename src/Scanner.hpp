@@ -111,12 +111,25 @@ class Scanner {
      * @brief Consumes the scanning input until an end of comment sequence, "*)", is found.
      *
      * @attention this internal method must be called only when the scanner knows that is in a
-     * comment - after a
-     * "(*", but before a "*)".
+     * comment - after a * "(*", but before a "*)".
      *
      * @param ctx the context of the ongoing scan operation.
      */
     static void consumeComment(ScanContext& ctx);
+
+    /**
+     * @brief Consumes the scanning input until an end of string character (the double quotes)
+     * is found.
+     *
+     * @attention this internal method must be called only when the scanner knows that is in a
+     * string literal - after the initial double quotes, but before the final double quotes. A
+     * string literal in Oberon must be on single line - an end of line before the string's
+     * closing double quotes triggers an error.
+     *
+     * @param ctx the context of the ongoing scan operation.
+     *
+     */
+    static void scanString(ScanContext& ctx);
 
     /**
      * @brief Scans an identifier - sequence of letters and digits initiated by a letter.

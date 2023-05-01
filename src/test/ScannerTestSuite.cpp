@@ -1,5 +1,7 @@
 #include <gtest/gtest.h>
 
+#include <filesystem>
+
 #include "Scanner.hpp"
 
 TEST(ScannerTests, TestEmptyFile) {
@@ -159,4 +161,21 @@ END.
     // invalid symbol being line 8.
     EXPECT_EQ(res.errors[0].line, 8);
     EXPECT_EQ(res.errors[0].msg, std::string{"Unexpected character, '?' found."});
+}
+
+TEST(ScannerTests, TestModuleWithStringLiteral) {
+    namespace fs = std::filesystem;
+    const std::string src_file_path{
+          fs::path(__FILE__).parent_path().append("oberon_src").append("Hello.Mod")};
+    auto res = Scanner::scanSrcFile(src_file_path);
+    ASSERT_EQ(res.tokens.size(), 12);
+    EXPECT_EQ(res.tokens[0].type, TokenType::MODULE);
+    EXPECT_EQ(res.tokens[1].type, TokenType::IDENT);
+    EXPECT_EQ(res.tokens[1].lexeme, "Hello");
+    EXPECT_EQ(res.tokens[3].type, TokenType::BEGIN);
+    EXPECT_EQ(res.tokens[4].type, TokenType::IDENT);
+    EXPECT_EQ(res.tokens[4].lexeme, "WriteLn");
+    EXPECT_EQ(res.tokens[5].type, TokenType::LEFT_PAREN);
+    EXPECT_EQ(res.tokens[6].type, TokenType::STRING);
+    EXPECT_EQ(res.tokens[6].lexeme, "Hello world!");
 }

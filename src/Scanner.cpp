@@ -240,7 +240,12 @@ void Scanner::scanNextToken(ScanContext& ctx) {
             }
             break;
 
-
+        // Handling of string literals. String literals cannot contain internal double quotes
+        // and cannot span across multiple lines.
+        case '"':
+            scanString(ctx);
+            break;
+            
         default:
 
             if (std::isalpha(chr) != 0) {
@@ -350,6 +355,31 @@ void Scanner::consumeComment(ScanContext& ctx) {
               ErrorInfo{.line = ctx.currLine,
                         .column = ctx.ignoreCurrColumn ? -1 : ctx.currColumn,
                         .msg = "Source module ends in an unfinished comment."});
+    }
+}
+
+void Scanner::scanString(ScanContext& ctx) {
+    std::string strLex{};
+    while (!allScanned(ctx)) {
+        if (nextChrNoAdvance(ctx) == '\n') {
+            ctx.results.errors.emplace_back(
+                  ErrorInfo{.line = ctx.currLine,
+                            .column = ctx.ignoreCurrColumn ? -1 : ctx.currColumn,
+                            .msg = "Unterminated string - strings must be on a single line."});
+            break;
+        } else if (nextChrNoAdvance(ctx) == '"') {
+            // End of string literal found
+            ctx.lexPos++;
+            ctx.currColumn++;
+            ctx.results.tokens.emplace_back(
+                  Token{.type = TokenType::STRING, .lexeme = strLex, .line = ctx.currLine});
+            break;
+        } else {
+            // In the middle of the string literal
+            strLex.push_back(nextChrNoAdvance(ctx));
+            ctx.lexPos++;
+            ctx.currColumn++;
+        }
     }
 }
 
