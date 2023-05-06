@@ -13,3 +13,17 @@ x86_64.
 WebAssembly modules are also a possible target when the [WebAssembly port of lld](https://lld.llvm.org/WebAssembly.html)
 is used. 
 
+
+## On Oberon
+
+#### Oberon+
+
+**obc** is only my first take on writing a compiler and most probably nothing too useful will come out of it. 
+
+To get really serious about Oberon and its future, take a GOOD look at [Oberon+](https://oberon-lang.github.io/). 
+
+#### Oberon - the Uranus' moon, not the language (yet) - in the news:
+
+> "This has led NASA scientists to conclude that four of Uranus’ largest moons—Ariel, Umbriel, Titania, and **Oberon**—probably contain water oceans below their icy crusts. These oceans are likely dozens of kilometers deep and probably fairly salty in being sandwiched between the upper ice and inner rock core. These inner cores are likely producing enough heat from radioactive decay to create layers of liquid water, the scientists say. Additionally, chlorides, as well as ammonia, are likely abundant in the oceans of the icy giant’s largest moons and may be helping to keep them unfrozen."
+>
+> from <cite> [ArsTechnica](https://arstechnica.com/science/2023/05/as-many-as-four-moons-around-uranus-may-have-oceans-below-the-surface/). </cite>
