@@ -28,8 +28,9 @@ std::string Token::typeString() const {
           {TokenType::VAR, "VAR"},
           {TokenType::WHILE, "WHILE"},
           {TokenType::IDENT, "IDENT"},
+          {TokenType::INTEGER, "INTEGER"},
           {TokenType::STRING, "STRING"},
-          {TokenType::NUMBER, "NUMBER"},
+          {TokenType::REAL, "REAL"},
 
           {TokenType::AND, "AND"},
           {TokenType::COLON, "COLON"},

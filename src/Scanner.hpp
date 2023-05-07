@@ -153,6 +153,29 @@ class Scanner {
     static void scanNumberOrSingleCharString(ScanContext& ctx, char firstDigit);
 
     /**
+     * @brief Scans a real number - sequence of digits in base 10 with a decimal separator. A
+     * real number literal can have an optional scale factor at its end.
+     *
+     * @note: As the scanner can only know that it is handling a real number once it finds the
+     * decimal separator, this method actually scans the decimal and the optional scale factor
+     * at the end of the real number.
+     *
+     * @param ctx the context of the ongoing scan operation.
+     * @param integerPart the integer part of the real number (includes the decimal separator).
+     */
+    static void scanRealNumber(ScanContext& ctx, const std::string& integerPart);
+
+    /**
+     * @brief Scans the optional scale factor at the end of a real number literal.
+     *
+     * @param ctx the context of the ongoing scan operation.
+     * @param realBasePart the integer and decimal part (without any exponent) information of
+     * the real number literal - the scanner can only know that the literal has a scale factor
+     * when it finds the introducing 'E' of the exponential notation.
+     */
+    static void scanRealScaleFactor(ScanContext& ctx, const std::string& realBasePart);
+
+    /**
      * @brief Returns whether a given char is an hexadecimal digit or not.
      *
      * @note Oberon's grammar specifies only uppercase 'A' to 'F' as valid hexadecimal
@@ -162,6 +185,14 @@ class Scanner {
      * @return true if chr is an hexadecimal digit; false otherwise.
      */
     static bool isHexDigit(char chr);
+
+    /**
+     * @brief Returns whether a given string is composed exclusively of base 10 digits.
+     *
+     * @param str the string to be verified
+     * @return true if all characters in the string are base 10 digits; false otherwise.
+     */
+    static bool allBase10Digits(const std::string& str);
 };
 
 

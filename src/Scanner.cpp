@@ -267,6 +267,15 @@ bool Scanner::isHexDigit(char chr) {
             chr == 'F');
 }
 
+bool Scanner::allBase10Digits(const std::string& str) {
+    for (char chr : str) {
+        if (isdigit(chr) == 0) {
+            return false;
+        }
+    }
+    return true;
+}
+
 void Scanner::scanNumberOrSingleCharString(ScanContext& ctx, char firstDigit) {
     std::string lex{firstDigit};
     char nextChr = nextChrNoAdvance(ctx);
@@ -283,21 +292,28 @@ void Scanner::scanNumberOrSingleCharString(ScanContext& ctx, char firstDigit) {
     } else if (nextChr == 'H') {
         // The end of an integer literal in hexadecimal form has been found.
         ctx.results.tokens.emplace_back(
-              Token{.type = TokenType::NUMBER, .lexeme = lex, .line = ctx.currLine});
+              Token{.type = TokenType::INTEGER, .lexeme = lex, .line = ctx.currLine});
+    } else if (nextChr == '.') {
+        // A decimal separator indicates that a REAL literal is being scanned.
+        if (!allBase10Digits(lex)) {
+            // Oberon only allows integer numbers to be represented in hex. Real numbers must be
+            // always expressed in base 10.
+            ctx.results.errors.emplace_back(
+                  ErrorInfo{.line = ctx.currLine,
+                            .column = ctx.ignoreCurrColumn ? -1 : ctx.currColumn,
+                            .msg = "Real numbers must use only digits between 0 and 9."});
+        }
+        lex.push_back(nextChr);
+        ctx.lexPos++;
+        ctx.currColumn++;
+        scanRealNumber(ctx, lex);
     } else {
         // The lexeme found so far can be an integer literal in decimal form - unless it
-        // contains any hexadecimal digit that is not a base 10 digit
-        size_t nonBase10Pos = -1;
-        for (size_t i = 0; i < lex.size(); i++) {
-            if (isdigit(lex[i]) == 0) {
-                nonBase10Pos = i;
-                break;
-            }
-        }
-        if (nonBase10Pos == -1) {
+        // contains any hexadecimal digit that is not a base 10 digit.
+        if (allBase10Digits(lex)) {
             // The lexeme is a valid integer literal in decimal form.
             ctx.results.tokens.emplace_back(
-                  Token{.type = TokenType::NUMBER, .lexeme = lex, .line = ctx.currLine});
+                  Token{.type = TokenType::INTEGER, .lexeme = lex, .line = ctx.currLine});
         } else {
             // A hexadecimal digit that is not a base 10 digit has been found; report the
             // error.
@@ -305,6 +321,62 @@ void Scanner::scanNumberOrSingleCharString(ScanContext& ctx, char firstDigit) {
                   ErrorInfo{.line = ctx.currLine,
                             .column = ctx.ignoreCurrColumn ? -1 : ctx.currColumn,
                             .msg = "Hexadecimal number must be terminated with an 'H'."});
+        }
+    }
+}
+
+void Scanner::scanRealNumber(ScanContext& ctx, const std::string& integerPart) {
+    std::string lex{integerPart};
+    char nextChr = nextChrNoAdvance(ctx);
+    while (isdigit(nextChr) != 0) {
+        lex.push_back(nextChr);
+        ctx.lexPos++;
+        ctx.currColumn++;
+        nextChr = nextChrNoAdvance(ctx);
+    }
+    if (nextChr == 'E') {
+        // Found the optional scale factor at the end.
+        lex.push_back(nextChr);
+        ctx.lexPos++;
+        ctx.currColumn++;
+        scanRealScaleFactor(ctx, lex);
+    } else {
+        ctx.results.tokens.emplace_back(
+              Token{.type = TokenType::REAL, .lexeme = lex, .line = ctx.currLine});
+    }
+}
+
+void Scanner::scanRealScaleFactor(ScanContext& ctx, const std::string& realBasePart) {
+    std::string lex{realBasePart};
+    char nextCh = nextChr(ctx);
+    ctx.currColumn++;
+    if (nextCh != '+' && nextCh != '-') {
+        ctx.results.errors.push_back(
+              ErrorInfo{.line = ctx.currLine,
+                        .column = ctx.ignoreCurrColumn ? -1 : ctx.currColumn,
+                        .msg = "Real number scale factor must start with an 'E' followed by "
+                               "either a '+' or '-' signal."});
+    } else {
+        lex.push_back(nextCh);
+        nextCh = nextChr(ctx);
+        ctx.currColumn++;
+        if (isdigit(nextCh) == 0) {
+            ctx.results.errors.push_back(
+                  ErrorInfo{.line = ctx.currLine,
+                            .column = ctx.ignoreCurrColumn ? -1 : ctx.currColumn,
+                            .msg = "Scale factor of a real number must have at least one digit "
+                                   "after the '+' or '-' signal."});
+        } else {
+            lex.push_back(nextCh);
+            nextCh = nextChrNoAdvance(ctx);
+            while (isdigit(nextCh) != 0) {
+                lex.push_back(nextCh);
+                ctx.lexPos++;
+                ctx.currColumn++;
+                nextCh = nextChrNoAdvance(ctx);
+            }
+            ctx.results.tokens.push_back(
+                  Token{.type = TokenType::REAL, .lexeme = lex, .line = ctx.currLine});
         }
     }
 }
