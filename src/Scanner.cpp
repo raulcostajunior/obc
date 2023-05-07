@@ -230,6 +230,7 @@ void Scanner::scanNextToken(ScanContext& ctx) {
         case '(':
             if (nextChrMatch(ctx, '*')) {
                 // Found start of comment - "consume" it.
+                ctx.currColumn++;
                 consumeComment(ctx);
             } else {
                 // Found a single-character open parenthesis token.
@@ -243,11 +244,12 @@ void Scanner::scanNextToken(ScanContext& ctx) {
         // Handling of string literals. String literals cannot contain internal double quotes
         // and cannot span across multiple lines.
         case '"':
+            ctx.currColumn++;
             scanString(ctx);
             break;
 
         default:
-
+            ctx.currColumn++;
             if (std::isalpha(chr) != 0) {
                 scanIdentifier(ctx, chr);
             } else if (std::isdigit(chr) != 0) {
@@ -257,7 +259,6 @@ void Scanner::scanNextToken(ScanContext& ctx) {
                       .line = ctx.currLine,
                       .column = ctx.ignoreCurrColumn ? -1 : ctx.currColumn,
                       .msg = std::string{"Unexpected character, '"} + chr + "' found."});
-                ctx.currColumn++;
             }
     }
 }
