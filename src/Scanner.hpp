@@ -158,10 +158,10 @@ class Scanner {
      * @note Oberon's grammar specifies only uppercase 'A' to 'F' as valid hexadecimal
      * digits. We stick to the specification in here.
      *
-     * @param c the character to be verified
-     * @return true if c is an hexadecimal digit; false otherwise.
+     * @param chr the character to be verified
+     * @return true if chr is an hexadecimal digit; false otherwise.
      */
-    static bool isHexDigit(char c);
+    static bool isHexDigit(char chr);
 };
 
 

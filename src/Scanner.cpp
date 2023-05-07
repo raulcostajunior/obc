@@ -245,7 +245,7 @@ void Scanner::scanNextToken(ScanContext& ctx) {
         case '"':
             scanString(ctx);
             break;
-            
+
         default:
 
             if (std::isalpha(chr) != 0) {
@@ -361,24 +361,26 @@ void Scanner::consumeComment(ScanContext& ctx) {
 void Scanner::scanString(ScanContext& ctx) {
     std::string strLex{};
     while (!allScanned(ctx)) {
-        if (nextChrNoAdvance(ctx) == '\n') {
-            ctx.results.errors.emplace_back(
-                  ErrorInfo{.line = ctx.currLine,
-                            .column = ctx.ignoreCurrColumn ? -1 : ctx.currColumn,
-                            .msg = "Unterminated string - strings must be on a single line."});
-            break;
-        } else if (nextChrNoAdvance(ctx) == '"') {
-            // End of string literal found
-            ctx.lexPos++;
-            ctx.currColumn++;
-            ctx.results.tokens.emplace_back(
-                  Token{.type = TokenType::STRING, .lexeme = strLex, .line = ctx.currLine});
-            break;
-        } else {
-            // In the middle of the string literal
+        const char nextChr = nextChrNoAdvance(ctx);
+        if (nextChr != '\n' && nextChr != '"') {
+            // In the middle of the string literal - just keep on acquiring the lexeme
             strLex.push_back(nextChrNoAdvance(ctx));
             ctx.lexPos++;
             ctx.currColumn++;
+        } else {
+            if (nextChr == '\n') {
+                ctx.results.errors.emplace_back(ErrorInfo{
+                      .line = ctx.currLine,
+                      .column = ctx.ignoreCurrColumn ? -1 : ctx.currColumn,
+                      .msg = "Unterminated string - strings must be on a single line."});
+            } else {
+                // Double-quotes (End of string literal) found
+                ctx.lexPos++;
+                ctx.currColumn++;
+                ctx.results.tokens.emplace_back(
+                      Token{.type = TokenType::STRING, .lexeme = strLex, .line = ctx.currLine});
+            }
+            break;
         }
     }
 }
@@ -388,13 +390,14 @@ TokenType Scanner::tokenTypeFromIdentifierLexeme(const ScanContext& ctx,
     TokenType idTokenType = TokenType::IDENT;
     try {
         if (!ctx.lowerCaseKeywords) {
-            // The scanner is supporting the standard casing of Oberon keywords: the lexeme must
-            // be provided in all upper case to be recognized as a keyword.
+            // The scanner is supporting the standard casing of Oberon keywords: the lexeme
+            // must be provided in all upper case to be recognized as a keyword.
             idTokenType = Token::keywordTypeFromLexeme(idLex);
         } else {
-            // The scanner is in all lowercase mode - if the lexeme is all lowercase and matches
-            // (in a case-insensitive manner) an Oberon keyword, we return the appropriate
-            // keyword token type - otherwise, the lexeme is seen as an identifier.
+            // The scanner is in all lowercase mode - if the lexeme is all lowercase and
+            // matches (in a case-insensitive manner) an Oberon keyword, we return the
+            // appropriate keyword token type - otherwise, the lexeme is seen as an
+            // identifier.
             std::string upperLex(idLex.size(), ' ');
             bool allLower = true;
             for (std::size_t i = 0; i < idLex.size(); i++) {
@@ -405,9 +408,9 @@ TokenType Scanner::tokenTypeFromIdentifierLexeme(const ScanContext& ctx,
                 upperLex[i] = static_cast<char>(std::toupper(idLex[i]));
             }
             if (allLower) {
-                // The identifier lexeme being is all lower case; there's a chance for it to be
-                // a keyword - as the corresponding token method expects all upper case lexemes,
-                // we give it upperLex, instead of the original idLex argument.
+                // The identifier lexeme being is all lower case; there's a chance for it to
+                // be a keyword - as the corresponding token method expects all upper case
+                // lexemes, we give it upperLex, instead of the original idLex argument.
                 idTokenType = Token::keywordTypeFromLexeme(upperLex);
             }
         }
