@@ -63,7 +63,7 @@ END LowerCaseModule.
     EXPECT_EQ(res.tokens[40].type, TokenType::DOT);
 
     // A lexically valid file with lowerCaseKeywords should be successfully parsed with none
-    // of the keywords identified when the scanner is in the default uppercase keywords mode.
+    // of the keywords identified when the scanner is in the default uppercase-keywords mode.
     // All keywords should be identified as token identifiers.
     res = Scanner::scan(lowerCaseSrc);
     ASSERT_EQ(res.errors.size(), 0);
@@ -78,7 +78,7 @@ END LowerCaseModule.
     EXPECT_EQ(res.tokens[40].type, TokenType::DOT);
 
     // A lexically valid file with uppercase keywords should be successfully parsed with all
-    // the keywords identified with the scanner in the default uppercase keywords mode.
+    // the keywords identified with the scanner in the default uppercase-keywords mode.
     res = Scanner::scan(upperCaseSrc);
     ASSERT_EQ(res.errors.size(), 0);
     ASSERT_EQ(res.tokens.size(), expectTokens);
@@ -90,7 +90,7 @@ END LowerCaseModule.
     EXPECT_EQ(res.tokens[40].type, TokenType::DOT);
 
     // A lexically valid file with uppercase keywords should be successfully parsed with none
-    // of the keywords identified when the scanner is in lowercase keywords mode.
+    // of the keywords identified when the scanner is in lowercase-keywords mode.
     // All keywords should be identified as token identifiers.
     res = Scanner::scan(upperCaseSrc, true);
     ASSERT_EQ(res.errors.size(), 0);
