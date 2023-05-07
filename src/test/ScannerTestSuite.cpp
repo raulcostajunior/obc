@@ -179,3 +179,41 @@ TEST(ScannerTests, TestModuleWithStringLiteral) {
     EXPECT_EQ(res.tokens[6].type, TokenType::STRING);
     EXPECT_EQ(res.tokens[6].lexeme, "Hello world!");
 }
+
+TEST(ScannerTests, TestModuleWithNumericLiterals) {
+    namespace fs = std::filesystem;
+    const std::string src_file_path{
+          fs::path(__FILE__).parent_path().append("oberon_src").append("NumLiterals.Mod")};
+    auto res = Scanner::scanSrcFile(src_file_path);
+    ASSERT_EQ(res.tokens.size(), 74);
+    // InvalidRealNoIntPart = .2E+4 must be scanned as a dot, followed by an invalid hex int
+    // (2E), a plus, and a 4 integer.
+    EXPECT_EQ(res.tokens[4].type, TokenType::IDENT);
+    EXPECT_EQ(res.tokens[4].lexeme, "InvalidRealNoIntPart");
+    EXPECT_EQ(res.tokens[5].type, TokenType::EQUAL);
+    EXPECT_EQ(res.tokens[6].type, TokenType::DOT);
+    EXPECT_EQ(res.tokens[7].type, TokenType::PLUS);
+    EXPECT_EQ(res.tokens[8].type, TokenType::INTEGER);
+    EXPECT_EQ(res.tokens[8].lexeme, "4");
+    // 2AX must be recognized as a valid one char string. 2A is 42 in base 10 and is the code
+    // for the '*'.
+    EXPECT_EQ(res.tokens[37].type, TokenType::STRING);
+    EXPECT_EQ(res.tokens[37].lexeme, "*");
+    EXPECT_EQ(res.tokens[37].line, 9);
+
+    ASSERT_EQ(res.errors.size(), 4);
+    EXPECT_EQ(res.errors[0].line, 3);
+    EXPECT_EQ(res.errors[0].column, 41);
+    EXPECT_EQ(res.errors[0].msg, "Hexadecimal number must be terminated with an 'H'.");
+    EXPECT_EQ(res.errors[1].line, 4);
+    EXPECT_EQ(res.errors[1].column, 45);
+    EXPECT_EQ(res.errors[1].msg,
+              "Real number scale factor must start with an 'E' followed by either a '+' or '-' "
+              "signal.");
+    EXPECT_EQ(res.errors[2].line, 8);
+    EXPECT_EQ(res.errors[2].column, 31);
+    EXPECT_EQ(res.errors[2].msg, "Hexadecimal number must be terminated with an 'H'.");
+    EXPECT_EQ(res.errors[3].line, 12);
+    EXPECT_EQ(res.errors[3].column, 41);
+    EXPECT_EQ(res.errors[3].msg, "Real numbers must use only digits between 0 and 9.");
+}
