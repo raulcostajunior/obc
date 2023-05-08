@@ -9,7 +9,7 @@ enum class TokenType : unsigned short {
 
     // TODO: missing Oberon-07 tokens:
     //       TRUE, FALSE, NIL, FOR, RETURN, REPEAT, CASE, LABEL_RANGE (".."), UNTIL,
-    //       IMPORT
+    //       IMPORT, POINTER, IN, IS, LEFT_CURLY, RIGHT_CURLY, TO, CIRCUMFLEX
 
     // Keywords
     ARRAY, BEGIN, CONST, DIV, DO, ELSE, ELSEIF, END, IF, MOD, MODULE, OF, OR,

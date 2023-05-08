@@ -289,13 +289,20 @@ void Scanner::scanNumberOrSingleCharString(ScanContext& ctx, char firstDigit) {
     if (nextChr == 'X') {
         // The end of a single character string has been found. The character must be evaluated
         // from the hexadecimal value given by the lexeme.
-        int charCode = std::stoi(
-              lex, nullptr,
-              16); // NOLINT(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
-        ctx.results.tokens.emplace_back(
-              Token{.type = TokenType::STRING,
-                    .lexeme = std::string{static_cast<char>(charCode)},
-                    .line = ctx.currLine});
+        if (lex.size() > 2) {
+            ctx.results.errors.push_back(ErrorInfo{
+                  .line = ctx.currLine,
+                  .column = ctx.ignoreCurrColumn ? -1 : ctx.currColumn,
+                  .msg = "Single character strings must have values between 0 and FF."});
+        } else {
+            int charCode = std::stoi(
+                  lex, nullptr,
+                  16); // NOLINT(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
+            ctx.results.tokens.emplace_back(
+                  Token{.type = TokenType::STRING,
+                        .lexeme = std::string{static_cast<char>(charCode)},
+                        .line = ctx.currLine});
+        }
     } else if (nextChr == 'H') {
         // The end of an integer literal in hexadecimal form has been found.
         ctx.results.tokens.emplace_back(
