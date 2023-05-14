@@ -7,13 +7,10 @@
 enum class TokenType : unsigned short {
     // clang-format off
 
-    // TODO: missing Oberon-07 tokens:
-    //       TRUE, FALSE, NIL, FOR, RETURN, REPEAT, CASE, LABEL_RANGE (".."), UNTIL,
-    //       IMPORT, POINTER, IN, IS, LEFT_CURLY, RIGHT_CURLY, TO, CIRCUMFLEX
-
     // Keywords
     ARRAY, BEGIN, CONST, DIV, DO, ELSE, ELSEIF, END, IF, MOD, MODULE, OF, OR,
-    PROCEDURE, RECORD, THEN, TYPE, VAR, WHILE,
+    PROCEDURE, RECORD, THEN, TYPE, VAR, WHILE, TRUE, FALSE, NIL, FOR, RETURN,
+    REPEAT, CASE, UNTIL, IMPORT, POINTER, IN, IS, TO,
 
     // Literals
     IDENT, STRING, INTEGER, REAL,
@@ -21,9 +18,10 @@ enum class TokenType : unsigned short {
     // Single-char tokens
     AND, COLON, COMMA, DOT, EQUAL, GREATER, HASH, LEFT_BRACKET, LEFT_PAREN,
     LESS, MINUS, PLUS, RIGHT_BRACKET, RIGHT_PAREN, SEMICOLON, STAR, TILDE,
+    CIRCUMFLEX, LEFT_CURLY, RIGHT_CURLY,
 
     // Two-char tokens
-    GREATER_EQUAL, LESS_EQUAL, ASSIGN
+    GREATER_EQUAL, LESS_EQUAL, ASSIGN, LABEL_RANGE
 
     // clang-format on
 };

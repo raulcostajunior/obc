@@ -143,7 +143,6 @@ void Scanner::scanNextToken(ScanContext& ctx) {
         // Handling of single-char tokens
         case '&':
         case ',':
-        case '.':
         case '=':
         case '#':
         case '[':
@@ -159,6 +158,9 @@ void Scanner::scanNextToken(ScanContext& ctx) {
             // A star matched in this context won't be one of the comments terminating
             // characters. Such stars will be consumed by the comment consuming loop.
         case '~':
+        case '{':
+        case '}':
+        case '^':
             try {
                 ctx.results.tokens.emplace_back(Token{.type = Token::typeFromChar(chr),
                                                       .lexeme = std::string{chr},
@@ -209,6 +211,17 @@ void Scanner::scanNextToken(ScanContext& ctx) {
                 ctx.currColumn++;
             }
             break;
+        case '.':
+            if (nextChrMatch(ctx, '.')) {
+                ctx.results.tokens.emplace_back(Token{
+                      .type = TokenType::LABEL_RANGE, .lexeme = "..", .line = ctx.currLine});
+                ctx.currColumn += 2;
+            } else {
+                ctx.results.tokens.emplace_back(Token{.type = Token::typeFromChar(chr),
+                                                      .lexeme = std::string{chr},
+                                                      .line = ctx.currLine});
+                ctx.currColumn++;
+            }
 
         // Handling of whitespace characters (except newline) - simply consumed. Blanks are not
         // ignored when inside strings.

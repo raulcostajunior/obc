@@ -69,7 +69,8 @@ TokenType Token::typeFromChar(const char chr) {
           {'-', TokenType::MINUS},         {'+', TokenType::PLUS},
           {']', TokenType::RIGHT_BRACKET}, {')', TokenType::RIGHT_PAREN},
           {';', TokenType::SEMICOLON},     {'*', TokenType::STAR},
-          {'~', TokenType::TILDE}};
+          {'~', TokenType::TILDE},         {'^', TokenType::CIRCUMFLEX},
+          {'{', TokenType::LEFT_CURLY},    {'}', TokenType::RIGHT_CURLY}};
     const auto& iter = charToSingleCharTokenType.find(chr);
     if (iter == charToSingleCharTokenType.end()) {
         std::ostringstream oss{"Unexpected char, '"};
@@ -81,17 +82,22 @@ TokenType Token::typeFromChar(const char chr) {
 
 TokenType Token::keywordTypeFromLexeme(const std::string& lex) {
     static std::unordered_map<std::string, TokenType> lexToKeywordType{
-          {"ARRAY", TokenType::ARRAY},   {"BEGIN", TokenType::BEGIN},
-          {"CONST", TokenType::CONST},   {"DIV", TokenType::DIV},
-          {"DO", TokenType::DO},         {"ELSE", TokenType::ELSE},
-          {"ELSEIF", TokenType::ELSEIF}, {"END", TokenType::END},
-          {"IF", TokenType::IF},         {"MOD", TokenType::MOD},
-          {"MODULE", TokenType::MODULE}, {"OF", TokenType::OF},
-          {"OR", TokenType::OR},         {"PROCEDURE", TokenType::PROCEDURE},
-          {"RECORD", TokenType::RECORD}, {"THEN", TokenType::THEN},
-          {"TYPE", TokenType::TYPE},     {"VAR", TokenType::VAR},
-          {"WHILE", TokenType::WHILE},
-    };
+          {"ARRAY", TokenType::ARRAY},     {"BEGIN", TokenType::BEGIN},
+          {"CONST", TokenType::CONST},     {"DIV", TokenType::DIV},
+          {"DO", TokenType::DO},           {"ELSE", TokenType::ELSE},
+          {"ELSEIF", TokenType::ELSEIF},   {"END", TokenType::END},
+          {"IF", TokenType::IF},           {"MOD", TokenType::MOD},
+          {"MODULE", TokenType::MODULE},   {"OF", TokenType::OF},
+          {"OR", TokenType::OR},           {"PROCEDURE", TokenType::PROCEDURE},
+          {"RECORD", TokenType::RECORD},   {"THEN", TokenType::THEN},
+          {"TYPE", TokenType::TYPE},       {"VAR", TokenType::VAR},
+          {"WHILE", TokenType::WHILE},     {"TRUE", TokenType::TRUE},
+          {"FALSE", TokenType::FALSE},     {"NIL", TokenType::NIL},
+          {"FOR", TokenType::FOR},         {"RETURN", TokenType::RETURN},
+          {"REPEAT", TokenType::REPEAT},   {"CASE", TokenType::CASE},
+          {"UNTIL", TokenType::UNTIL},     {"IMPORT", TokenType::IMPORT},
+          {"POINTER", TokenType::POINTER}, {"IN", TokenType::IN},
+          {"IS", TokenType::IS},           {"TO", TokenType::TO}};
     const auto& iter = lexToKeywordType.find(lex);
     if (iter == lexToKeywordType.end()) {
         std::ostringstream oss{"Provided string, '"};
