@@ -10,6 +10,7 @@ std::string Token::typeString() const {
 
           {TokenType::ARRAY, "ARRAY"},
           {TokenType::BEGIN, "BEGIN"},
+          {TokenType::BY, "BY"},
           {TokenType::CONST, "CONST"},
           {TokenType::DIV, "DIV"},
           {TokenType::DO, "DO"},

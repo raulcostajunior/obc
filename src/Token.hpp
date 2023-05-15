@@ -7,8 +7,6 @@
 enum class TokenType : unsigned short {
     // clang-format off
 
-    // TODO: BY keyword, type identifiers as TYPE tokens
-
     // Keywords
     ARRAY, BEGIN, BY, CONST, DIV, DO, ELSE, ELSEIF, END, IF, MOD, MODULE, OF, OR,
     PROCEDURE, RECORD, THEN, TYPE, VAR, WHILE, TRUE, FALSE, NIL, FOR, RETURN,
