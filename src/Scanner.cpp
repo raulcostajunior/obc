@@ -316,8 +316,15 @@ void Scanner::scanNumberOrSingleCharString(ScanContext& ctx, char firstDigit) {
                         .lexeme = std::string{static_cast<char>(charCode)},
                         .line = ctx.currLine});
         }
+        // Consume the 'X' - it is not part of the string
+        ctx.lexPos++;
+        ctx.currColumn++;
     } else if (nextChr == 'H') {
-        // The end of an integer literal in hexadecimal form has been found.
+        // The end of an integer literal in hexadecimal form has been found - the H is part
+        // of the integer literal and must be included in its lexeme.
+        lex.push_back(nextChr);
+        ctx.lexPos++;
+        ctx.currColumn++;
         ctx.results.tokens.emplace_back(
               Token{.type = TokenType::INTEGER, .lexeme = lex, .line = ctx.currLine});
     } else if (nextChr == '.') {

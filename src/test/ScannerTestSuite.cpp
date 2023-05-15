@@ -168,7 +168,7 @@ TEST(ScannerTests, TestModuleWithStringLiteral) {
     const std::string src_file_path{
           fs::path(__FILE__).parent_path().append("oberon_src").append("Hello.Mod")};
     auto res = Scanner::scanSrcFile(src_file_path);
-    ASSERT_EQ(res.tokens.size(), 12);
+    ASSERT_EQ(res.tokens.size(), 17);
     EXPECT_EQ(res.tokens[0].type, TokenType::MODULE);
     EXPECT_EQ(res.tokens[1].type, TokenType::IDENT);
     EXPECT_EQ(res.tokens[1].lexeme, "Hello");
@@ -185,7 +185,7 @@ TEST(ScannerTests, TestModuleWithNumericLiterals) {
     const std::string src_file_path{
           fs::path(__FILE__).parent_path().append("oberon_src").append("NumLiterals.Mod")};
     auto res = Scanner::scanSrcFile(src_file_path);
-    ASSERT_EQ(res.tokens.size(), 74);
+    ASSERT_EQ(res.tokens.size(), 72);
     // InvalidRealNoIntPart = .2E+4 must be scanned as a dot, followed by an invalid hex int
     // (2E), a plus, and a 4 integer.
     EXPECT_EQ(res.tokens[4].type, TokenType::IDENT);
@@ -197,13 +197,13 @@ TEST(ScannerTests, TestModuleWithNumericLiterals) {
     EXPECT_EQ(res.tokens[8].lexeme, "4");
     // 2AX must be recognized as a valid one char string. 2A is 42 in base 10 and is the code
     // for the '*'.
-    EXPECT_EQ(res.tokens[37].type, TokenType::STRING);
-    EXPECT_EQ(res.tokens[37].lexeme, "*");
-    EXPECT_EQ(res.tokens[37].line, 9);
+    EXPECT_EQ(res.tokens[36].type, TokenType::STRING);
+    EXPECT_EQ(res.tokens[36].lexeme, "*");
+    EXPECT_EQ(res.tokens[36].line, 9);
 
     ASSERT_EQ(res.errors.size(), 4);
     EXPECT_EQ(res.errors[0].line, 3);
-    EXPECT_EQ(res.errors[0].column, 41);
+    EXPECT_EQ(res.errors[0].column, 42);
     EXPECT_EQ(res.errors[0].msg, "Hexadecimal number must be terminated with an 'H'.");
     EXPECT_EQ(res.errors[1].line, 4);
     EXPECT_EQ(res.errors[1].column, 45);
