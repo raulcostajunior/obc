@@ -163,6 +163,18 @@ class Scanner {
      */
     static void scanRealScaleFactor(ScanContext& ctx, const std::string& realBasePart);
 
+    /**
+     * Handles potential two-char tokens by looking ahead the next character in the source and
+     * either consuming it as part of a two-char token if it matches the expected token or
+     * returns immediately after registering the one-time token found.
+     *
+     * @param firstChr first character of the potentially two-character's token.
+     * @param expectTokenType token type to be added if the second character matches what is
+     * expected.
+     * @param expectSecondChr expected look-ahead character needed to compose a two-character
+     * token.
+     * @param ctx the context of the ongoing scan operation.
+     */
     static void handleTwoCharTokens(char firstChr, TokenType expectTokenType,
                                     char expectSecondChr, ScanContext& ctx);
 };
