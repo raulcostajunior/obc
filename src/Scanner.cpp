@@ -424,7 +424,7 @@ void Scanner::scanIdentifier(ScanContext& ctx, char firstLetter) {
         ctx.currColumn++;
         nextChr = nextChrNoAdvance(ctx);
     }
-    const TokenType tkType = tokenTypeFromIdentifierLexeme(ctx, identLex);
+    const TokenType tkType = Token::typeFromIdentifierLexeme(ctx.lowerCaseKeywords, identLex);
     ctx.results.tokens.emplace_back(
           Token{.type = tkType, .lexeme = identLex, .line = ctx.currLine});
 }
@@ -489,40 +489,4 @@ void Scanner::scanString(ScanContext& ctx) {
             break;
         }
     }
-}
-
-TokenType Scanner::tokenTypeFromIdentifierLexeme(const ScanContext& ctx,
-                                                 const std::string& idLex) {
-    TokenType idTokenType = TokenType::IDENT;
-    try {
-        if (!ctx.lowerCaseKeywords) {
-            // The scanner is supporting the standard casing of Oberon keywords: the lexeme
-            // must be provided in all upper case to be recognized as a keyword.
-            idTokenType = Token::keywordTypeFromLexeme(idLex);
-        } else {
-            // The scanner is in all lowercase mode - if the lexeme is all lowercase and
-            // matches (in a case-insensitive manner) an Oberon keyword, we return the
-            // appropriate keyword token type - otherwise, the lexeme is seen as an
-            // identifier.
-            std::string upperLex(idLex.size(), ' ');
-            bool allLower = true;
-            for (std::size_t i = 0; i < idLex.size(); i++) {
-                if (idLex[i] != std::tolower(idLex[i])) {
-                    allLower = false;
-                    break;
-                }
-                upperLex[i] = static_cast<char>(std::toupper(idLex[i]));
-            }
-            if (allLower) {
-                // The identifier lexeme being is all lower case; there's a chance for it to
-                // be a keyword - as the corresponding token method expects all upper case
-                // lexemes, we give it upperLex, instead of the original idLex argument.
-                idTokenType = Token::keywordTypeFromLexeme(upperLex);
-            }
-        }
-    } catch (std::invalid_argument const& e) {
-        // The lexeme not being a keyword is not an issue in the context of this method; we
-        // can simply ignore the invalid_argument exception.
-    }
-    return idTokenType;
 }

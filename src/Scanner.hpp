@@ -57,18 +57,6 @@ class Scanner {
     static void scanNextToken(ScanContext& ctx);
 
     /**
-     * @brief Gets the token type of a given identifier lexeme.
-     *
-     * @param ctx the context of the ongoing scan operation.
-     * @param idLex the identifier lexeme whose token type should be determined.
-     *
-     * @return the token type of an identifier lexeme - the lexeme can be of a language keyword
-     * or of an ordinary identifier.
-     */
-    static TokenType tokenTypeFromIdentifierLexeme(const ScanContext& ctx,
-                                                   const std::string& idLex);
-
-    /**
      * @brief Returns whether the whole src input has been already scanned or not.
      *
      * @param ctx  the context of the ongoing scan operation.

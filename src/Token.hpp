@@ -60,6 +60,18 @@ struct Token {
      * types of the language.
      */
     static TokenType keywordTypeFromLexeme(const std::string& lex);
+
+
+    /**
+     * @brief Gets the token type of a given identifier lexeme.
+     *
+     * @param lowerCaseKeywords should assume lowercase keywords?
+     * @param idLex the identifier lexeme whose token type should be determined.
+     *
+     * @return the token type of an identifier lexeme - the lexeme can be of a language keyword
+     * or of an ordinary identifier.
+     */
+    static TokenType typeFromIdentifierLexeme(bool lowerCaseKeywords, const std::string& idLex);
 };
 
 std::ostream& operator<<(std::ostream&, const Token&);
