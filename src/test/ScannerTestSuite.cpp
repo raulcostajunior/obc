@@ -221,7 +221,7 @@ TEST(ScannerTests, TestModuleWithNumericLiterals) {
 
     ASSERT_EQ(res.errors.size(), 4);
     EXPECT_EQ(res.errors[0].line, 3);
-    EXPECT_EQ(res.errors[0].column, 42);
+    EXPECT_EQ(res.errors[0].column, 41);
     EXPECT_EQ(res.errors[0].msg, "Hexadecimal number must be terminated with an 'H'.");
     EXPECT_EQ(res.errors[1].line, 4);
     EXPECT_EQ(res.errors[1].column, 45);

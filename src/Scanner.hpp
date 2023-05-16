@@ -163,24 +163,8 @@ class Scanner {
      */
     static void scanRealScaleFactor(ScanContext& ctx, const std::string& realBasePart);
 
-    /**
-     * @brief Returns whether a given char is an hexadecimal digit or not.
-     *
-     * @note Oberon's grammar specifies only uppercase 'A' to 'F' as valid hexadecimal
-     * digits. We stick to the specification in here.
-     *
-     * @param chr the character to be verified
-     * @return true if chr is an hexadecimal digit; false otherwise.
-     */
-    static bool isHexDigit(char chr);
-
-    /**
-     * @brief Returns whether a given string is composed exclusively of base 10 digits.
-     *
-     * @param str the string to be verified
-     * @return true if all characters in the string are base 10 digits; false otherwise.
-     */
-    static bool allBase10Digits(const std::string& str);
+    static void handleTwoCharTokens(char firstChr, TokenType expectTokenType,
+                                    char expectSecondChr, ScanContext& ctx);
 };
 
 

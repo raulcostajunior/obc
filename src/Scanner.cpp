@@ -2,12 +2,12 @@
 
 #include <algorithm>
 #include <array>
-#include <cctype>
 #include <cstring>
 #include <fstream>
 #include <string_view>
 
 #include "ErrorInfo.hpp"
+#include "TokenUtils.hpp"
 
 // Size of the buffer for storing an errno corresponding message.
 const size_t ERR_MSG_BUFF_SIZE = 256U;
@@ -176,52 +176,17 @@ void Scanner::scanNextToken(ScanContext& ctx) {
 
         // Handling of (potentially) two-char tokens
         case '<':
-            if (nextChrMatch(ctx, '=')) {
-                ctx.results.tokens.emplace_back(Token{
-                      .type = TokenType::LESS_EQUAL, .lexeme = "<=", .line = ctx.currLine});
-                ctx.currColumn += 2;
-            } else {
-                ctx.results.tokens.emplace_back(Token{.type = Token::typeFromChar(chr),
-                                                      .lexeme = std::string{chr},
-                                                      .line = ctx.currLine});
-                ctx.currColumn++;
-            }
+            handleTwoCharTokens(chr, TokenType::LESS_EQUAL, '=', ctx);
             break;
         case '>':
-            if (nextChrMatch(ctx, '=')) {
-                ctx.results.tokens.emplace_back(Token{
-                      .type = TokenType::GREATER_EQUAL, .lexeme = ">=", .line = ctx.currLine});
-                ctx.currColumn += 2;
-            } else {
-                ctx.results.tokens.emplace_back(Token{.type = Token::typeFromChar(chr),
-                                                      .lexeme = std::string{chr},
-                                                      .line = ctx.currLine});
-                ctx.currColumn++;
-            }
+            handleTwoCharTokens(chr, TokenType::GREATER_EQUAL, '=', ctx);
             break;
         case ':':
-            if (nextChrMatch(ctx, '=')) {
-                ctx.results.tokens.emplace_back(
-                      Token{.type = TokenType::ASSIGN, .lexeme = ":=", .line = ctx.currLine});
-                ctx.currColumn += 2;
-            } else {
-                ctx.results.tokens.emplace_back(Token{.type = Token::typeFromChar(chr),
-                                                      .lexeme = std::string{chr},
-                                                      .line = ctx.currLine});
-                ctx.currColumn++;
-            }
+            handleTwoCharTokens(chr, TokenType::ASSIGN, '=', ctx);
             break;
         case '.':
-            if (nextChrMatch(ctx, '.')) {
-                ctx.results.tokens.emplace_back(Token{
-                      .type = TokenType::LABEL_RANGE, .lexeme = "..", .line = ctx.currLine});
-                ctx.currColumn += 2;
-            } else {
-                ctx.results.tokens.emplace_back(Token{.type = Token::typeFromChar(chr),
-                                                      .lexeme = std::string{chr},
-                                                      .line = ctx.currLine});
-                ctx.currColumn++;
-            }
+            handleTwoCharTokens(chr, TokenType::LABEL_RANGE, '.', ctx);
+            break;
 
         // Handling of whitespace characters (except newline) - simply consumed. Blanks are not
         // ignored when inside strings.
@@ -245,13 +210,12 @@ void Scanner::scanNextToken(ScanContext& ctx) {
                 // Found start of comment - "consume" it.
                 ctx.currColumn++;
                 consumeComment(ctx);
-            } else {
-                // Found a single-character open parenthesis token.
-                ctx.results.tokens.emplace_back(Token{.type = Token::typeFromChar(chr),
-                                                      .lexeme = std::string{chr},
-                                                      .line = ctx.currLine});
-                ctx.currColumn++;
-            }
+                break;
+            } // Found a single-character open parenthesis token.
+            ctx.results.tokens.emplace_back(Token{.type = Token::typeFromChar(chr),
+                                                  .lexeme = std::string{chr},
+                                                  .line = ctx.currLine});
+            ctx.currColumn++;
             break;
 
         // Handling of string literals. String literals cannot contain internal double quotes
@@ -274,20 +238,6 @@ void Scanner::scanNextToken(ScanContext& ctx) {
                       .msg = std::string{"Unexpected character, '"} + chr + "' found."});
             }
     }
-}
-
-bool Scanner::isHexDigit(char chr) {
-    return (isdigit(chr) != 0 || chr == 'A' || chr == 'B' || chr == 'D' || chr == 'E' ||
-            chr == 'F');
-}
-
-bool Scanner::allBase10Digits(const std::string& str) {
-    for (char chr : str) {
-        if (isdigit(chr) == 0) {
-            return false;
-        }
-    }
-    return true;
 }
 
 void Scanner::scanNumberOrSingleCharString(ScanContext& ctx, char firstDigit) {
@@ -488,5 +438,21 @@ void Scanner::scanString(ScanContext& ctx) {
             }
             break;
         }
+    }
+}
+
+void Scanner::handleTwoCharTokens(char firstChr, TokenType expectTokenType,
+                                  char expectSecondChr, ScanContext& ctx) {
+    std::string twoChrLex{firstChr};
+    if (nextChrMatch(ctx, expectSecondChr)) {
+        twoChrLex += expectSecondChr;
+        ctx.results.tokens.emplace_back(
+              Token{.type = expectTokenType, .lexeme = twoChrLex, .line = ctx.currLine});
+        ctx.currColumn += 2;
+    } else {
+        ctx.results.tokens.emplace_back(Token{.type = Token::typeFromChar(firstChr),
+                                              .lexeme = std::string{firstChr},
+                                              .line = ctx.currLine});
+        ctx.currColumn++;
     }
 }
