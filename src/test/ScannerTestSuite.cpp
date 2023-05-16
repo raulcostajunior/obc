@@ -195,6 +195,24 @@ TEST(ScannerTests, TestModuleWithNumericLiterals) {
     EXPECT_EQ(res.tokens[7].type, TokenType::PLUS);
     EXPECT_EQ(res.tokens[8].type, TokenType::INTEGER);
     EXPECT_EQ(res.tokens[8].lexeme, "4");
+    // ValidRealNoDecimalScale must be scanned as a REAL with the appropriate lexeme.
+    EXPECT_EQ(res.tokens[15].type, TokenType::IDENT);
+    EXPECT_EQ(res.tokens[15].lexeme, "ValidRealNoDecimalScale");
+    EXPECT_EQ(res.tokens[16].type, TokenType::EQUAL);
+    EXPECT_EQ(res.tokens[17].type, TokenType::REAL);
+    EXPECT_EQ(res.tokens[17].lexeme, "23.E+2");
+    // ValidRealNoDecimalNScale must be scanned as a REAL with the appropriate lexeme.
+    EXPECT_EQ(res.tokens[20].type, TokenType::IDENT);
+    EXPECT_EQ(res.tokens[20].lexeme, "ValidRealNoDecimalNoScale");
+    EXPECT_EQ(res.tokens[21].type, TokenType::EQUAL);
+    EXPECT_EQ(res.tokens[22].type, TokenType::REAL);
+    EXPECT_EQ(res.tokens[22].lexeme, "23.");
+    // ValidHexInt must be scanned as an INTEGER with the appropriate lexeme.
+    EXPECT_EQ(res.tokens[25].type, TokenType::IDENT);
+    EXPECT_EQ(res.tokens[25].lexeme, "ValidHexInt");
+    EXPECT_EQ(res.tokens[26].type, TokenType::EQUAL);
+    EXPECT_EQ(res.tokens[27].type, TokenType::INTEGER);
+    EXPECT_EQ(res.tokens[27].lexeme, "87AH");
     // 2AX must be recognized as a valid one char string. 2A is 42 in base 10 and is the code
     // for the '*'.
     EXPECT_EQ(res.tokens[36].type, TokenType::STRING);
