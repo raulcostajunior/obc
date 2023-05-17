@@ -166,7 +166,7 @@ END.
 TEST(ScannerTests, TestModuleWithStringLiteral) {
     namespace fs = std::filesystem;
     const std::string src_file_path{
-          fs::path(__FILE__).parent_path().append("oberon_src").append("Hello.Mod")};
+          fs::path(__FILE__).parent_path().append("oberon_src").append("Hello.Mod").string()};
     auto res = Scanner::scanSrcFile(src_file_path);
     ASSERT_EQ(res.tokens.size(), 17);
     EXPECT_EQ(res.tokens[0].type, TokenType::MODULE);
@@ -182,8 +182,11 @@ TEST(ScannerTests, TestModuleWithStringLiteral) {
 
 TEST(ScannerTests, TestModuleWithNumericLiterals) {
     namespace fs = std::filesystem;
-    const std::string src_file_path{
-          fs::path(__FILE__).parent_path().append("oberon_src").append("NumLiterals.Mod")};
+    const std::string src_file_path{fs::path(__FILE__)
+                                          .parent_path()
+                                          .append("oberon_src")
+                                          .append("NumLiterals.Mod")
+                                          .string()};
     auto res = Scanner::scanSrcFile(src_file_path);
     ASSERT_EQ(res.tokens.size(), 72);
     // InvalidRealNoIntPart = .2E+4 must be scanned as a dot, followed by an invalid hex int
