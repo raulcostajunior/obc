@@ -22,7 +22,7 @@ is used.
 
 To get really serious about Oberon and its future, take a GOOD look at [Oberon+](https://oberon-lang.github.io/). 
 
-#### Oberon - the Uranus' moon, not the language (yet) - in the news:
+#### Oberon - the Uranus' moon, not the language - in the news:
 
 > "This has led NASA scientists to conclude that four of Uranus’ largest moons—Ariel, Umbriel, Titania, and **Oberon**—probably contain water oceans below their icy crusts. These oceans are likely dozens of kilometers deep and probably fairly salty in being sandwiched between the upper ice and inner rock core. These inner cores are likely producing enough heat from radioactive decay to create layers of liquid water, the scientists say. Additionally, chlorides, as well as ammonia, are likely abundant in the oceans of the icy giant’s largest moons and may be helping to keep them unfrozen."
 >
