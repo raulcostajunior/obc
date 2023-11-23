@@ -62,3 +62,11 @@ checks.json
 .clangd/
 .cache
 Footer
+
+# conan specific
+conan.lock
+conanbuildinfo.txt
+conaninfo.txt
+FindCLI11.cmake
+FindGTest.cmake
+graph_info.json
