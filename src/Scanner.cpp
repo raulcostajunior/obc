@@ -1,6 +1,5 @@
 #include "Scanner.hpp"
 
-#include <algorithm>
 #include <array>
 #include <cstring>
 #include <fstream>
