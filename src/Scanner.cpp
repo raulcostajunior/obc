@@ -381,7 +381,7 @@ void Scanner::scanIdentifier(ScanContext& ctx, char firstLetter) {
 void Scanner::consumeComment(ScanContext& ctx) {
     bool endOfCommentFound = false;
     while (!allScanned(ctx)) {
-        // As comments can be "surrounded" by real code (in Oberon-0, comments are not
+        // As comments can be "surrounded" by real code (in Oberon-07, comments are not
         // ended by line breaks), the line and column information must be updated.
         if (nextChrNoAdvance(ctx) == '\n') {
             ctx.currLine++;

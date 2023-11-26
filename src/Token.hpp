@@ -21,7 +21,7 @@ enum class TokenType : unsigned short {
     CIRCUMFLEX, LEFT_CURLY, RIGHT_CURLY,
 
     // Two-char tokens
-    GREATER_EQUAL, LESS_EQUAL, ASSIGN, LABEL_RANGE
+    GREATER_EQUAL, LESS_EQUAL, ASSIGN, LABEL_RANGE,
 
     // clang-format on
 };
@@ -40,7 +40,7 @@ struct Token {
      * @return The single-char token type corresponding token type should be returned
      *
      * @throw invalid_argument exception if the given character does not correspond to
-     * a single-char token type known to Oberon-0.
+     * a single-char token type known to Oberon-07.
      */
     static TokenType typeFromChar(char chr);
 
@@ -51,13 +51,12 @@ struct Token {
      * lexeme must be all upper-case as this is how the Oberon language specifies its keywords.
      * Any desired support for lowercase (or mixed case) keywords must be provided by the
      * callers of this method. For example, the caller can (and should) convert the lexeme to
-     * upper-case before calling this method.
+     * upper-case before calling this method. Any lexeme not recognized as keyword will be
+     * considered an identifier - the caller must thus be sure that the lexeme doesn't match any
+     * non-keyword token at the time it calls this method.
      *
      * @param lex the lexeme whose keyword token type should be returned.
      * @return the keyword token type corresponding to the lexeme.
-     *
-     * @throw invalid_argument when the given lexeme doesn't match any of the keyword token
-     * types of the language.
      */
     static TokenType keywordTypeFromLexeme(const std::string& lex);
 
