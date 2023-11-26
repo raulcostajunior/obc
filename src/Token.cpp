@@ -127,7 +127,7 @@ TokenType Token::typeFromIdentifierLexeme(bool lowerCaseKeywords, const std::str
         return Token::keywordTypeFromLexeme(upperLex);
     }
     // If this point is reached, it means that the lexeme was not all lowercase. There's no
-    // chance for it to be a lowercase keyword; it is assumed to be a keyword.
+    // chance for it to be a lowercase keyword; it is assumed to be an identifier.
     return TokenType::IDENT;
 }
 
