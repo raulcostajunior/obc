@@ -179,5 +179,4 @@ class Scanner {
                                     char expectSecondChr, ScanContext& ctx);
 };
 
-
 #endif
