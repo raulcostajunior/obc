@@ -40,6 +40,13 @@ struct ScanContext {
 
     ScanContext(const std::string& srcInput, bool lowerKey, bool ignoreCurrColumn)
         : srcInput{srcInput}, lowerCaseKeywords{lowerKey}, ignoreCurrColumn{ignoreCurrColumn} {}
+
+    int getCurrColumn() const {
+        if (ignoreCurrColumn) {
+            return -1;
+        }
+        return currColumn;
+    }
 };
 
 ScanResults Scanner::scanSrcFile(const std::string& srcFilePath, bool lowerCaseKeywords) {
@@ -165,10 +172,8 @@ void Scanner::scanNextToken(ScanContext& ctx) {
                                                       .lexeme = std::string{chr},
                                                       .line = ctx.currLine});
             } catch (std::invalid_argument const& ex) {
-                ctx.results.errors.emplace_back(
-                      ErrorInfo{.line = ctx.currLine,
-                                .column = ctx.ignoreCurrColumn ? -1 : ctx.currColumn,
-                                .msg = ex.what()});
+                ctx.results.errors.emplace_back(ErrorInfo{
+                      .line = ctx.currLine, .column = ctx.getCurrColumn(), .msg = ex.what()});
             }
             ctx.currColumn++;
             break;
@@ -233,7 +238,7 @@ void Scanner::scanNextToken(ScanContext& ctx) {
             } else {
                 ctx.results.errors.emplace_back(ErrorInfo{
                       .line = ctx.currLine,
-                      .column = ctx.ignoreCurrColumn ? -1 : ctx.currColumn,
+                      .column = ctx.getCurrColumn(),
                       .msg = std::string{"Unexpected character, '"} + chr + "' found."});
             }
     }
@@ -254,7 +259,7 @@ void Scanner::scanNumberOrSingleCharString(ScanContext& ctx, char firstDigit) {
         if (lex.size() > 2) {
             ctx.results.errors.push_back(ErrorInfo{
                   .line = ctx.currLine,
-                  .column = ctx.ignoreCurrColumn ? -1 : ctx.currColumn,
+                  .column = ctx.getCurrColumn(),
                   .msg = "Single character strings must have values between 0 and FF."});
         } else {
             int charCode = std::stoi(
@@ -283,7 +288,7 @@ void Scanner::scanNumberOrSingleCharString(ScanContext& ctx, char firstDigit) {
             // always expressed in base 10.
             ctx.results.errors.emplace_back(
                   ErrorInfo{.line = ctx.currLine,
-                            .column = ctx.ignoreCurrColumn ? -1 : ctx.currColumn,
+                            .column = ctx.getCurrColumn(),
                             .msg = "Real numbers must use only digits between 0 and 9."});
         }
         lex.push_back(nextChr);
@@ -302,7 +307,7 @@ void Scanner::scanNumberOrSingleCharString(ScanContext& ctx, char firstDigit) {
             // error.
             ctx.results.errors.emplace_back(
                   ErrorInfo{.line = ctx.currLine,
-                            .column = ctx.ignoreCurrColumn ? -1 : ctx.currColumn,
+                            .column = ctx.getCurrColumn(),
                             .msg = "Hexadecimal number must be terminated with an 'H'."});
         }
     }
@@ -336,7 +341,7 @@ void Scanner::scanRealScaleFactor(ScanContext& ctx, const std::string& realBaseP
     if (nextCh != '+' && nextCh != '-') {
         ctx.results.errors.push_back(
               ErrorInfo{.line = ctx.currLine,
-                        .column = ctx.ignoreCurrColumn ? -1 : ctx.currColumn,
+                        .column = ctx.getCurrColumn(),
                         .msg = "Real number scale factor must start with an 'E' followed by "
                                "either a '+' or '-' signal."});
     } else {
@@ -346,7 +351,7 @@ void Scanner::scanRealScaleFactor(ScanContext& ctx, const std::string& realBaseP
         if (isdigit(nextCh) == 0) {
             ctx.results.errors.push_back(
                   ErrorInfo{.line = ctx.currLine,
-                            .column = ctx.ignoreCurrColumn ? -1 : ctx.currColumn,
+                            .column = ctx.getCurrColumn(),
                             .msg = "Scale factor of a real number must have at least one digit "
                                    "after the '+' or '-' signal."});
         } else {
@@ -408,7 +413,7 @@ void Scanner::consumeComment(ScanContext& ctx) {
         // have an unfinished comment.
         ctx.results.errors.emplace_back(
               ErrorInfo{.line = ctx.currLine,
-                        .column = ctx.ignoreCurrColumn ? -1 : ctx.currColumn,
+                        .column = ctx.getCurrColumn(),
                         .msg = "Source module ends in an unfinished comment."});
     }
 }
@@ -426,7 +431,7 @@ void Scanner::scanString(ScanContext& ctx) {
             if (nextChr == '\n') {
                 ctx.results.errors.emplace_back(ErrorInfo{
                       .line = ctx.currLine,
-                      .column = ctx.ignoreCurrColumn ? -1 : ctx.currColumn,
+                      .column = ctx.getCurrColumn(),
                       .msg = "Unterminated string - strings must be on a single line."});
             } else {
                 // Double-quotes (End of string literal) found
