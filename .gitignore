@@ -58,9 +58,13 @@ checks.json
 # CLion specific
 .idea
 
+# Fleet specific
+.fleet
+
 # clangd specific
 .clangd/
 .cache
+.clangd.swp
 Footer
 
 # conan specific
