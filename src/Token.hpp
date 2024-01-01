@@ -4,7 +4,7 @@
 #include <iostream>
 #include <string>
 
-enum class TokenType : unsigned short {
+enum class TokenType : unsigned char {
     // clang-format off
 
     // Keywords
