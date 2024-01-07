@@ -5,10 +5,6 @@
 An [Oberon-07](https://people.inf.ethz.ch/wirth/Oberon/Oberon07.Report.pdf)
 to [LLVM IR](https://llvm.org/docs/LangRef.html) compiler.
 
-Oberon-07 is one of the amazing programming languages created by Prof. Niklaus Wirth, who unfortunately, passed away on
-January 1st. 2024. A summary of the projects of Prof. Niklaus Wirth between 1962 and 1999 can be
-found [here](https://people.inf.ethz.ch/wirth/projects.html).
-
 LLVM IR code emitted by **obc** can then be compiled to native binary modules for a number of different architectures by
 using the [LLVM llc](https://llvm.org/docs/CommandGuide/llc.html) compiler and the [LLVM lld](https://lld.llvm.org)
 linker. Possible target architectures for LLVM's backend stack include AArch64, ARM, PowerPC, RISC-V, x86_32, and
@@ -16,6 +12,11 @@ x86_64.
 
 WebAssembly modules are also a possible target when the [WebAssembly port of lld](https://lld.llvm.org/WebAssembly.html)
 is used.
+
+> Oberon-07 is one of the amazing programming languages created
+> by [Prof. Niklaus Wirth](https://people.inf.ethz.ch/wirth/), who unfortunately, passed away on
+> January 1st. 2024. A summary of the projects of Prof. Niklaus Wirth between 1962 and 1999 can be
+> found [here](https://people.inf.ethz.ch/wirth/projects.html).
 
 ## On Oberon
 
