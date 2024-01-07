@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.20)  # GTest import targets introduced in 3.20 are used
 
 # TODO: Extract version from repository and generate _version.hpp file
-project(obc´
+project(obc
         VERSION 1.0.0
         DESCRIPTION "An Oberon-07 to LLVM-IR compiler"
         LANGUAGES CXX)
