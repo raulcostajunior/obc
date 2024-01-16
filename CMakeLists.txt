@@ -23,7 +23,7 @@ find_package(CLI11 REQUIRED)
 find_package(GTest REQUIRED)
 
 # The compiler library to be linked to the CLI and the unit tests
-add_library(obc_lib STATIC src/Token.cpp src/Scanner.cpp src/ErrorInfo.cpp src/TokenUtils.cpp src/TokenUtils.hpp src/TokenUtils.cpp)
+add_library(obc_lib STATIC src/Token.cpp src/Scanner.cpp src/ErrorInfo.cpp src/TokenUtils.cpp)
 
 # The compiler CLI
 add_executable(obc
