@@ -26,6 +26,7 @@ FetchContent_MakeAvailable(GoogleTest)
 # The compiler library to be linked to the CLI and the unit tests
 add_library(obc_lib STATIC
         src/Token.cpp src/Scanner.cpp src/ErrorInfo.cpp src/TokenUtils.cpp)
+target_include_directories(obc_lib PUBLIC src)
 target_compile_options(obc_lib PUBLIC -Wall -Wextra)
 
 # The compiler CLI
@@ -40,7 +41,6 @@ include(GoogleTest)
 enable_testing()
 
 add_executable(scanner_test_suite src/test/ScannerTestSuite.cpp)
-target_include_directories(scanner_test_suite PRIVATE ${CMAKE_CURRENT_LIST_DIR}/src)
 target_link_libraries(scanner_test_suite PRIVATE GTest::gtest GTest::gtest_main PRIVATE obc_lib)
 
 # To avoid a warning introduced by the new Apple linker shipped with XCode15.
