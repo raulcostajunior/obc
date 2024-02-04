@@ -27,7 +27,9 @@ FetchContent_MakeAvailable(GoogleTest)
 add_library(obc_lib STATIC
         src/Token.cpp src/Scanner.cpp src/ErrorInfo.cpp src/TokenUtils.cpp)
 target_include_directories(obc_lib PUBLIC src)
-target_compile_options(obc_lib PUBLIC -Wall)
+if (CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang" OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+    target_compile_options(obc_lib PUBLIC -Wall -Wextra)
+endif ()
 
 # The compiler CLI
 add_executable(obc
