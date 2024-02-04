@@ -28,7 +28,7 @@ struct ScanContext {
     // Should currColumn be ignored? (Look in currColumn description for more details)
     bool ignoreCurrColumn;
     // Index, in the src input, of the character being scanned.
-    int lexPos{0};
+    unsigned long lexPos{0};
     // Number of the line from the src input currently being scanned.
     int currLine{1};
     // Number of the column (of the current line) from the src input currently

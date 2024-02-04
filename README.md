@@ -40,8 +40,5 @@ from <cite> [ArsTechnica](https://arstechnica.com/science/2023/05/as-many-as-fou
 
 ## Build
 
-To build **obc**, [CMake](https://cmake.org) version 3.20 or later and [Conan](https://conan.io) are required.
+To build **obc**, [CMake](https://cmake.org) version 3.20 or later is required.
 
-Once CMake and Conan are available on your system, please follow
-this [sequence of instructions described on the Conan Documentation site](https://docs.conan.io/2/tutorial/consuming_packages/build_simple_cmake_project.html)
-to build obc. 
