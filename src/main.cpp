@@ -6,10 +6,12 @@
  */
 #include <iostream>
 #include <string>
+#include <utility>
 
 #include "CLI/CLI.hpp"
+#include "Parser.hpp"
 #include "Scanner.hpp"
-#include "version.hpp"
+#include "Version.hpp"
 
 // NOLINTBEGIN(bugprone-exception-escape)
 int main(int argc, char **argv) {
@@ -34,7 +36,7 @@ int main(int argc, char **argv) {
     }
 
     // For now, we just scan and printout the results.
-    const auto res = Scanner::scanSrcFile(srcFile, lowerCaseKeywords);
+    auto res = Scanner::scanSrcFile(srcFile, lowerCaseKeywords);
     // Report on tokens.
     if (res.tokens.empty()) {
         std::cout << "No token found in '" << srcFile << "'.\n";
@@ -58,5 +60,7 @@ int main(int argc, char **argv) {
             std::cout << error << "\n";
         }
     }
+    
+    Parser parser{std::move(res.tokens)};
 }
 // NOLINTEND(bugprone-exception-escape)
