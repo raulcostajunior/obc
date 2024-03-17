@@ -23,8 +23,8 @@ enum class TokenType : unsigned char {
     // Two-char tokens
     GREATER_EQUAL, LESS_EQUAL, ASSIGN, LABEL_RANGE,
 
-    // EOS (End-of-Source - sentinel value to ease the parser's life)
-    EOS,
+    // EOM (End-of-Module - sentinel value to ease the parser's life)
+    EOM,
 
     // clang-format on
 };
