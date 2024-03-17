@@ -53,7 +53,8 @@ std::string Token::typeString() const {
 
           {TokenType::GREATER_EQUAL, "GREATER_EQUAL"},
           {TokenType::LESS_EQUAL, "LESS_EQUAL"},
-          {TokenType::ASSIGN, "ASSIGN"}
+          {TokenType::ASSIGN, "ASSIGN"},
+          {TokenType::EOM, "EOM"}
 
     };
 
