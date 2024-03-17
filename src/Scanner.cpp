@@ -114,6 +114,10 @@ ScanResults Scanner::scan(const std::string& src, bool lowerCaseKeywords) {
         Scanner::scanNextToken(ctx);
     }
 
+    // An End-of-Source is always inserted to provide a clear indicator for the parser.
+    ctx.results.tokens.emplace_back(
+          Token{.type = TokenType::EOS, .lexeme = "", .line = ctx.currLine});
+
     return ctx.results;
 }
 
