@@ -15,7 +15,7 @@ include(FetchContent)
 
 FetchContent_Declare(CLI11
         GIT_REPOSITORY https://github.com/CLIUtils/CLI11
-        GIT_TAG v2.3.2)
+        GIT_TAG v2.4.1)
 FetchContent_Declare(GoogleTest
         GIT_REPOSITORY https://github.com/google/googletest
         GIT_TAG v1.14.0)
