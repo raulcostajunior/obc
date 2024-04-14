@@ -69,12 +69,11 @@ ScanResults Scanner::scanSrcFile(const std::string& srcFilePath, bool lowerCaseK
             std::getline(srcFile, nextLine);
             src.append(nextLine);
             // As std::getline consumes the delimiter - in this case the default
-            // "\n" - we add it to the string. We may end up adding an extra
-            // "\n" when the last line in the source file didn't end with a "\n"
-            // - for the context of the scanner, though, this extra line break
-            // is harmless as the new last line in memory will have no code to
-            // be scanned.
-            src.append("\n");
+            // "\n" - we add it to the string if the end of the file hasn't still been
+            // reached.
+            if (srcFile) {
+                src.append("\n");
+            }
         }
         srcFile.close();
         if (srcFile.bad()) {
@@ -113,6 +112,10 @@ ScanResults Scanner::scan(const std::string& src, bool lowerCaseKeywords) {
     while (!allScanned(ctx)) {
         Scanner::scanNextToken(ctx);
     }
+
+    // An End-of-Module is always inserted to provide a clear indicator for the parser.
+    ctx.results.tokens.emplace_back(
+          Token{.type = TokenType::EOM, .lexeme = "", .line = ctx.currLine});
 
     return ctx.results;
 }
