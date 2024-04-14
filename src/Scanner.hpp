@@ -175,7 +175,7 @@ class Scanner {
      * token.
      * @param ctx the context of the ongoing scan operation.
      */
-    static void handleTwoCharTokens(char firstChr, TokenType expectTokenType,
+    static void handleTwoCharTokens(char firstChr, enum TokenType expectTokenType,
                                     char expectSecondChr, ScanContext& ctx);
 };
 

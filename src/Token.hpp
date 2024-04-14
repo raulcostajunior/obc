@@ -4,6 +4,16 @@
 #include <iostream>
 #include <string>
 
+// The following pre-processor macros are defined in "minwindef.h" (part of WIN SDK) and are
+// included when a toolchain based on the Microsoft C/C++ compiler is used (issue detected when
+// MSVC 19.39.33523.0 was used, but most probably happens with other versions of the compiler
+// as well).
+#undef CONST
+#undef TRUE
+#undef FALSE
+#undef IN
+
+
 enum class TokenType : unsigned char {
     // clang-format off
 
@@ -30,7 +40,7 @@ enum class TokenType : unsigned char {
 };
 
 struct Token {
-    TokenType type;
+    enum TokenType type;
     std::string lexeme;
     int line;
 
@@ -45,7 +55,7 @@ struct Token {
      * @throw invalid_argument exception if the given character does not correspond to
      * a single-char token type known to Oberon-07.
      */
-    static TokenType typeFromChar(char chr);
+    static enum TokenType typeFromChar(char chr);
 
     /**
      * @brief Returns the token type of the keyword that corresponds to a given lexeme.
@@ -61,7 +71,7 @@ struct Token {
      * @param lex the lexeme whose keyword token type should be returned.
      * @return the keyword token type corresponding to the lexeme.
      */
-    static TokenType keywordTypeFromLexeme(const std::string& lex);
+    static enum TokenType keywordTypeFromLexeme(const std::string& lex);
 
 
     /**
@@ -73,9 +83,11 @@ struct Token {
      * @return the token type of an identifier lexeme - the lexeme can be of a language keyword
      * or of an ordinary identifier.
      */
-    static TokenType typeFromIdentifierLexeme(bool lowerCaseKeywords, const std::string& idLex);
+    static enum TokenType typeFromIdentifierLexeme(bool lowerCaseKeywords,
+                                                   const std::string& idLex);
 };
 
 std::ostream& operator<<(std::ostream&, const Token&);
+
 
 #endif
