@@ -23,7 +23,7 @@ class Scanner {
      * @brief Scans a given source file, returning the list of tokens found in it.
      *
      * @param srcFilePath the path of the source file to be scanned.
-     * @param lowerCaseKeywords adopt accept lowercase keywords?
+     * @param lowerCaseKeywords use lowercase keywords?
      *
      * @return list of tokens (and the lexical errors) in the file.
      *
@@ -37,7 +37,7 @@ class Scanner {
      * @brief Scans a string with the contents of a source file.
      *
      * @param src the contents of a source file.
-     * @param lowerCaseKeywords adopt lowercase keywords?
+     * @param lowerCaseKeywords use lowercase keywords?
      *
      * @return list of tokens (and the lexical errors) in the contents.
      *
