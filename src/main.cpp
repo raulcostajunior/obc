@@ -6,7 +6,6 @@
  */
 #include <iostream>
 #include <string>
-#include <utility>
 
 #include "CLI/CLI.hpp"
 #include "Parser.hpp"
@@ -60,7 +59,7 @@ int main(int argc, char **argv) {
             std::cout << error << "\n";
         }
     }
-    
+
     Parser parser{std::move(res.tokens)};
 }
 // NOLINTEND(bugprone-exception-escape)
