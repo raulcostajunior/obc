@@ -20,7 +20,7 @@ int main(int argc, char **argv) {
 
     bool lowerCaseKeywords{false};
     app.add_flag("--lower-keywords", lowerCaseKeywords,
-                 "Must keywords be lowercase? (in the Oberon-07 spec, keywords are all "
+                 "Must keywords be all lowercase? (in the Oberon-07 spec, keywords are all "
                  "uppercase)");
 
     std::string srcFile;
