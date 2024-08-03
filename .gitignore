@@ -58,6 +58,9 @@ checks.json
 # CLion specific
 .idea
 
+# Qt Creator specific
+.qtcreator
+
 # Fleet specific
 .fleet
 
