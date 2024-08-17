@@ -61,7 +61,7 @@ struct Token {
     /**
      * @brief Returns the token type of the keyword that corresponds to a given lexeme.
      *
-     * @attention internally this method works with case-sensitive comparisons and the input
+     * @note internally this method works with case-sensitive comparisons and the input
      * lexeme must be all upper-case as this is how the Oberon language specifies its keywords.
      * Any desired support for lowercase (or mixed case) keywords must be provided by the
      * callers of this method. For example, the caller can (and should) convert the lexeme to
