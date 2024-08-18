@@ -76,12 +76,12 @@ struct Token {
 
 
     /**
-     * @brief Gets the token type of a given identifier lexeme.
+     * @brief Gets the token type of given identifier lexeme.
      *
      * @param lowerCaseKeywords should assume lowercase keywords?
      * @param idLex the identifier lexeme whose token type should be determined.
      *
-     * @return the token type of an identifier lexeme - the lexeme can be of a language keyword
+     * @return the token type of identifier lexeme - the lexeme can be of a language keyword
      * or of an ordinary identifier.
      */
     static enum TokenType typeFromIdentifierLexeme(bool lowerCaseKeywords,

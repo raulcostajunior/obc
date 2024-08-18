@@ -129,7 +129,7 @@ class Scanner {
 
     /**
      * @brief Scans a number - sequence of digits optionally in hexadecimal form - or a single
-     * char string - sequence of digits or hexadecimal digits followed by an "X". An hexadecimal
+     * char string - sequence of digits or hexadecimal digits followed by an "X". A hexadecimal
      * number literal must be followed by an "H" to be valid.
      *
      * @param ctx the context of the ongoing scan operation.

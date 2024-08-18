@@ -9,11 +9,11 @@
 #include "TokenUtils.hpp"
 
 // Size of the buffer for storing an errno corresponding message.
-const size_t ERR_MSG_BUFF_SIZE = 256U;
+constexpr size_t ERR_MSG_BUFF_SIZE = 256U;
 
 /**
  * Context of an ongoing scan operation. Each scan operation creates an
- * instance of ScanContext at its start. The context stores book-keeping data for the
+ * instance of ScanContext at its start. The context stores bookkeeping data for the
  * scan process and is passed around (and modified) by the different methods of the
  * Scanner class.
  */
@@ -146,9 +146,7 @@ bool Scanner::nextChrMatch(ScanContext& ctx, char expChr) {
 }
 
 void Scanner::scanNextToken(ScanContext& ctx) {
-    char chr = nextChr(ctx);
-
-    switch (chr) {
+    switch (char chr = nextChr(ctx)) {
         // Handling of single-char tokens
         case '&':
         case ',':
