@@ -38,7 +38,7 @@ struct ScanContext {
     // The tokens (and errors) found by the ongoing scan operation.
     ScanResults results;
 
-    ScanContext(const std::string& srcInput, bool lowerKey, bool ignoreCurrColumn)
+    ScanContext(const std::string& srcInput, const bool lowerKey, const bool ignoreCurrColumn)
         : srcInput{srcInput}, lowerCaseKeywords{lowerKey}, ignoreCurrColumn{ignoreCurrColumn} {}
 
     int getCurrColumn() const {
@@ -102,15 +102,15 @@ ScanResults Scanner::scanSrcFile(const std::string& srcFilePath, bool lowerCaseK
 }
 
 
-ScanResults Scanner::scan(const std::string& src, bool lowerCaseKeywords) {
+ScanResults Scanner::scan(const std::string& src, const bool lowerCaseKeywords) {
     // Current column information should be ignored when the source file has at least one tab:
     // The information of how many columns correspond to a '\t' is not in the source file
     // and cannot be easily inferred.
-    bool srcHasTab = src.find('\t') != std::string::npos;
+    const bool srcHasTab = src.find('\t') != std::string::npos;
     ScanContext ctx(src, lowerCaseKeywords, srcHasTab);
 
     while (!allScanned(ctx)) {
-        Scanner::scanNextToken(ctx);
+        scanNextToken(ctx);
     }
 
     // An End-of-Module is always inserted to provide a clear indicator for the parser.
@@ -125,7 +125,7 @@ bool Scanner::allScanned(const ScanContext& ctx) {
 }
 
 char Scanner::nextChr(ScanContext& ctx) {
-    char chr = ctx.srcInput[ctx.lexPos];
+    const char chr = ctx.srcInput[ctx.lexPos];
     ctx.lexPos++;
     return chr;
 }
@@ -137,7 +137,7 @@ char Scanner::nextChrNoAdvance(const ScanContext& ctx) {
     return ctx.srcInput[ctx.lexPos];
 }
 
-bool Scanner::nextChrMatch(ScanContext& ctx, char expChr) {
+bool Scanner::nextChrMatch(ScanContext& ctx, const char expChr) {
     if (allScanned(ctx) || ctx.srcInput[ctx.lexPos] != expChr) {
         return false;
     }
@@ -146,7 +146,7 @@ bool Scanner::nextChrMatch(ScanContext& ctx, char expChr) {
 }
 
 void Scanner::scanNextToken(ScanContext& ctx) {
-    switch (char chr = nextChr(ctx)) {
+    switch (const char chr = nextChr(ctx)) {
         // Handling of single-char tokens
         case '&':
         case ',':
@@ -245,7 +245,7 @@ void Scanner::scanNextToken(ScanContext& ctx) {
     }
 }
 
-void Scanner::scanNumberOrSingleCharString(ScanContext& ctx, char firstDigit) {
+void Scanner::scanNumberOrSingleCharString(ScanContext& ctx, const char firstDigit) {
     std::string lex{firstDigit};
     char nextChr = nextChrNoAdvance(ctx);
     while (isHexDigit(nextChr)) {
@@ -263,7 +263,7 @@ void Scanner::scanNumberOrSingleCharString(ScanContext& ctx, char firstDigit) {
                   .column = ctx.getCurrColumn(),
                   .msg = "Single character strings must have values between 0 and FF."});
         } else {
-            int charCode = std::stoi(
+            const int charCode = std::stoi(
                   lex, nullptr,
                   16); // NOLINT(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
             ctx.results.tokens.emplace_back(
@@ -370,7 +370,7 @@ void Scanner::scanRealScaleFactor(ScanContext& ctx, const std::string& realBaseP
     }
 }
 
-void Scanner::scanIdentifier(ScanContext& ctx, char firstLetter) {
+void Scanner::scanIdentifier(ScanContext& ctx, const char firstLetter) {
     std::string identLex{firstLetter};
     char nextChr = nextChrNoAdvance(ctx);
     while (isalpha(nextChr) != 0 || isdigit(nextChr) != 0) {
@@ -422,8 +422,7 @@ void Scanner::consumeComment(ScanContext& ctx) {
 void Scanner::scanString(ScanContext& ctx) {
     std::string strLex{};
     while (!allScanned(ctx)) {
-        const char nextChr = nextChrNoAdvance(ctx);
-        if (nextChr != '\n' && nextChr != '"') {
+        if (const char nextChr = nextChrNoAdvance(ctx); nextChr != '\n' && nextChr != '"') {
             // In the middle of the string literal - just keep on acquiring the lexeme
             strLex.push_back(nextChrNoAdvance(ctx));
             ctx.lexPos++;
@@ -446,8 +445,8 @@ void Scanner::scanString(ScanContext& ctx) {
     }
 }
 
-void Scanner::handleTwoCharTokens(char firstChr, enum TokenType expectTokenType,
-                                  char expectSecondChr, ScanContext& ctx) {
+void Scanner::handleTwoCharTokens(const char firstChr, const enum TokenType expectTokenType,
+                                  const char expectSecondChr, ScanContext& ctx) {
     std::string twoChrLex{firstChr};
     if (nextChrMatch(ctx, expectSecondChr)) {
         twoChrLex += expectSecondChr;
