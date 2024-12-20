@@ -61,7 +61,7 @@ std::string Token::typeString() const {
     return tokenTypeToString[this->type];
 }
 
-enum TokenType Token::typeFromChar(const char chr) {
+TokenType Token::typeFromChar(const char chr) {
     static std::unordered_map<char, TokenType> charToSingleCharTokenType{
           {'&', TokenType::AND},           {':', TokenType::COLON},
           {',', TokenType::COMMA},         {'.', TokenType::DOT},
@@ -107,8 +107,8 @@ enum TokenType Token::keywordTypeFromLexeme(const std::string& lex) {
     return iter->second;
 }
 
-enum TokenType Token::typeFromIdentifierLexeme(bool lowerCaseKeywords,
-                                               const std::string& idLex) {
+TokenType Token::typeFromIdentifierLexeme(const bool lowerCaseKeywords,
+                                          const std::string& idLex) {
     if (!lowerCaseKeywords) {
         // The scanner is supporting the standard casing of Oberon keywords: the lexeme
         // must be provided in all upper case to be recognized as a keyword.

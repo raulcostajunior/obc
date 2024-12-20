@@ -445,7 +445,7 @@ void Scanner::scanString(ScanContext& ctx) {
     }
 }
 
-void Scanner::handleTwoCharTokens(const char firstChr, const enum TokenType expectTokenType,
+void Scanner::handleTwoCharTokens(const char firstChr, const TokenType expectTokenType,
                                   const char expectSecondChr, ScanContext& ctx) {
     std::string twoChrLex{firstChr};
     if (nextChrMatch(ctx, expectSecondChr)) {
