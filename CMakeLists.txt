@@ -18,7 +18,7 @@ FetchContent_Declare(CLI11
         GIT_TAG v2.4.1)
 FetchContent_Declare(GoogleTest
         GIT_REPOSITORY https://github.com/google/googletest
-        GIT_TAG v1.14.0)
+        GIT_TAG v1.15.2)
 
 FetchContent_MakeAvailable(CLI11)
 FetchContent_MakeAvailable(GoogleTest)
