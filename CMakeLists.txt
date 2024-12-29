@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.20)  # GTest import targets introduced in 3.20 are used
+cmake_minimum_required(VERSION 3.23)
 
 project(obc
         VERSION 1.0.0
@@ -30,7 +30,7 @@ target_sources(obc_lib PUBLIC
         src/Parser.cpp
         src/Compiler.cpp
         PUBLIC
-        FILE_SET HEADERS
+        FILE_SET HEADERS   #  FILE_SET is supported since cmake 3.23
         BASE_DIRS ${PROJECT_SOURCE_DIR}/src
         FILES
         ${PROJECT_SOURCE_DIR}/src/Compiler.hpp
