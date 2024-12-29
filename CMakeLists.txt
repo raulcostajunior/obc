@@ -24,14 +24,22 @@ FetchContent_MakeAvailable(CLI11)
 FetchContent_MakeAvailable(GoogleTest)
 
 # The compiler library to be linked to the CLI and the unit tests
-add_library(obc_lib STATIC
+add_library(obc_lib STATIC)
+target_sources(obc_lib PUBLIC
         src/Token.cpp src/Scanner.cpp src/ErrorInfo.cpp src/TokenUtils.cpp
         src/Parser.cpp
-        src/Compiler.cpp)
-target_include_directories(obc_lib PUBLIC src)
-if (CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang" OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-    target_compile_options(obc_lib PUBLIC -Wall -Wextra)
-endif ()
+        src/Compiler.cpp
+        PUBLIC
+        FILE_SET HEADERS
+        BASE_DIRS ${PROJECT_SOURCE_DIR}/src
+        FILES
+        ${PROJECT_SOURCE_DIR}/src/Compiler.hpp
+        ${PROJECT_SOURCE_DIR}/src/ErrorInfo.hpp
+        ${PROJECT_SOURCE_DIR}/src/Parser.hpp
+        ${PROJECT_SOURCE_DIR}/src/Scanner.hpp
+        ${PROJECT_SOURCE_DIR}/src/Token.hpp
+        ${PROJECT_SOURCE_DIR}/src/TokenUtils.hpp
+        ${PROJECT_SOURCE_DIR}/src/Version.hpp)
 
 # The compiler CLI
 add_executable(obc
