@@ -5,7 +5,7 @@ project(obc
         DESCRIPTION "An Oberon-07 to LLVM-IR compiler"
         LANGUAGES CXX)
 
-set(CMAKE_CXX_STANDARD 20)  # Uses C++ 20 Designated Initializers feature
+set(CMAKE_CXX_STANDARD 20) # Uses C++ 20 Designated Initializers feature
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS 1)
@@ -15,7 +15,7 @@ include(FetchContent)
 
 FetchContent_Declare(CLI11
         GIT_REPOSITORY https://github.com/CLIUtils/CLI11
-        GIT_TAG v2.4.1)
+        GIT_TAG d9473a486b1ffb9a2949a937f3895c7c055afa59)
 FetchContent_Declare(GoogleTest
         GIT_REPOSITORY https://github.com/google/googletest
         GIT_TAG v1.15.2)
@@ -30,7 +30,7 @@ target_sources(obc_lib PUBLIC
         src/Parser.cpp
         src/Compiler.cpp
         PUBLIC
-        FILE_SET HEADERS   #  FILE_SET is supported since cmake 3.23
+        FILE_SET HEADERS # FILE_SET is supported since cmake 3.23
         BASE_DIRS ${PROJECT_SOURCE_DIR}/src
         FILES
         ${PROJECT_SOURCE_DIR}/src/Compiler.hpp
@@ -57,8 +57,8 @@ target_link_libraries(scanner_test_suite PRIVATE GTest::gtest GTest::gtest_main 
 
 # To avoid a warning introduced by the new Apple linker shipped with XCode15.
 # Details at https://gitlab.kitware.com/cmake/cmake/-/issues/25297
-if (CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang" AND CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL "15.0")
-    target_link_options(scanner_test_suite PRIVATE LINKER:-no_warn_duplicate_libraries)
-endif ()
+if(CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang" AND CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL "15.0")
+        target_link_options(scanner_test_suite PRIVATE LINKER:-no_warn_duplicate_libraries)
+endif()
 
 gtest_discover_tests(scanner_test_suite)
