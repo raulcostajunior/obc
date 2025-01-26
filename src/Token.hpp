@@ -41,7 +41,7 @@ enum class TokenType : unsigned char {
 };
 
 struct Token {
-    TokenType type;
+    enum TokenType type;
     std::string lexeme;
     int line;
 
@@ -56,7 +56,7 @@ struct Token {
      * @throw invalid_argument exception if the given character does not correspond to
      * a single-char token type known to Oberon-07.
      */
-    static TokenType typeFromChar(char chr);
+    static enum TokenType typeFromChar(char chr);
 
     /**
      * @brief Returns the token type of the keyword that corresponds to a given lexeme.
@@ -72,7 +72,7 @@ struct Token {
      * @param lex the lexeme whose keyword token type should be returned.
      * @return the keyword token type corresponding to the lexeme.
      */
-    static TokenType keywordTypeFromLexeme(const std::string& lex);
+    static enum TokenType keywordTypeFromLexeme(const std::string& lex);
 
 
     /**
@@ -84,7 +84,8 @@ struct Token {
      * @return the token type of identifier lexeme - the lexeme can be of a language keyword
      * or of an ordinary identifier.
      */
-    static TokenType typeFromIdentifierLexeme(bool lowerCaseKeywords, const std::string& idLex);
+    static enum TokenType typeFromIdentifierLexeme(bool lowerCaseKeywords,
+                                                   const std::string& idLex);
 };
 
 std::ostream& operator<<(std::ostream&, const Token&);
