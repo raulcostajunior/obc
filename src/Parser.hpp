@@ -5,13 +5,16 @@
 
 #include "Token.hpp"
 
-class Parser {
-   public:
-    Parser(std::vector<Token> &&tokens);
+namespace obc {
 
-   private:
-    std::vector<Token> m_tokens;
-};
+    class Parser {
+       public:
+        Parser(std::vector<Token> &&tokens);
 
+       private:
+        std::vector<Token> m_tokens;
+    };
+
+} // namespace obc
 
 #endif // PARSER_HPP

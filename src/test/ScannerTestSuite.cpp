@@ -4,6 +4,8 @@
 
 #include "Scanner.hpp"
 
+using namespace obc;
+
 TEST(ScannerTests, TestEmptyFile) {
     // An empty file must have the EOM token and no errors.
     const auto res = Scanner::scan("");
@@ -49,7 +51,8 @@ BEGIN
 END LowerCaseModule.
 )"};
 
-    const int expectTokens = 42; // Expected number of tokens in src files used in this test.
+    constexpr int expectTokens =
+          42; // Expected number of tokens in src files used in this test.
 
     // A lexically valid file with lowerCase keywords should be successfully parsed with all
     // the keywords identified with the scanner in lowerCaseKeywords mode.

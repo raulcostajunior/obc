@@ -1,5 +1,7 @@
 #include "Parser.hpp"
 
-#include <utility>
+namespace obc {
 
-Parser::Parser(std::vector<Token>&& tokens) : m_tokens(std::move(tokens)) {}
+    Parser::Parser(std::vector<Token>&& tokens) : m_tokens(std::move(tokens)) {}
+
+} // namespace obc

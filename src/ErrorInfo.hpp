@@ -3,13 +3,16 @@
 
 #include <string>
 
-struct ErrorInfo {
-    int line = -1;   // -1 flags for a non-locatable error
-    int column = -1; // -1 flags for a non-locatable error
-    std::string msg;
-};
+namespace obc {
 
-std::ostream& operator<<(std::ostream&, const ErrorInfo&);
+    struct ErrorInfo {
+        int line = -1;   // -1 flags for a non-locatable error
+        int column = -1; // -1 flags for a non-locatable error
+        std::string msg;
+    };
 
+    std::ostream& operator<<(std::ostream& ostr, const ErrorInfo& errInf);
+
+} // namespace obc
 
 #endif // OBC_ERRORINFO_HPP
