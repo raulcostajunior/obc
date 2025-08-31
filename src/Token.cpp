@@ -116,7 +116,7 @@ namespace obc {
             // must be provided in all upper case to be recognized as a keyword.
             return keywordTypeFromLexeme(idLex);
         }
-        // The scanner is in all lowercase mode - if the lexeme is all lowercase, we pass its
+        // The scanner is in all-lowercase mode - if the lexeme is all lowercase, we pass its
         // uppercase form to the keyword matcher.
         std::string upperLex(idLex.size(), ' ');
         for (std::size_t i = 0; i < idLex.size(); i++) {

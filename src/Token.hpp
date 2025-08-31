@@ -42,11 +42,11 @@ namespace obc {
     };
 
     struct Token {
-        enum TokenType type;
+        TokenType type;
         std::string lexeme;
         int line;
 
-        [[nodiscard]] std::string typeString() const;
+        std::string typeString() const;
 
         /**
          * @brief For single-char tokens, returns the token type for a given character.
@@ -58,7 +58,7 @@ namespace obc {
          * @throw invalid_argument exception if the given character does not correspond to
          * a single-char token type known to Oberon-07.
          */
-        static enum TokenType typeFromChar(char chr);
+        static TokenType typeFromChar(char chr);
 
         /**
          * @brief Returns the token type of the keyword that corresponds to a given lexeme.
@@ -74,7 +74,7 @@ namespace obc {
          * @param lex the lexeme whose keyword token type should be returned.
          * @return the keyword token type corresponding to the lexeme.
          */
-        static enum TokenType keywordTypeFromLexeme(const std::string& lex);
+        static TokenType keywordTypeFromLexeme(const std::string& lex);
 
 
         /**
@@ -86,8 +86,8 @@ namespace obc {
          * @return the token type of identifier lexeme - the lexeme can be of a language keyword
          * or of an ordinary identifier.
          */
-        static enum TokenType typeFromIdentifierLexeme(bool lowerCaseKeywords,
-                                                       const std::string& idLex);
+        static TokenType typeFromIdentifierLexeme(bool lowerCaseKeywords,
+                                                  const std::string& idLex);
     };
 
     std::ostream& operator<<(std::ostream& out, const Token& token);
