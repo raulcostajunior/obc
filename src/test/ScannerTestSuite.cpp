@@ -8,10 +8,10 @@ using namespace obc;
 
 TEST(ScannerTests, TestEmptyFile) {
     // An empty file must have the EOM token and no errors.
-    const auto res = Scanner::scan("");
-    EXPECT_EQ(res.tokens.size(), 1);
-    EXPECT_EQ(res.tokens.at(res.tokens.size() - 1).type, TokenType::EOM);
-    EXPECT_EQ(res.errors.size(), 0);
+    const auto [tokens, errors] = Scanner::scan("");
+    EXPECT_EQ(tokens.size(), 1);
+    EXPECT_EQ(tokens.at(tokens.size() - 1).type, TokenType::EOM);
+    EXPECT_EQ(errors.size(), 0);
 }
 
 TEST(ScannerTests, TestLowerCaseKeywords) {
