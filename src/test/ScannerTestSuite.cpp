@@ -10,7 +10,7 @@ TEST(ScannerTests, TestEmptyFile) {
     // An empty file must have the EOM token and no errors.
     const auto res = Scanner::scan("");
     EXPECT_EQ(res.tokens.size(), 1);
-    EXPECT_EQ(res.tokens[res.tokens.size() - 1].type, TokenType::EOM);
+    EXPECT_EQ(res.tokens.at(res.tokens.size() - 1).type, TokenType::EOM);
     EXPECT_EQ(res.errors.size(), 0);
 }
 
