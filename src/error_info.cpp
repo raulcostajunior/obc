@@ -1,6 +1,8 @@
-#include "ErrorInfo.hpp"
+module;
 
 #include <iostream>
+
+module error_info;
 
 namespace obc {
 

@@ -1,11 +1,12 @@
-cmake_minimum_required(VERSION 3.24)
+cmake_minimum_required(VERSION 3.28)
 
 project(obc
         VERSION 1.0.0
         DESCRIPTION "An Oberon-07 to LLVM-IR compiler"
         LANGUAGES CXX)
 
-set(CMAKE_CXX_STANDARD 20) # Uses C++ 20 Designated Initializers feature
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS 1)
@@ -25,27 +26,24 @@ FetchContent_MakeAvailable(CLI11)
 FetchContent_MakeAvailable(GoogleTest)
 
 # The compiler library to be linked to the CLI and the unit tests
-add_library(obc_lib STATIC)
+add_library(obc_lib STATIC
+        src/error_info.cpp src/parser.cpp src/scanner.cpp src/token.cpp src/token_utils.cpp)
 target_sources(obc_lib PUBLIC
-        src/Token.cpp src/Scanner.cpp src/ErrorInfo.cpp src/TokenUtils.cpp
-        src/Parser.cpp
-        src/Compiler.cpp
         PUBLIC
-        FILE_SET HEADERS # FILE_SET is supported since cmake 3.23
-        BASE_DIRS ${PROJECT_SOURCE_DIR}/src
+        FILE_SET CXX_MODULES
         FILES
-        ${PROJECT_SOURCE_DIR}/src/Compiler.hpp
-        ${PROJECT_SOURCE_DIR}/src/ErrorInfo.hpp
-        ${PROJECT_SOURCE_DIR}/src/Parser.hpp
-        ${PROJECT_SOURCE_DIR}/src/Scanner.hpp
-        ${PROJECT_SOURCE_DIR}/src/Token.hpp
-        ${PROJECT_SOURCE_DIR}/src/TokenUtils.hpp
-        ${PROJECT_SOURCE_DIR}/src/Version.hpp)
+        ${PROJECT_SOURCE_DIR}/src/compiler.cppm
+        ${PROJECT_SOURCE_DIR}/src/error_info.cppm
+        ${PROJECT_SOURCE_DIR}/src/parser.cppm
+        ${PROJECT_SOURCE_DIR}/src/scanner.cppm
+        ${PROJECT_SOURCE_DIR}/src/token.cppm
+        ${PROJECT_SOURCE_DIR}/src/token_utils.cppm
+        ${PROJECT_SOURCE_DIR}/src/version.cppm)
 
 # The compiler CLI
-add_executable(obc
-        src/main.cpp)
+add_executable(obc src/main.cpp)
 target_link_libraries(obc PRIVATE obc_lib)
+
 target_include_directories(obc
         PRIVATE ${CLI11_SOURCE_DIR}/include)
 
@@ -58,7 +56,7 @@ target_link_libraries(scanner_test_suite PRIVATE GTest::gtest GTest::gtest_main 
 
 # To avoid a warning introduced by the new Apple linker shipped with XCode15.
 # Details at https://gitlab.kitware.com/cmake/cmake/-/issues/25297
-if (CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang" AND CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL "15.0")
+if ((CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang" OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang") AND CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL "15.0")
     target_link_options(scanner_test_suite PRIVATE LINKER:-no_warn_duplicate_libraries)
 endif ()
 

@@ -1,4 +1,10 @@
-#include "Parser.hpp"
+module;
+
+#include <vector>
+
+module parser;
+
+import token;
 
 namespace obc {
 

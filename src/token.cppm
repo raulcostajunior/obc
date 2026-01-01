@@ -1,8 +1,9 @@
-#ifndef TOKEN_HPP
-#define TOKEN_HPP
+module;
 
 #include <iostream>
 #include <string>
+
+export module token;
 
 // The following 4 pre-processor definitions come from "minwindef.h" (part of WIN SDK) and are
 // included when a toolchain based on the Microsoft C/C++ compiler is used (issue detected when
@@ -16,7 +17,7 @@
 
 namespace obc {
 
-    enum class TokenType : unsigned char {
+    export enum class TokenType : unsigned char {
         // clang-format off
 
         // Keywords
@@ -41,7 +42,7 @@ namespace obc {
         // clang-format on
     };
 
-    struct Token {
+    export struct Token {
         TokenType type;
         std::string lexeme;
         int line;
@@ -90,8 +91,6 @@ namespace obc {
                                                   const std::string& idLex);
     };
 
-    std::ostream& operator<<(std::ostream& out, const Token& token);
+    export std::ostream& operator<<(std::ostream& out, const Token& token);
 
 } // namespace obc
-
-#endif

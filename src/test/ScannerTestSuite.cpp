@@ -2,7 +2,8 @@
 
 #include <filesystem>
 
-#include "Scanner.hpp"
+import scanner;
+import token;
 
 using namespace obc;
 

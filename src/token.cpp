@@ -1,9 +1,11 @@
-#include "Token.hpp"
+module;
 
 #include <map>
 #include <sstream>
 #include <stdexcept>
 #include <unordered_map>
+
+module token;
 
 namespace obc {
 

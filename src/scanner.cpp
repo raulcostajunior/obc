@@ -1,12 +1,13 @@
-#include "Scanner.hpp"
+module;
 
 #include <array>
-#include <cstring>
 #include <fstream>
 #include <string_view>
 
-#include "ErrorInfo.hpp"
-#include "TokenUtils.hpp"
+module scanner;
+
+import token_utils;
+import error_info;
 
 namespace obc {
     // Size of the buffer for storing an errno corresponding message.

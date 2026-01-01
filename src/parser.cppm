@@ -1,13 +1,14 @@
-#ifndef PARSER_HPP
-#define PARSER_HPP
+module;
 
 #include <vector>
 
-#include "Token.hpp"
+export module parser;
+
+import token;
 
 namespace obc {
 
-    class Parser {
+    export class Parser {
        public:
         Parser(std::vector<Token> &&tokens);
 
@@ -16,5 +17,3 @@ namespace obc {
     };
 
 } // namespace obc
-
-#endif // PARSER_HPP

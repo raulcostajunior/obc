@@ -1,21 +1,22 @@
-#ifndef SCANNER_HPP
-#define SCANNER_HPP
+module;
 
 #include <vector>
 
-#include "ErrorInfo.hpp"
-#include "Token.hpp"
+export module scanner;
+
+import token;
+import error_info;
 
 namespace obc {
 
-    struct ScanResults {
+    export struct ScanResults {
         std::vector<Token> tokens;
         std::vector<ErrorInfo> errors;
     };
 
     struct ScanContext;
 
-    class Scanner {
+    export class Scanner {
        public:
         /**
          * @brief Scans a given source file, returning the list of tokens found in it.
@@ -178,4 +179,3 @@ namespace obc {
                                         char expectSecondChr, ScanContext& ctx);
     };
 } // namespace obc
-#endif

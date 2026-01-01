@@ -40,5 +40,24 @@ from <cite> [ArsTechnica](https://arstechnica.com/science/2023/05/as-many-as-fou
 
 ## Build
 
-To build **obc**, [CMake](https://cmake.org) version 3.20 or later is required.
+To build **obc**, [CMake](https://cmake.org) version 3.28 or later is required.
+
+### Caveats for using C++ Modules on macOS with AppleCLang and CLang:
+
+AppleClang does not come with support for C++ Modules yet - in particular, `clang-scan-deps` is not bundled with it. A
+solution is to install the upstream LLVM version of clang with homebrew and instruct CMake to use it. More details at
+https://stackoverflow.com/questions/79143467/using-c-20-modules-with-cmake-using-appleclang-16-with-macos.
+
+Due to an issue with the Homebrew LLVM formula, linking fails with undefined references to symbols that should be
+available in libc++.
+Full details at https://github.com/Homebrew/homebrew-core/issues/235411#issuecomment-3314586517. Fortunately, the
+solution described at
+https://github.com/Homebrew/homebrew-core/issues/235411#issuecomment-3314586517 by https://github.com/orkun1675 is
+effective.
+
+Due to the caveats above and the fact that the state of module support can vary between different C++ compilers, the
+migration to modules will be postponed and this branch will be frozen for now.
+
+
+
 
