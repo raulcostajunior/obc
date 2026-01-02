@@ -55,9 +55,12 @@ solution described at
 https://github.com/Homebrew/homebrew-core/issues/235411#issuecomment-3314586517 by https://github.com/orkun1675 is
 effective.
 
-Due to the caveats above and the fact that the state of module support can vary between different C++ compilers, the
-migration to modules will be postponed and this branch will be frozen for now.
+#### Successful compiler/Generator combinations:
 
+For Windows: MSVC 19.50 (Bundled in Visual Studio 2026) / Ninja (CMake emits warnings if the Visual Studio generator is used)
+For Linux: GCC 14.2.0 / Ninja (GCC 13.3 that comes with Ubuntu 24.04 complains about not being able to extract module dependencies, just like AppleClang)
+For macos: clang 21.1.0 / Ninja with the caveat about the bug in the Homebrew LLVM formula (to be solved either by a formula update or by installing LLVN in another way) 
 
-
+Next steps: use CMake presets to enforce the minimal compiler versions and the Ninja generator. 
+Setup a DeveloperContainer for the project
 
