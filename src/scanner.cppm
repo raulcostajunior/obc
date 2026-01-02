@@ -1,10 +1,9 @@
 module;
 
 #include <vector>
+#include <string>
 
 export module scanner;
-
-import <string>;
 
 import token;
 import error_info;

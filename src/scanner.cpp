@@ -1,6 +1,7 @@
 module;
 
 #include <array>
+#include <cstring>
 #include <fstream>
 #include <string_view>
 
