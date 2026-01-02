@@ -4,14 +4,16 @@ module;
 
 export module scanner;
 
+import <string>;
+
 import token;
 import error_info;
 
 namespace obc {
 
     export struct ScanResults {
-        std::vector<Token> tokens;
-        std::vector<ErrorInfo> errors;
+        std::vector<Token> tokens{};
+        std::vector<ErrorInfo> errors{};
     };
 
     struct ScanContext;
