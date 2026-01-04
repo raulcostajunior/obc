@@ -27,7 +27,7 @@ FetchContent_MakeAvailable(GoogleTest)
 
 # The compiler library to be linked to the CLI and the unit tests
 add_library(obc_lib STATIC
-        src/error_info.cpp src/parser.cpp src/scanner.cpp src/token.cpp src/token_utils.cpp)
+        src/error_info.cpp src/parser.cpp src/scanner.cpp src/token_utils.cpp)
 target_sources(obc_lib PUBLIC
         PUBLIC
         FILE_SET CXX_MODULES
@@ -36,7 +36,7 @@ target_sources(obc_lib PUBLIC
         ${PROJECT_SOURCE_DIR}/src/error_info.cppm
         ${PROJECT_SOURCE_DIR}/src/parser.cppm
         ${PROJECT_SOURCE_DIR}/src/scanner.cppm
-        ${PROJECT_SOURCE_DIR}/src/token.cppm
+        ${PROJECT_SOURCE_DIR}/src/scanner.token.cppm
         ${PROJECT_SOURCE_DIR}/src/token_utils.cppm
         ${PROJECT_SOURCE_DIR}/src/version.cppm)
 

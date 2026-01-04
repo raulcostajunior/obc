@@ -4,7 +4,7 @@ module;
 
 export module parser;
 
-import token;
+import scanner;
 
 namespace obc {
 

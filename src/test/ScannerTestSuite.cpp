@@ -3,7 +3,6 @@
 #include <filesystem>
 
 import scanner;
-import token;
 
 using namespace obc;
 
