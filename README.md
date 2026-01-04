@@ -15,18 +15,18 @@ is used.
 
 > Oberon-07 is one of the amazing programming languages created
 > by [Prof. Niklaus Wirth](https://people.inf.ethz.ch/wirth/), who unfortunately, passed away on
-> January 1st. 2024. A summary of the projects of Prof. Niklaus Wirth between 1962 and 1999 can be
+> January 1st. 2024. A summary of Prof. Niklaus Wirth's projects between 1962 and 1999 can be
 > found [here](https://people.inf.ethz.ch/wirth/projects.html).
 
 ## On Oberon
 
 #### Oberon+
 
-**obc** is only my first take on writing a compiler and most probably nothing too useful will come out of it.
+**obc** is only my first take on writing a compiler and, most probably, nothing too useful will come out of it.
 
 To get really serious about Oberon and its future, take a GOOD look at [Oberon+](https://oberon-lang.github.io/).
 
-#### Oberon - the Uranus' moon, not the language - in the news:
+#### Oberon – the Uranus' moon, not the language – in the news:
 
 > "This has led NASA scientists to conclude that four of Uranus’ largest moons—Ariel, Umbriel, Titania, and **Oberon**
 > —probably contain water oceans below their icy crusts. These oceans are likely dozens of kilometers deep and probably
@@ -40,5 +40,31 @@ from <cite> [ArsTechnica](https://arstechnica.com/science/2023/05/as-many-as-fou
 
 ## Build
 
-To build **obc**, [CMake](https://cmake.org) version 3.20 or later is required.
+To build **obc**, [CMake](https://cmake.org) version 3.28 or later is required.
+
+### Caveats for using C++ Modules on macOS with AppleCLang and CLang:
+
+    The caveats are temporary: the compiler will use the LLVM 18+ infra-structure as both the backend and the building
+    toolchain. None of the caveats described below will be pertinent anymore once the `clang` + `libc++` bundled in the
+    LLVM installation are used to build the compiler itself.
+
+    To ease the initial setup, a developer container with all the project requirements is planned.
+
+AppleClang does not come with support for C++ Modules yet - in particular, `clang-scan-deps` is not bundled with it. A
+solution is to install the upstream LLVM version of clang with homebrew and instruct CMake to use it. More details at
+https://stackoverflow.com/questions/79143467/using-c-20-modules-with-cmake-using-appleclang-16-with-macos.
+
+Due to an issue with the Homebrew LLVM formula, linking fails with undefined references to symbols that should be
+available in libc++.
+Full details at https://github.com/Homebrew/homebrew-core/issues/235411#issuecomment-3314586517. Fortunately, the
+solution described at
+https://github.com/Homebrew/homebrew-core/issues/235411#issuecomment-3314586517 by https://github.com/orkun1675 is
+effective.
+
+#### Successful compiler/Generator combinations:
+
+For Windows: MSVC 19.50 (Bundled in Visual Studio 2026) / Ninja (CMake emits warnings if the Visual Studio generator is used)
+For Linux: GCC 14.2.0 / Ninja (GCC 13.3 that comes with Ubuntu 24.04 complains about not being able to extract module dependencies, just like AppleClang)
+For macOS: clang 21.1.0 / Ninja with the caveat about the bug in the Homebrew LLVM formula (to be solved either by a formula update or by installing LLVN in another way) 
+
 

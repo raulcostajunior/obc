@@ -1,9 +1,10 @@
-#ifndef OBC_COMPILER_HPP
-#define OBC_COMPILER_HPP
+module;
 
 #include <vector>
 
-#include "ErrorInfo.hpp"
+export module compiler;
+
+import error_info;
 
 namespace obc {
     struct CompilationResults {
@@ -21,5 +22,3 @@ namespace obc {
     };
 
 } // namespace obc
-
-#endif // OBC_COMPILER_HPP

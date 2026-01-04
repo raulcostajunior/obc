@@ -1,12 +1,15 @@
-#include "Scanner.hpp"
+module;
 
 #include <array>
 #include <cstring>
 #include <fstream>
+#include <string>
 #include <string_view>
 
-#include "ErrorInfo.hpp"
-#include "TokenUtils.hpp"
+module scanner;
+
+import :token_utils;
+import error_info;
 
 namespace obc {
     // Size of the buffer for storing an errno corresponding message.
@@ -26,7 +29,7 @@ namespace obc {
         std::string_view srcInput;
         // Use lowercase keyword?
         bool lowerCaseKeywords;
-        // Should currColumn be ignored? (Look in currColumn description for more details)
+        // Should currColumn be ignored? (Look in the currColumn description for more details)
         bool ignoreCurrColumn;
         // Index, in the src input, of the character being scanned.
         unsigned long lexPos{0};
@@ -129,7 +132,7 @@ namespace obc {
     }
 
     char Scanner::nextChr(ScanContext& ctx) {
-        const char chr = ctx.srcInput[ctx.lexPos];
+        const char chr = ctx.srcInput.at(ctx.lexPos);
         ctx.lexPos++;
         return chr;
     }
@@ -138,11 +141,11 @@ namespace obc {
         if (allScanned(ctx)) {
             return '\0';
         }
-        return ctx.srcInput[ctx.lexPos];
+        return ctx.srcInput.at(ctx.lexPos);
     }
 
     bool Scanner::nextChrMatch(ScanContext& ctx, const char expChr) {
-        if (allScanned(ctx) || ctx.srcInput[ctx.lexPos] != expChr) {
+        if (allScanned(ctx) || ctx.srcInput.at(ctx.lexPos) != expChr) {
             return false;
         }
         ctx.lexPos++;
@@ -161,13 +164,13 @@ namespace obc {
             case '+':
             case ']':
             case ')':
-                // A close parenthesis matched in this context won't be ont of the comments
-                // terminating characters. Such right parenthesis will be consumed by th comment
-                // consuming loop.
+                // A close parenthesis matched in this context won't be one of the comments
+                // terminating characters. Such a right parenthesis will be consumed by the
+                // comment-consuming loop.
             case ';':
             case '*':
                 // A star matched in this context won't be one of the comments terminating
-                // characters. Such stars will be consumed by the comment consuming loop.
+                // characters. Such stars will be consumed by the comment-consuming loop.
             case '~':
             case '{':
             case '}':
@@ -198,7 +201,7 @@ namespace obc {
                 handleTwoCharTokens(chr, TokenType::LABEL_RANGE, '.', ctx);
                 break;
 
-            // Handling of whitespace characters (except newline) - simply consumed. Blanks are
+            // Handling of whitespace characters (except newlines) - simply consumed. Blanks are
             // not ignored when inside strings.
             case ' ':
             case '\r':
@@ -206,8 +209,8 @@ namespace obc {
                 ctx.currColumn++;
                 break;
 
-            // Handling of new lines (outside comments; new lines in the middle of comments are
-            // handled by the comment handler)
+            // Handling of new lines (outside comments; the comment handler handles new lines in
+            // the middle of comments)
             case '\n':
                 ctx.currLine++;
                 ctx.currColumn = 1;
@@ -292,7 +295,7 @@ namespace obc {
             // A decimal separator indicates that a REAL literal is being scanned.
             if (!allBase10Digits(lex)) {
                 // Oberon only allows integer numbers to be represented in hex. Real numbers
-                // must be always expressed in base 10.
+                // must always be expressed in base 10.
                 ctx.results.errors.emplace_back(
                       ErrorInfo{.line = ctx.currLine,
                                 .column = ctx.getCurrColumn(),
@@ -411,7 +414,7 @@ namespace obc {
                     ctx.lexPos++;
                     ctx.currColumn++;
                     endOfCommentFound = true;
-                    break; // Break-out of the comment consuming loop
+                    break; // Break-out of the comment-consuming loop
                 }
             }
             ctx.lexPos++;

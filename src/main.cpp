@@ -10,9 +10,11 @@
 // Details about the IWYU pragma below can be found at
 // https://clangd.llvm.org/guides/include-cleaner#unused-include-warning
 #include "CLI/CLI.hpp" // IWYU pragma: keep
-#include "Parser.hpp"
-#include "Scanner.hpp"
-#include "Version.hpp"
+
+import error_info;
+import parser;
+import scanner;
+import version;
 
 // NOLINTBEGIN(bugprone-exception-escape)
 int main(int argc, char **argv) {

@@ -1,7 +1,8 @@
-#ifndef OBC_TOKEN_UTILS_HPP
-#define OBC_TOKEN_UTILS_HPP
+module;
 
 #include <string>
+
+export module token_utils;
 
 namespace obc {
 
@@ -14,7 +15,7 @@ namespace obc {
      * @param chr the character to be verified
      * @return true if chr is an hexadecimal digit; false otherwise.
      */
-    bool isHexDigit(char chr);
+    export bool isHexDigit(char chr);
 
     /**
      * @brief Returns whether a given string is composed exclusively of base 10 digits.
@@ -22,8 +23,6 @@ namespace obc {
      * @param str the string to be verified
      * @return true if all characters in the string are base 10 digits; false otherwise.
      */
-    bool allBase10Digits(const std::string& str);
+    export bool allBase10Digits(const std::string& str);
 
 } // namespace obc
-
-#endif // OBC_TOKEN_UTILS_HPP
