@@ -12,7 +12,6 @@
 #include "CLI/CLI.hpp" // IWYU pragma: keep
 
 import error_info;
-import token;
 import parser;
 import scanner;
 import version;
