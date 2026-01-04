@@ -6,7 +6,7 @@ import scanner;
 
 using namespace obc;
 
-TEST(ScannerTests, TestEmptyFile) {
+TEST(ScannerTests, TestEmptyFile) { // NOLINT(*-throwing-static-initialization, *-owning-memory)
     // An empty file must have the EOM token and no errors.
     const auto [tokens, errors] = Scanner::scan("");
     EXPECT_EQ(tokens.size(), 1);
@@ -14,7 +14,7 @@ TEST(ScannerTests, TestEmptyFile) {
     EXPECT_EQ(errors.size(), 0);
 }
 
-TEST(ScannerTests, TestLowerCaseKeywords) {
+TEST(ScannerTests, TestLowerCaseKeywords) { // NOLINT(*-throwing-static-initialization, *-owning-memory, *-function-cognitive-complexity)
     const std::string lowerCaseSrc{
           R"(
 module LowerCaseModule;
@@ -113,7 +113,7 @@ END LowerCaseModule.
     EXPECT_EQ(res.tokens.at(41).type, TokenType::EOM);
 }
 
-TEST(ScannerTests, TestModuleWithUnfinishedComment) {
+TEST(ScannerTests, TestModuleWithUnfinishedComment) { // NOLINT(*-throwing-static-initialization, *-owning-memory, *-function-cognitive-complexity)
     // A source file that finishes with an unfinished comment must trigger an error.
     const std::string unfinishedCommentMsg{"Source module ends in an unfinished comment."};
 
@@ -137,7 +137,7 @@ comment and should be rejected.
     EXPECT_EQ(errors.at(0).msg, unfinishedCommentMsg);
 }
 
-TEST(ScannerTests, TestModuleWithInvalidSymbol) {
+TEST(ScannerTests, TestModuleWithInvalidSymbol) { // NOLINT(*-throwing-static-initialization, *-owning-memory, *-function-cognitive-complexity)
     // A source file with an invalid terminal symbol must trigger a lexical error.
     // The error must not stop the scanner, which must continue finding tokens
     // until the end of the module.
@@ -168,13 +168,13 @@ END.
 
     ASSERT_EQ(errors.size(), 1);
     // The R-String for the source starts with a new line, so the MODULE line
-    // is already line 2 in the source - that's the reason for line with the
+    // is already line 2 in the source - that's the reason for the line with the
     // invalid symbol being line 8.
     EXPECT_EQ(errors.at(0).line, 8);
     EXPECT_EQ(errors.at(0).msg, std::string{"Unexpected character, '?' found."});
 }
 
-TEST(ScannerTests, TestModuleWithStringLiteral) {
+TEST(ScannerTests, TestModuleWithStringLiteral) { // NOLINT(*-throwing-static-initialization, *-owning-memory, *-function-cognitive-complexity)
     namespace fs = std::filesystem;
     const std::string src_file_path{
           fs::path(__FILE__).parent_path().append("oberon_src").append("Hello.Mod").string()};
@@ -192,7 +192,7 @@ TEST(ScannerTests, TestModuleWithStringLiteral) {
     EXPECT_EQ(tokens.at(tokens.size() - 1).type, TokenType::EOM);
 }
 
-TEST(ScannerTests, TestModuleWithNumericLiterals) {
+TEST(ScannerTests, TestModuleWithNumericLiterals) { // NOLINT(*-throwing-static-initialization, *-owning-memory, *-function-cognitive-complexity)
     namespace fs = std::filesystem;
     const std::string src_file_path{fs::path(__FILE__)
                                           .parent_path()
@@ -228,7 +228,7 @@ TEST(ScannerTests, TestModuleWithNumericLiterals) {
     EXPECT_EQ(tokens.at(26).type, TokenType::EQUAL);
     EXPECT_EQ(tokens.at(27).type, TokenType::INTEGER);
     EXPECT_EQ(tokens.at(27).lexeme, "87AH");
-    // 2AX must be recognized as a valid one char string. 2A is 42 in base 10 and is the code
+    // 2AX must be recognized as a valid one-char string. 2A is 42 in base 10 and is the code
     // for the '*'.
     EXPECT_EQ(tokens.at(36).type, TokenType::STRING);
     EXPECT_EQ(tokens.at(36).lexeme, "*");
