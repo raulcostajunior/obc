@@ -164,13 +164,13 @@ namespace obc {
             case '+':
             case ']':
             case ')':
-                // A close parenthesis matched in this context won't be ont of the comments
-                // terminating characters. Such right parenthesis will be consumed by th comment
-                // consuming loop.
+                // A close parenthesis matched in this context won't be one of the comments
+                // terminating characters. Such a right parenthesis will be consumed by the
+                // comment-consuming loop.
             case ';':
             case '*':
                 // A star matched in this context won't be one of the comments terminating
-                // characters. Such stars will be consumed by the comment consuming loop.
+                // characters. Such stars will be consumed by the comment-consuming loop.
             case '~':
             case '{':
             case '}':
