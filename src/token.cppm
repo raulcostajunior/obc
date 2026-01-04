@@ -5,16 +5,6 @@ module;
 
 export module token;
 
-// The following 4 pre-processor definitions come from "minwindef.h" (part of WIN SDK) and are
-// included when a toolchain based on the Microsoft C/C++ compiler is used (issue detected when
-// MSVC 19.39.33523.0 was used, but most probably happens with other versions of the compiler
-// as well). They have to be undefined before the declaration of the TokenType enum to prevent
-// the pre-processor from turning them into invalid source.
-#undef CONST
-#undef TRUE
-#undef FALSE
-#undef IN
-
 namespace obc {
 
     export enum class TokenType : unsigned char {
