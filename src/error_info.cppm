@@ -12,6 +12,6 @@ namespace obc {
         std::string msg;
     };
 
-    export std::ostream& operator<<(std::ostream& ostr, const ErrorInfo& errInf);
+    export std::ostream& operator<<(std::ostream& ostream, const ErrorInfo& errInf);
 
 } // namespace obc

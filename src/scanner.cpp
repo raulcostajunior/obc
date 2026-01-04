@@ -8,7 +8,7 @@ module;
 
 module scanner;
 
-import token_utils;
+import :token_utils;
 import error_info;
 
 namespace obc {

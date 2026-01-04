@@ -3,7 +3,7 @@ module;
 #include <cctype>
 #include <string>
 
-module token_utils;
+module scanner:token_utils;
 
 namespace obc {
 

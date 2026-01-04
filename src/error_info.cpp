@@ -6,15 +6,15 @@ module error_info;
 
 namespace obc {
 
-    std::ostream& operator<<(std::ostream& ostr, const ErrorInfo& errInf) {
+    std::ostream& operator<<(std::ostream& ostream, const ErrorInfo& errInf) {
         if (errInf.line < 0 && errInf.column < 0) {
-            ostr << errInf.msg;
+            ostream << errInf.msg;
         } else if (errInf.column < 0) {
-            ostr << "(lin " << errInf.line << "): " << errInf.msg;
+            ostream << "(lin " << errInf.line << "): " << errInf.msg;
         } else {
-            ostr << "(lin " << errInf.line << ", col " << errInf.column << "): " << errInf.msg;
+            ostream << "(lin " << errInf.line << ", col " << errInf.column << "): " << errInf.msg;
         }
-        return ostr;
+        return ostream;
     }
 
 } // namespace obc
