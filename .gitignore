@@ -40,6 +40,7 @@ compile_commands.json
 CTestTestfile.cmake
 CMakeUserPresets.json
 build/
+build-*/
 build_debug/
 build-debug/
 build_release/
@@ -62,7 +63,7 @@ checks.json
 # Qt Creator specific
 .qtcreator
 
-# zed specific 
+# zed specific
 .zed
 
 # clangd specific
