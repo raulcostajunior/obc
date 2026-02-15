@@ -62,8 +62,8 @@ checks.json
 # Qt Creator specific
 .qtcreator
 
-# Fleet specific
-.fleet
+# zed specific 
+.zed
 
 # clangd specific
 .clangd/
