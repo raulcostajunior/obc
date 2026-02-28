@@ -15,11 +15,10 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS 1)
 include(FetchContent)
 
 FetchContent_Declare(CLI11
-        GIT_REPOSITORY https://github.com/CLIUtils/CLI11
-        GIT_TAG d9473a486b1ffb9a2949a937f3895c7c055afa59)
+        URL https://github.com/CLIUtils/CLI11/archive/d9473a486b1ffb9a2949a937f3895c7c055afa59.zip)
+
 FetchContent_Declare(GoogleTest
-        GIT_REPOSITORY https://github.com/google/googletest
-        GIT_TAG v1.15.2
+        URL https://github.com/google/googletest/archive/refs/tags/v1.15.2.zip
         FIND_PACKAGE_ARGS 1.15.2...1.16.0 NAMES GTest)
 
 FetchContent_MakeAvailable(CLI11)
