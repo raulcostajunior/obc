@@ -53,7 +53,7 @@ To ease the initial setup, a developer container with all the project requiremen
 ### Proper IDE Module Support:
 
 `clion 2025.3.1` and `Visual Studio 2026` have been verified to provide proper C++ module support. Unfortunately, `Visual Studio Code` with `C++ extension 1.30.x` provided by
-Microsoft and `QtCreator 18.0.x` currently (as of March 2026) don't support modules yet.
+Microsoft and `QtCreator 18.0.x`, as of March 2026, don't yet support modules.
 
 ### C++ Modules on macOS with AppleCLang:
 
