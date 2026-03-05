@@ -18,8 +18,8 @@ FetchContent_Declare(CLI11
         URL https://github.com/CLIUtils/CLI11/archive/d9473a486b1ffb9a2949a937f3895c7c055afa59.zip)
 
 FetchContent_Declare(GoogleTest
-        URL https://github.com/google/googletest/archive/refs/tags/v1.15.2.zip
-        FIND_PACKAGE_ARGS 1.15.2...1.16.0 NAMES GTest)
+        URL https://github.com/google/googletest/archive/refs/tags/v1.17.0.zip
+        FIND_PACKAGE_ARGS 1.16.0...1.17.0 NAMES GTest)
 
 FetchContent_MakeAvailable(CLI11)
 FetchContent_MakeAvailable(GoogleTest)
@@ -55,8 +55,8 @@ target_link_libraries(scanner_test_suite PRIVATE GTest::gtest GTest::gtest_main 
 
 # To avoid a warning introduced by the new Apple linker shipped with XCode15.
 # Details at https://gitlab.kitware.com/cmake/cmake/-/issues/25297
-if ((CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang" OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang") AND CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL "15.0")
-    target_link_options(scanner_test_suite PRIVATE LINKER:-no_warn_duplicate_libraries)
-endif ()
+#if ((CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang" OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang") AND CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL "15.0")
+#    target_link_options(scanner_test_suite PRIVATE LINKER:-no_warn_duplicate_libraries)
+#endif ()
 
 gtest_discover_tests(scanner_test_suite)
