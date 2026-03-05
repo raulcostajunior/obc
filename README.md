@@ -44,27 +44,30 @@ To build **obc**, [CMake](https://cmake.org) version 3.28 or later is required.
 
 ### Caveats for using C++ Modules on macOS with AppleCLang and CLang:
 
-    The caveats are temporary: the compiler will use the LLVM 18+ infra-structure as both the backend and the building
-    toolchain. None of the caveats described below will be pertinent anymore once the `clang` + `libc++` bundled in the
-    LLVM installation are used to build the compiler itself.
-
     To ease the initial setup, a developer container with all the project requirements is planned.
 
 AppleClang does not come with support for C++ Modules yet - in particular, `clang-scan-deps` is not bundled with it. A
 solution is to install the upstream LLVM version of clang with homebrew and instruct CMake to use it. More details at
 https://stackoverflow.com/questions/79143467/using-c-20-modules-with-cmake-using-appleclang-16-with-macos.
 
-Due to an issue with the Homebrew LLVM formula, linking fails with undefined references to symbols that should be
+~~Due to an issue with the Homebrew LLVM formula, linking fails with undefined references to symbols that should be
 available in libc++.
 Full details at https://github.com/Homebrew/homebrew-core/issues/235411#issuecomment-3314586517. Fortunately, the
 solution described at
 https://github.com/Homebrew/homebrew-core/issues/235411#issuecomment-3314586517 by https://github.com/orkun1675 is
-effective.
+effective.~~
+The Homebrew LLVM formula for LLVM 22.1.0 doesn't present the issue. Upgrading LLVM to version 22.1.0 or newer should
+fix it.
 
 #### Successful compiler/Generator combinations:
 
 For Windows: MSVC 19.50 (Bundled in Visual Studio 2026) / Ninja (CMake emits warnings if the Visual Studio generator is used)
 For Linux: GCC 14.2.0 / Ninja (GCC 13.3 that comes with Ubuntu 24.04 complains about not being able to extract module dependencies, just like AppleClang)
-For macOS: clang 21.1.0 / Ninja with the caveat about the bug in the Homebrew LLVM formula (to be solved either by a formula update or by installing LLVN in another way) 
+For macOS: clang 21.1.0 / Ninja with the caveat about the bug in the Homebrew LLVM formula (to be solved either by a formula update or by installing LLVN in another way)
+
+#### IDE Module Support:
+
+clion with version 2025.*.* and Visual Studio 2022 provide proper C++ module support. Unfortunately, Visual Studio Code with the C++ extension provided by
+Microsoft and QtCreator currently (as of March 2026) doesn't support modules.
 
 
