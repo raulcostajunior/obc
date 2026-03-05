@@ -71,11 +71,3 @@ checks.json
 .cache
 .clangd.swp
 Footer
-
-# conan specific
-conan.lock
-conanbuildinfo.txt
-conaninfo.txt
-FindCLI11.cmake
-FindGTest.cmake
-graph_info.json
