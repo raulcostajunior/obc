@@ -38,27 +38,26 @@ To get really serious about Oberon and its future, take a GOOD look at [Oberon+]
 >
 from <cite> [ArsTechnica](https://arstechnica.com/science/2023/05/as-many-as-four-moons-around-uranus-may-have-oceans-below-the-surface/). </cite>
 
-## Build
+## Building
 
-To build **obc**, [CMake](https://cmake.org) version 3.28 or later is required.
+To build **obc**, [CMake](https://cmake.org) version 3.28 or later is required. 
 
-### Caveats for using C++ Modules on macOS with AppleCLang and CLang:
+To ease the initial setup, a developer container with all the project requirements is planned and should come soon.
 
-    To ease the initial setup, a developer container with all the project requirements is planned.
-
-`AppleClang` (as of version `17.0.0`) does not come with support for C++ Modules yet. In particular, `clang-scan-deps` is not bundled with it. A
-solution is to install the upstream LLVM version of clang with homebrew and instruct CMake to use it. More details at
-https://stackoverflow.com/questions/79143467/using-c-20-modules-with-cmake-using-appleclang-16-with-macos.
-
-#### Successful compiler/Generator combinations:
+### Successful compiler/Generator combinations:
 
 - `Windows`: `MSVC 19.50` (Bundled in Visual Studio 2026) / `Ninja` (CMake emits warnings if the Visual Studio generator is used)
 - `Linux`: `GCC 14.2.0` / `Ninja` (GCC 13.3 that comes with Ubuntu 24.04 complains about not being able to extract module dependencies, just like AppleClang)
 - `macOS`: `clang 22.1.0` / `Ninja` 
 
-#### Proper IDE Module Support:
+### Proper IDE Module Support:
 
 `clion 2025.3.1` and `Visual Studio 2026` have been verified to provide proper C++ module support. Unfortunately, `Visual Studio Code` with `C++ extension 1.30.x` provided by
 Microsoft and `QtCreator 18.0.x` currently (as of March 2026) don't support modules yet.
 
+### C++ Modules on macOS with AppleCLang:
+
+`AppleClang` (as of version `17.0.0`) does not yet support C++ Modules. In particular, `clang-scan-deps` is not bundled with it. A
+solution is to install the upstream `LLVM` version of `clang` with `homebrew` and instruct `CMake` to use it. More details at
+https://stackoverflow.com/questions/79143467/using-c-20-modules-with-cmake-using-appleclang-16-with-macos.
 
