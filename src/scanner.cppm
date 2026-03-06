@@ -60,8 +60,8 @@ namespace obc {
          * @brief Returns whether the whole src input has been already scanned or not.
          *
          * @param ctx  the context of the ongoing scan operation.
-         * @return true all the characters from the src input have already been scanned.
-         * @return false there is at least one more character from the src input to be scanned.
+         * @return true: all the characters from the src input have already been scanned.
+         * @return false: there is at least one more character from the src input to be scanned.
          */
         static bool allScanned(const ScanContext& ctx);
 
@@ -78,7 +78,7 @@ namespace obc {
          * the scan.
          *
          * @param ctx the context of the ongoing scan operation.
-         * @return the next character in the source being scanned. If the end of the input has
+         * @return The next character in the source being scanned. If the end of the input has
          * been reached, it returns '\0'.
          */
         static char nextChrNoAdvance(const ScanContext& ctx);
@@ -109,7 +109,7 @@ namespace obc {
          * @brief Consumes the scanning input until an end of string character (the double
          * quotes) is found.
          *
-         * @attention this internal method must be called only when the scanner knows that is in
+         * @attention This internal method must be called only when the scanner knows that is in
          * a string literal - after the initial double quotes, but before the final double
          * quotes. A string literal in Oberon must be on a single line - an end of line before the
          * string's closing double quotes triggers an error.
