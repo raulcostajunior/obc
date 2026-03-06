@@ -8,7 +8,7 @@ module scanner:token_utils;
 namespace obc {
 
     /**
-    * @brief Returns whether a given char is an hexadecimal digit or not.
+    * @brief Returns whether a given char is a hexadecimal digit or not.
     *
     * @note Oberon's grammar specifies only uppercase 'A' to 'F' as valid hexadecimal
     * digits. We stick to the specification in here.
