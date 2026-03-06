@@ -53,10 +53,11 @@ enable_testing()
 add_executable(scanner_test_suite src/test/ScannerTestSuite.cpp)
 target_link_libraries(scanner_test_suite PRIVATE GTest::gtest GTest::gtest_main PRIVATE obc_lib)
 
-# To avoid a warning introduced by the new Apple linker shipped with XCode15.
+# To avoid a warning introduced by the new Apple linker shipped initially with XCode15.
+# The warning reads: "ld: warning: ignoring duplicate libraries: 'lib/libgtest.a'"
 # Details at https://gitlab.kitware.com/cmake/cmake/-/issues/25297
-#if ((CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang" OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang") AND CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL "15.0")
-#    target_link_options(scanner_test_suite PRIVATE LINKER:-no_warn_duplicate_libraries)
-#endif ()
+if (APPLE)
+    target_link_options(scanner_test_suite PRIVATE LINKER:-no_warn_duplicate_libraries)
+endif ()
 
 gtest_discover_tests(scanner_test_suite)
