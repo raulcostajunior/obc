@@ -35,8 +35,8 @@ target_sources(obc_lib PUBLIC
         ${PROJECT_SOURCE_DIR}/src/error_info.cppm
         ${PROJECT_SOURCE_DIR}/src/parser.cppm
         ${PROJECT_SOURCE_DIR}/src/scanner.cppm
-        ${PROJECT_SOURCE_DIR}/src/scanner.token.cppm  # module partition interface with implementation inline
-        ${PROJECT_SOURCE_DIR}/src/scanner.token_utils.cpp  # internal module partition implementation
+        ${PROJECT_SOURCE_DIR}/src/scanner.token.cppm  # module partition interface unit with implementation inline
+        ${PROJECT_SOURCE_DIR}/src/scanner.token_utils.cpp  # internal module partition unit
         ${PROJECT_SOURCE_DIR}/src/version.cppm)
 
 # The compiler CLI
