@@ -1,6 +1,5 @@
 module;
 
-#include <cctype>
 #include <string>
 
 module scanner:token_utils;
