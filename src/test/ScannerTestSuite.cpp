@@ -2,7 +2,7 @@
 
 #include <filesystem>
 
-import scanner;
+import obc.scanner;
 
 using namespace obc;
 

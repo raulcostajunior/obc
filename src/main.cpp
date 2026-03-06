@@ -11,10 +11,10 @@
 // https://clangd.llvm.org/guides/include-cleaner#unused-include-warning
 #include "CLI/CLI.hpp" // IWYU pragma: keep
 
-import error_info;
-import parser;
-import scanner;
-import version;
+import obc.error_info;
+import obc.parser;
+import obc.scanner;
+import obc.version;
 
 // NOLINTBEGIN(bugprone-exception-escape)
 int main(const int argc, char **argv) {

@@ -7,7 +7,7 @@ module;
 #include <stdexcept>
 #include <unordered_map>
 
-export module scanner:token;
+export module obc.scanner:token;
 
 namespace obc {
 
@@ -58,11 +58,11 @@ namespace obc {
         /**
          * @brief Returns the token type of the keyword that corresponds to a given lexeme.
          *
-         * @note internally this method works with case-sensitive comparisons and the input
+         * @note Internally, this method works with case-sensitive comparisons and the input
          * lexeme must be all upper-case as this is how the Oberon language specifies its
          * keywords. Any desired support for lowercase (or mixed case) keywords must be provided
          * by the callers of this method. For example, the caller can (and should) convert the
-         * lexeme to upper-case before calling this method. Any lexeme not recognized as keyword
+         * lexeme to upper-case before calling this method. Any lexeme not recognized as keywords
          * will be considered an identifier - the caller must thus be sure that the lexeme
          * doesn't match any non-keyword token at the time it calls this method.
          *
@@ -73,7 +73,7 @@ namespace obc {
 
 
         /**
-         * @brief Gets the token type of given identifier lexeme.
+         * @brief Gets the token type of the given identifier lexeme.
          *
          * @param lowerCaseKeywords should assume lowercase keywords?
          * @param idLex the identifier lexeme whose token type should be determined.

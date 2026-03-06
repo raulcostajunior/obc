@@ -3,7 +3,7 @@ module;
 #include <sstream>
 #include <string>
 
-export module version;
+export module obc.version;
 
 namespace obc {
     export constexpr int OBC_VERSION_MAJOR{0};

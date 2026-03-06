@@ -2,9 +2,9 @@ module;
 
 #include <vector>
 
-module parser;
+module obc.parser;
 
-import scanner;
+import obc.scanner;
 
 namespace obc {
 

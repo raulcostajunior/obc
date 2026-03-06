@@ -3,16 +3,16 @@ module;
 #include <vector>
 #include <string>
 
-export module scanner;
+export module obc.scanner;
 
 export import :token;
-import error_info;
+import obc.error_info;
 
 namespace obc {
 
     export struct ScanResults {
         std::vector<Token> tokens;
-        std::vector<ErrorInfo> errors;
+        std::vector<ErrorInfo> errors{};
     };
 
     struct ScanContext;

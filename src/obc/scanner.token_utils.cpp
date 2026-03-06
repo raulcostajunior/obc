@@ -2,7 +2,7 @@ module;
 
 #include <string>
 
-module scanner:token_utils;
+module obc.scanner:token_utils;
 
 namespace obc {
 

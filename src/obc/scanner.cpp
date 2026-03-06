@@ -5,10 +5,10 @@ module;
 #include <string>
 #include <string_view>
 
-module scanner;
+module obc.scanner;
 
 import :token_utils;
-import error_info;
+import obc.error_info;
 
 namespace obc {
     // Size of the buffer for storing an errno corresponding message.

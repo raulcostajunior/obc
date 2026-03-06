@@ -2,13 +2,13 @@ module;
 
 #include <vector>
 
-export module compiler;
+export module obc.compiler;
 
-import error_info;
+import obc.error_info;
 
 namespace obc {
     struct CompilationResults {
-        std::vector<ErrorInfo> errors;
+        std::vector<ErrorInfo> errors{};
         // TODO: Add data structure representing the generated WASM module
     };
 

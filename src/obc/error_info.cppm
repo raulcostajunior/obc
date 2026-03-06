@@ -1,12 +1,19 @@
 module;
 
 #include <iostream>
+#include <string>
 
-module error_info;
+export module obc.error_info;
 
 namespace obc {
 
-    std::ostream& operator<<(std::ostream& ostream, const ErrorInfo& errInf) {
+    export struct ErrorInfo {
+        int line = -1;   // -1 flags for a non-locatable error
+        int column = -1; // -1 flags for a non-locatable error
+        std::string msg;
+    };
+
+    export std::ostream& operator<<(std::ostream& ostream, const ErrorInfo& errInf) {
         if (errInf.line < 0 && errInf.column < 0) {
             ostream << errInf.msg;
         } else if (errInf.column < 0) {
@@ -18,3 +25,5 @@ namespace obc {
     }
 
 } // namespace obc
+
+
