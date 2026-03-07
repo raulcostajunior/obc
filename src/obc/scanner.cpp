@@ -3,6 +3,7 @@ module;
 #include <array>
 #include <fstream>
 #include <string>
+#include <cstring>
 #include <string_view>
 
 module obc.scanner;
