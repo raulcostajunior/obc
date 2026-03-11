@@ -26,7 +26,7 @@ FetchContent_MakeAvailable(GoogleTest)
 
 # The compiler library to be linked to the CLI and the unit tests
 add_library(obc_lib STATIC
-        src/obc/parser.cpp src/obc/scanner.cpp)
+        src/obc/parser.cpp src/obc/scanner/scanner.cpp)
 target_sources(obc_lib PUBLIC
         PUBLIC
         FILE_SET CXX_MODULES
@@ -34,9 +34,9 @@ target_sources(obc_lib PUBLIC
         src/obc/compiler.cppm
         src/obc/error_info.cppm
         src/obc/parser.cppm
-        src/obc/scanner.cppm
-        src/obc/scanner.token.cppm  # module partition interface unit with implementation inline
-        src/obc/scanner.token_utils.cpp  # internal module partition unit
+        src/obc/scanner/scanner.cppm
+        src/obc/scanner/token.cppm  # module partition interface unit with implementation inline
+        src/obc/scanner/token_utils.cpp  # internal module partition unit
         src/obc/version.cppm)
 
 # The compiler CLI

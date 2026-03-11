@@ -12,7 +12,7 @@ namespace obc {
 
     export struct ScanResults {
         std::vector<Token> tokens;
-        std::vector<ErrorInfo> errors{};
+        std::vector<ErrorInfo> errors;
     };
 
     struct ScanContext;
