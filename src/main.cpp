@@ -4,12 +4,11 @@
  * The Oberon-07 programming language is described in
  * https://people.inf.ethz.ch/wirth/Oberon/Oberon07.Report.pdf
  */
+
 #include <iostream>
 #include <string>
 
-// Details about the IWYU pragma below can be found at
-// https://clangd.llvm.org/guides/include-cleaner#unused-include-warning
-#include "CLI/CLI.hpp" // IWYU pragma: keep
+#include "CLI/CLI.hpp"
 
 import obc.error_info;
 import obc.parser;
