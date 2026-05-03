@@ -42,7 +42,8 @@ from <cite> [ArsTechnica](https://arstechnica.com/science/2023/05/as-many-as-fou
 
 To build **obc**, [CMake](https://cmake.org) version 3.28 or later is required. 
 
-To ease the initial setup, a developer container with all the project requirements is planned and should come soon.
+A Development Container based on Ubuntu 26.04 can be used to ease the initial setup. It has been tested with CLion 2026.1 
+running on Windows 11 Pro build 26200.8328.
 
 ### Successful compiler/Generator combinations:
 

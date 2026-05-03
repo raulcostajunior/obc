@@ -1,0 +1,5 @@
+// For more customization options, see https://containers.dev/implementors/json_reference
+{
+  name: "Ubuntu26",
+  build: { "dockerfile": "Dockerfile"},
+}
