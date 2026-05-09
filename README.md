@@ -1,3 +1,11 @@
+>
+> Due to the irregular level of support for C++ modules among different toolchains and IDEs,
+> this repository has been placed (temporarily?) in archive mode. Development is continuing
+> in a new repository, [obe](https://github.com/raulcostajunior/obe).
+>
+> obe starts with the latest state of obc before the module related changes.
+>
+ 
 # obc
 
 [![Build and Test Status](https://github.com/raulcostajunior/obc/actions/workflows/cmake.yml/badge.svg)](https://github.com/raulcostajunior/obc/actions/workflows/cmake.yml)
